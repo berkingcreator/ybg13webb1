@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <link rel="icon" href="Gemini_Generated_Image_57k0xa57k0xa57k0.png" type="image/png">
-    <link rel="shortcut icon" href="Gemini_Generated_Image_57k0xa57k0xa57k0.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YBG13™ | Web, Mobil ve Oyun Geliştirme</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -19,6 +17,7 @@
         .page-content {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
+            min-height: 80vh;
         }
 
         .page-content.active {
@@ -32,172 +31,323 @@
 
         .nav-link.active {
             color: #3b82f6;
-            border-bottom: 2px solid #3b82f6;
+            position: relative;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #3b82f6;
         }
 
-        .product-card:hover img {
-            transform: scale(1.05);
+        /* Founder Card Effects */
+        .founder-card {
+            transition: all 0.4s ease;
+        }
+        .founder-card:hover {
+            transform: translateY(-10px);
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
 
-    <!-- Navigasyon Menüsü -->
-    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex-shrink-0 flex items-center">
-                    <span class="text-2xl font-bold tracking-tighter text-blue-600">YBG13™</span>
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="showPage('home')">
+                    <span class="text-3xl font-extrabold tracking-tighter text-slate-900">YBG<span class="text-blue-600">13</span>™</span>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <button onclick="showPage('home')" class="nav-link font-medium hover:text-blue-500 transition active" id="btn-home">Anasayfa</button>
-                    <button onclick="showPage('services')" class="nav-link font-medium hover:text-blue-500 transition" id="btn-services">Hizmetler</button>
-                    <button onclick="showPage('shop')" class="nav-link font-medium hover:text-blue-500 transition" id="btn-shop">Mağaza</button>
-                    <button onclick="showPage('contact')" class="nav-link font-medium hover:text-blue-500 transition" id="btn-contact">İletişim</button>
+                    <button onclick="showPage('home')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition active" id="btn-home">Anasayfa</button>
+                    <button onclick="showPage('services')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-services">Hizmetler</button>
+                    <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
+                    <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
+                    <button onclick="showPage('contact')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-contact">İletişim</button>
                 </div>
                 <div class="md:hidden flex items-center">
-                    <button onclick="mobileMenuToggle()" class="text-slate-600 hover:text-blue-600">
+                    <button onclick="mobileMenuToggle()" class="text-slate-600 hover:text-blue-600 p-2">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
-        <!-- Mobil Menü -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4">
-            <button onclick="showPage('home')" class="block w-full text-left font-medium">Anasayfa</button>
-            <button onclick="showPage('services')" class="block w-full text-left font-medium">Hizmetler</button>
-            <button onclick="showPage('shop')" class="block w-full text-left font-medium">Mağaza</button>
-            <button onclick="showPage('contact')" class="block w-full text-left font-medium">İletişim</button>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg absolute w-full">
+            <button onclick="showPage('home')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Anasayfa</button>
+            <button onclick="showPage('services')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Hizmetler</button>
+            <button onclick="showPage('about')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Biz Kimiz?</button>
+            <button onclick="showPage('shop')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Mağaza</button>
+            <button onclick="showPage('contact')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İletişim</button>
         </div>
     </nav>
 
-    <!-- Anasayfa Bölümü -->
-    <section id="home" class="page-content active pt-32 pb-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center lg:text-left flex flex-col lg:flex-row items-center justify-between gap-12">
-                <div class="lg:w-1/2">
-                    <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-tight mb-6">
-                        Geleceği <span class="text-blue-600">Kodluyoruz.</span>
-                    </h1>
-                    <p class="text-xl text-slate-600 mb-8 max-w-2xl">
-                        YBG13™, yenilikçi web çözümleri, mobil uygulamalar ve sürükleyici oyun deneyimleri tasarlayan bir teknoloji atölyesidir.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <button onclick="showPage('services')" class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transition shadow-lg">Hizmetlerimizi Gör</button>
-                        <button onclick="showPage('shop')" class="bg-white text-blue-600 border border-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition shadow-md">Mağazaya Göz At</button>
+    <main class="flex-grow">
+        
+        <section id="home" class="page-content active pt-32 pb-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+                <div class="text-center lg:text-left flex flex-col lg:flex-row items-center justify-between gap-12">
+                    <div class="lg:w-1/2">
+                        <div class="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded-full font-semibold text-sm mb-6 border border-blue-100">
+                            🚀 Dijital Dünyanın Mimarları
+                        </div>
+                        <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6">
+                            Geleceği <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Kodluyoruz.</span>
+                        </h1>
+                        <p class="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
+                            YBG13™, yenilikçi web çözümleri, mobil uygulamalar ve sürükleyici oyun deneyimleri tasarlayan yeni nesil teknoloji atölyesidir.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <button onclick="showPage('services')" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200 transform hover:-translate-y-1">Hizmetlerimizi Gör</button>
+                            <button onclick="showPage('shop')" class="bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold hover:bg-slate-50 transition shadow-sm hover:shadow-md">Mağazaya Göz At</button>
+                        </div>
                     </div>
-                </div>
-                <div class="lg:w-1/2">
-                    <div class="w-full h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1000" 
-                             alt="YBG13 Teknoloji" 
-                             class="w-full h-full object-cover">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Hizmetler Bölümü -->
-    <section id="services" class="page-content pt-32 pb-20 bg-slate-100">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">Uzmanlık Alanlarımız</h2>
-                <div class="w-20 h-1 bg-blue-600 mx-auto"></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 text-2xl mb-6">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Web Geliştirme</h3>
-                    <p class="text-slate-600">Modern, hızlı ve SEO dostu kurumsal web siteleri ve e-ticaret platformları.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center text-green-600 text-2xl mb-6">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Mobil Uygulama</h3>
-                    <p class="text-slate-600">iOS ve Android platformları için yüksek performanslı yerel ve hibrit uygulamalar.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 text-2xl mb-6">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Oyun Geliştirme</h3>
-                    <p class="text-slate-600">2D ve 3D mobil oyunlar, sürükleyici mekanikler ve etkileyici görsel tasarımlar.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mağaza Bölümü -->
-    <section id="shop" class="page-content pt-32 pb-20">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Dijital Varlık ve Bakım Mağazası</h2>
-                <p class="text-slate-600">Tamamı test edilmiş, yayına hazır 15 profesyonel çözüm.</p>
-            </div>
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Ürünler JS ile buraya yüklenecek -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Ürün Detay Sayfası -->
-    <section id="product-detail" class="page-content pt-32 pb-20">
-        <div class="max-w-5xl mx-auto px-4">
-            <button onclick="showPage('shop')" class="mb-8 text-blue-600 flex items-center font-medium">
-                <i class="fas fa-arrow-left mr-2"></i> Mağazaya Dön
-            </button>
-            <div id="detail-content" class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-                <!-- İçerik JS ile yüklenecek -->
-            </div>
-        </div>
-    </section>
-
-    <!-- İletişim Bölümü -->
-    <section id="contact" class="page-content pt-32 pb-20 bg-white">
-        <div class="max-w-5xl mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-slate-50 p-8 md:p-12 rounded-3xl shadow-lg border border-slate-100">
-                <div>
-                    <h2 class="text-3xl font-bold mb-6">Bir Projeniz mi Var?</h2>
-                    <p class="text-slate-600 mb-8">Fikrinizi hayata geçirmek için sabırsızlanıyoruz. Formu doldurun, size özel teklifimizi hazırlayalım.</p>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <i class="fas fa-envelope text-blue-600"></i>
-                            <span>Berkbey@ybg13.com</span>
+                    <div class="lg:w-1/2 relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="relative w-full h-[400px] lg:h-[500px] rounded-[1.8rem] overflow-hidden shadow-2xl bg-slate-900">
+                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000" 
+                                 alt="YBG13 Teknoloji" 
+                                 class="w-full h-full object-cover opacity-80 hover:scale-105 transition duration-700">
                         </div>
                     </div>
                 </div>
-                <form id="contact-form" action="https://formspree.io/f/mgolkvdq" method="POST" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-slate-700">Ad Soyad</label>
-                        <input type="text" name="name" required placeholder="Adınız ve soyadınız" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-slate-700">E-Posta Adresiniz</label>
-                        <input type="email" name="email" required placeholder="ornek@eposta.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-slate-700">Konu / Proje</label>
-                        <input type="text" id="contact-subject" name="subject" placeholder="Hangi konuda yardıma ihtiyacınız var?" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 text-slate-700">Mesajınız</label>
-                        <textarea id="contact-message" name="message" rows="4" required placeholder="Projeniz hakkında kısa bir bilgi verin..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg">Gönder</button>
-                </form>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-2xl font-bold mb-4 tracking-tighter">YBG13™</p>
-            <p class="text-slate-500">&copy; 2026 YBG13 Technology Group. Tüm hakları saklıdır.</p>
+<section id="about" class="page-content pt-32 pb-20 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4">
+                
+                <div class="text-center mb-16 max-w-3xl mx-auto">
+                    <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">Biz Kimiz?</span>
+                    <h2 class="text-4xl font-bold mt-2 mb-6 text-slate-900">Teknolojiye Yön Veren Vizyon</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed">
+                        YBG13™, 2026 yılında dijital dünyadaki karmaşık sorunlara basit, zarif ve güçlü çözümler üretmek amacıyla kuruldu. Biz sadece kod yazmıyoruz; markaların dijital geleceğini inşa ediyoruz.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                    
+                    <div class="founder-card bg-white p-10 rounded-[2rem] text-center border border-slate-100 shadow-xl relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-400 to-blue-500"></div>
+                        <div class="founder-img-container relative w-56 h-56 mx-auto mb-8">
+                            <img src="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/kurucu2.jpg" alt="Berk Bey" class="w-full h-full object-cover rounded-full shadow-2xl border-4 border-slate-50">
+                            <div class="absolute bottom-2 right-4 bg-green-500 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-lg z-10">
+                                <i class="fas fa-code"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-2">Berk Bey</h3>
+                        <p class="text-blue-600 font-bold text-sm uppercase tracking-wider mb-6">Kurucu Ortak & Lead Developer</p>
+                        <p class="text-slate-600 leading-relaxed italic mb-8 px-4">
+                            "Kod sadece sözdizimi değil, dijital dünyanın mimarisidir. Güvenlik ve performans, sonradan eklenen özellikler değil, temel taşlardır."
+                        </p>
+                        <div class="flex justify-center space-x-6">
+                            <a href="#" class="text-slate-400 hover:text-blue-600 transition text-2xl"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-slate-400 hover:text-slate-900 transition text-2xl"><i class="fab fa-github"></i></a>
+                            <a href="#" class="text-slate-400 hover:text-blue-400 transition text-2xl"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="founder-card bg-white p-10 rounded-[2rem] text-center border border-slate-100 shadow-xl relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+                        <div class="founder-img-container relative w-56 h-56 mx-auto mb-8">
+                            <img src="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/kurucu1.jpg" alt="Serhat Bey" class="w-full h-full object-cover rounded-full shadow-2xl border-4 border-slate-50 grayscale group-hover:grayscale-0 transition duration-500">
+                            <div class="absolute bottom-2 right-4 bg-purple-500 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-lg z-10">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-2">Serhat Bey</h3>
+                        <p class="text-purple-600 font-bold text-sm uppercase tracking-wider mb-6">Kurucu Ortak & Creative Director</p>
+                        <p class="text-slate-600 leading-relaxed italic mb-8 px-4">
+                            "Tasarım, teknolojinin insanla konuştuğu dildir. Her pikselin bir amacı, her animasyonun bir hikayesi olmalıdır."
+                        </p>
+                        <div class="flex justify-center space-x-6">
+                            <a href="#" class="text-slate-400 hover:text-blue-600 transition text-2xl"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-slate-400 hover:text-pink-500 transition text-2xl"><i class="fab fa-dribbble"></i></a>
+                            <a href="#" class="text-slate-400 hover:text-blue-400 transition text-2xl"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="page-content pt-32 pb-20 bg-slate-100">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">Neler Yapıyoruz?</span>
+                    <h2 class="text-4xl font-bold mt-2 mb-4 text-slate-900">Uzmanlık Alanlarımız</h2>
+                    <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group">
+                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 text-3xl mb-8 group-hover:bg-blue-600 group-hover:text-white transition duration-300">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Web Geliştirme</h3>
+                        <p class="text-slate-600 leading-relaxed">Modern, hızlı ve SEO dostu kurumsal web siteleri, SaaS projeleri ve e-ticaret platformları.</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group">
+                        <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 text-3xl mb-8 group-hover:bg-green-600 group-hover:text-white transition duration-300">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Mobil Uygulama</h3>
+                        <p class="text-slate-600 leading-relaxed">iOS ve Android platformları için Flutter ve React Native ile geliştirilmiş yüksek performanslı uygulamalar.</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-3xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group">
+                        <div class="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 text-3xl mb-8 group-hover:bg-purple-600 group-hover:text-white transition duration-300">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Oyun Geliştirme</h3>
+                        <p class="text-slate-600 leading-relaxed">Unity ve Unreal Engine ile geliştirilen 2D/3D mobil oyunlar, sürükleyici mekanikler.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="shop" class="page-content pt-32 pb-20">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold mb-4 text-slate-900">Dijital Varlık Mağazası</h2>
+                    <p class="text-slate-600 text-lg">Hemen indirip kullanabileceğiniz, test edilmiş profesyonel çözümler.</p>
+                </div>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    </div>
+            </div>
+        </section>
+
+        <section id="product-detail" class="page-content pt-32 pb-20">
+            <div class="max-w-6xl mx-auto px-4">
+                <button onclick="showPage('shop')" class="mb-8 text-slate-600 hover:text-blue-600 flex items-center font-medium transition">
+                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center mr-2">
+                        <i class="fas fa-arrow-left"></i>
+                    </div> 
+                    Mağazaya Dön
+                </button>
+                <div id="detail-content" class="bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
+                    </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page-content pt-32 pb-20">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 bg-white p-8 md:p-16 rounded-[2.5rem] shadow-xl border border-slate-100">
+                    <div>
+                        <span class="text-blue-600 font-bold uppercase tracking-widest text-sm">İletişime Geçin</span>
+                        <h2 class="text-4xl font-bold mb-6 mt-2 text-slate-900">Bir Projeniz mi Var?</h2>
+                        <p class="text-slate-600 mb-10 text-lg leading-relaxed">Harika fikirleriniz için sabırsızlanıyoruz. Formu doldurun veya doğrudan e-posta gönderin, 24 saat içinde dönüş yapalım.</p>
+                        
+                        <div class="space-y-8">
+                            <div class="flex items-start space-x-6">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-xl flex-shrink-0">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">E-Posta</h4>
+                                    <p class="text-slate-600">Berkbey@ybg13.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-6">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-xl flex-shrink-0">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Ofis</h4>
+                                    <p class="text-slate-600">Maslak, İstanbul / Türkiye</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="contact-form" action="https://formspree.io/f/mgolkvdq" method="POST" class="space-y-5 bg-slate-50 p-8 rounded-2xl">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">Ad Soyad</label>
+                            <input type="text" name="name" required placeholder="Adınız ve soyadınız" class="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">E-Posta</label>
+                            <input type="email" name="email" required placeholder="ornek@eposta.com" class="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">Konu</label>
+                            <input type="text" id="contact-subject" name="subject" placeholder="Proje konusu" class="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 text-slate-700">Mesaj</label>
+                            <textarea id="contact-message" name="message" rows="4" required placeholder="Detaylar..." class="w-full px-5 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition bg-white"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-blue-600 transition shadow-lg transform hover:-translate-y-1">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-300 pt-20 pb-10 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-extrabold text-white tracking-tighter">YBG<span class="text-blue-500">13</span>™</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Teknolojinin sınırlarını zorlayan web, mobil ve oyun çözümleri. Geleceği kodlarken yanınızdayız.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition duration-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition duration-300"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition duration-300"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6">Hızlı Erişim</h3>
+                    <ul class="space-y-4 text-sm">
+                        <li><button onclick="showPage('home')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Anasayfa</button></li>
+                        <li><button onclick="showPage('services')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Hizmetler</button></li>
+                        <li><button onclick="showPage('about')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Biz Kimiz?</button></li>
+                        <li><button onclick="showPage('shop')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Mağaza</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6">Hizmetler</h3>
+                    <ul class="space-y-4 text-sm">
+                        <li class="hover:text-white transition cursor-default">Web Geliştirme</li>
+                        <li class="hover:text-white transition cursor-default">Mobil Uygulama</li>
+                        <li class="hover:text-white transition cursor-default">Oyun Tasarımı</li>
+                        <li class="hover:text-white transition cursor-default">UI/UX Tasarım</li>
+                        <li class="hover:text-white transition cursor-default">Teknik Destek</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6">İletişim</h3>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-500"></i>
+                            <span>Maslak Mah. Büyükdere Cad.<br>Sarıyer, İstanbul</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-blue-500"></i>
+                            <span>Berkbey@ybg13.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3 text-blue-500"></i>
+                            <span>+90 (555) 000 00 00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+                <p>&copy; 2026 YBG13 Technology Group. Tüm hakları saklıdır.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition">Gizlilik Politikası</a>
+                    <a href="#" class="hover:text-white transition">Kullanım Şartları</a>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -232,6 +382,7 @@
         function showPage(pageId) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
+            
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             const btn = document.getElementById('btn-' + pageId);
             if(btn) btn.classList.add('active');
@@ -251,16 +402,23 @@
         function viewProduct(id) {
             const p = products.find(prod => prod.id === id);
             document.getElementById('detail-content').innerHTML = `
-                <div class="md:w-1/2 p-4">
-                    <img src="${p.img}" class="w-full h-96 object-cover rounded-2xl shadow-md" 
+                <div class="md:w-1/2 p-4 bg-slate-100 flex items-center justify-center">
+                    <img src="${p.img}" class="w-full max-h-[500px] object-cover rounded-2xl shadow-lg transform hover:scale-105 transition duration-500" 
                          onerror="this.src='https://placehold.co/800x600/3b82f6/white?text=${encodeURIComponent(p.name)}'">
                 </div>
-                <div class="md:w-1/2 p-8 md:p-12">
-                    <span class="text-blue-600 font-bold uppercase text-sm tracking-widest">${p.category}</span>
-                    <h2 class="text-3xl font-bold my-4 text-slate-900">${p.name}</h2>
-                    <p class="text-slate-600 mb-6 leading-relaxed">${p.desc}</p>
-                    <div class="text-4xl font-extrabold text-slate-900 mb-8">${p.price.toLocaleString('tr-TR')} ₺</div>
-                    <button onclick="requestQuote('${p.name}')" class="bg-blue-600 text-white py-4 px-8 rounded-xl font-bold hover:bg-blue-700 w-full transition shadow-lg">Hemen Teklif Al</button>
+                <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                    <div class="mb-4">
+                        <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">${p.category}</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-slate-900 leading-tight">${p.name}</h2>
+                    <p class="text-slate-600 mb-8 leading-relaxed text-lg">${p.desc}</p>
+                    <div class="flex items-center justify-between mb-8 border-t border-b border-slate-100 py-6">
+                        <span class="text-slate-500 font-medium">Fiyat</span>
+                        <div class="text-4xl font-extrabold text-slate-900">${p.price.toLocaleString('tr-TR')} ₺</div>
+                    </div>
+                    <button onclick="requestQuote('${p.name}')" class="bg-blue-600 text-white py-5 px-8 rounded-xl font-bold hover:bg-blue-700 w-full transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center text-lg">
+                        <i class="fas fa-paper-plane mr-3"></i> Hemen Teklif Al
+                    </button>
                 </div>
             `;
             showPage('product-detail');
@@ -269,31 +427,33 @@
         function requestQuote(name) {
             showPage('contact');
             document.getElementById('contact-subject').value = "Teklif Talebi: " + name;
-            document.getElementById('contact-message').innerText = name + " ürünü/paketi hakkında detaylı bilgi almak istiyorum.";
+            document.getElementById('contact-message').innerText = name + " ürünü/paketi hakkında detaylı bilgi ve satın alma koşullarını öğrenmek istiyorum.";
         }
 
         // Render Mağaza
         const grid = document.getElementById('product-grid');
         products.forEach(p => {
             grid.innerHTML += `
-                <div class="product-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group border border-slate-100">
-                    <div class="h-48 overflow-hidden bg-slate-200">
-                        <img src="${p.img}" class="w-full h-full object-cover transition duration-500" 
+                <div class="product-card bg-white rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 group border border-slate-100 flex flex-col h-full">
+                    <div class="h-56 overflow-hidden bg-slate-200 relative">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition z-10"></div>
+                        <img src="${p.img}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" 
                              onerror="this.src='https://placehold.co/400x300/3b82f6/white?text=${encodeURIComponent(p.name)}'">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-900 z-20 shadow-sm">
+                            ${p.category}
+                        </div>
                     </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-slate-800 mb-2 truncate">${p.name}</h3>
-                        <p class="text-blue-600 font-bold text-xl mb-4">${p.price.toLocaleString('tr-TR')} ₺</p>
-                        <button onclick="viewProduct(${p.id})" class="w-full py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition">İncele</button>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="font-bold text-slate-800 text-lg mb-2 line-clamp-1">${p.name}</h3>
+                        <p class="text-sm text-slate-500 mb-4 line-clamp-2">${p.desc}</p>
+                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-50">
+                            <p class="text-blue-600 font-extrabold text-xl">${p.price.toLocaleString('tr-TR')} ₺</p>
+                            <button onclick="viewProduct(${p.id})" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition shadow-md">İncele</button>
+                        </div>
                     </div>
                 </div>
             `;
         });
     </script>
 </body>
-
 </html>
-
-
-
-
