@@ -84,6 +84,12 @@
             <button onclick="showPage('about')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Biz Kimiz?</button>
             <button onclick="showPage('shop')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Mağaza</button>
             <button onclick="showPage('contact')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İletişim</button>
+            <button onclick="document.getElementById('ai-assistant').scrollIntoView({behavior: 'smooth'}); closeMenu();" 
+        class="block w-full text-left font-medium p-2 mt-2 bg-blue-50 text-blue-700 rounded-xl border border-blue-100 flex items-center gap-2">
+    <i class="fas fa-robot text-sm"></i>
+    Mimar (AI Asistan)
+    <span class="ml-auto text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full animate-pulse">CANLI</span>
+</button>
         </div>
     </nav>
 
@@ -380,6 +386,9 @@
                         <li><button onclick="showPage('services')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Hizmetler</button></li>
                         <li><button onclick="showPage('projects')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> İşlerimiz</button></li>
                         <li><button onclick="showPage('about')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Biz Kimiz?</button></li>
+                        <li><button onclick="document.getElementById('ai-assistant').scrollIntoView({behavior: 'smooth'})" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded text-blue-600">
+    Mimar AI
+</button></li>
                         <li><button onclick="showPage('shop')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Mağaza</button></li>
                     </ul>
                 </div>
@@ -627,3 +636,4 @@ document.getElementById('ai-input').addEventListener('keypress', (e) => {
     </script>
 </body>
 </html>
+
