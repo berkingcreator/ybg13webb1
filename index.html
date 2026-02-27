@@ -64,6 +64,7 @@
                 <div class="hidden md:flex space-x-8">
                     <button onclick="showPage('home')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition active" id="btn-home">Anasayfa</button>
                     <button onclick="showPage('services')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-services">Hizmetler</button>
+                    <button onclick="showPage('projects')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-projects">İşlerimiz</button>
                     <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
                     <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
                     <button onclick="showPage('contact')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-contact">İletişim</button>
@@ -78,6 +79,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg absolute w-full">
             <button onclick="showPage('home')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Anasayfa</button>
             <button onclick="showPage('services')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Hizmetler</button>
+            <button onclick="showPage('projects')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşlerimiz</button>
             <button onclick="showPage('about')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Biz Kimiz?</button>
             <button onclick="showPage('shop')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Mağaza</button>
             <button onclick="showPage('contact')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İletişim</button>
@@ -116,7 +118,43 @@
             </div>
         </section>
 
-<section id="about" class="page-content pt-32 pb-20 bg-slate-50">
+        <section id="projects" class="page-content pt-32 pb-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-16 max-w-3xl mx-auto">
+                    <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">Portfolyo</span>
+                    <h2 class="text-4xl font-bold mt-2 mb-6 text-slate-900">Neler Ürettik?</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed">
+                        YBG13™ olarak hayata geçirdiğimiz ve üzerinde çalışmaya devam ettiğimiz gurur tablolarımızdan bazıları aşağıdadır.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition duration-300">
+                        <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl mb-6">
+                            <i class="fas fa-book-history"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Makale-i Tarih</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed">Tarihin derinliklerine ışık tutan zengin içerikli makale platformu.</p>
+                        <a href="https://ybg13.info" target="_blank" class="inline-flex items-center text-blue-600 font-bold hover:underline">
+                            ybg13.info adresinde yayında <i class="fas fa-external-link-alt ml-2 text-sm"></i>
+                        </a>
+                    </div>
+
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition duration-300">
+                        <div class="w-14 h-14 bg-purple-600 text-white rounded-2xl flex items-center justify-center text-2xl mb-6">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Ayeli Couture</h3>
+                        <p class="text-slate-600 mb-6 leading-relaxed">Moda ve tasarımın buluştuğu özel butik e-ticaret deneyimi.</p>
+                        <div class="inline-flex items-center text-purple-600 font-bold italic">
+                            <i class="fas fa-clock mr-2 text-sm"></i> yakında ayelicouture.com.tr adresinde yayında
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page-content pt-32 pb-20 bg-slate-50">
             <div class="max-w-7xl mx-auto px-4">
                 
                 <div class="text-center mb-16 max-w-3xl mx-auto">
@@ -306,6 +344,7 @@
                     <ul class="space-y-4 text-sm">
                         <li><button onclick="showPage('home')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Anasayfa</button></li>
                         <li><button onclick="showPage('services')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Hizmetler</button></li>
+                        <li><button onclick="showPage('projects')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> İşlerimiz</button></li>
                         <li><button onclick="showPage('about')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Biz Kimiz?</button></li>
                         <li><button onclick="showPage('shop')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Mağaza</button></li>
                     </ul>
@@ -353,27 +392,18 @@
 
     <script>
         const products = [
-            // 1. Destek/Bakım
             { id: 21, name: "Premium Yıllık Destek", category: "Destek", price: 120000, img: "https://images.unsplash.com/photo-1454165833968-3850586f68ba?auto=format&fit=crop&q=80&w=800", desc: "Özel müşteri temsilcisi, 7/24 anlık hata müdahalesi ve altyapı modernizasyonu." },
             { id: 22, name: "Kurumsal Yıllık Bakım", category: "Destek", price: 55000, img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800", desc: "Güvenlik güncellemeleri, sunucu izleme ve aylık performans raporlama." },
             { id: 23, name: "Standart Aylık Bakım", category: "Destek", price: 7500, img: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800", desc: "Aylık rutin kontroller ve kritik güvenlik yamaları." },
-            
-            // 2. Kod/Script
             { id: 1, name: "E-Ticaret Full Stack Script", category: "Kod", price: 48000, img: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800", desc: "React/Node.js tabanlı, admin panelli profesyonel mağaza çözümü." },
             { id: 7, name: "AI Sohbet Botu Entegrasyonu", category: "Kod", price: 35000, img: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&q=80&w=800", desc: "GPT-4 destekli, akıllı müşteri hizmetleri otomasyonu." },
             { id: 11, name: "Veri Analizi Otomasyonu", category: "Kod", price: 28000, img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800", desc: "Python tabanlı otomatik raporlama ve görselleştirme aracı." },
-            
-            // 3. Mobil
             { id: 4, name: "Yemek Sipariş Uygulaması", category: "Mobil", price: 92000, img: "https://images.unsplash.com/photo-1526367790999-0150786486a9?auto=format&fit=crop&q=80&w=800", desc: "Kurye ve restoran panelli, tam kapsamlı teslimat ekosistemi." },
             { id: 9, name: "Modern Emlak App (Flutter)", category: "Mobil", price: 79000, img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800", desc: "Harita entegrasyonlu ve gelişmiş filtreleme özellikli emlak portalı." },
             { id: 15, name: "Fitness & Sağlık Platformu", category: "Mobil", price: 65000, img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800", desc: "Antrenman programları ve beslenme takibi içeren mobil uygulama." },
-            
-            // 4. Oyun
             { id: 2, name: "RPG Oyun Başlangıç Seti", category: "Oyun", price: 32000, img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800", desc: "Unity için envanter ve yetenek sistemi içeren RPG iskeleti." },
             { id: 19, name: "Gelişmiş Envanter Sistemi", category: "Oyun", price: 18000, img: "https://images.unsplash.com/photo-1614027164847-1b2809eb18e4?auto=format&fit=crop&q=80&w=800", desc: "Sürükle bırak destekli, çoklu kategori oyun envanteri." },
             { id: 13, name: "VFX & Shader Paketi", category: "Oyun", price: 14500, img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=800", desc: "Görsel kaliteyi artıran 50+ hazır Unity shader efekti." },
-            
-            // 5. Web/UI
             { id: 17, name: "LMS Eğitim Platformu", category: "Web", price: 105000, img: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=800", desc: "Video dersler ve sınav modülleri içeren kurumsal akademi sistemi." },
             { id: 3, name: "SaaS Dashboard UI Kit", category: "UI Kit", price: 15000, img: "https://images.unsplash.com/photo-1581291518066-0e742b017354?auto=format&fit=crop&q=80&w=800", desc: "Figma ve Tailwind uyumlu 200+ kurumsal arayüz bileşeni." },
             { id: 14, name: "Restoran Rezervasyon Sistemi", category: "Web", price: 42000, img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800", desc: "Masa yönetimi ve online ödeme destekli rezervasyon web sitesi." }
@@ -387,7 +417,6 @@
             const btn = document.getElementById('btn-' + pageId);
             if(btn) btn.classList.add('active');
             
-            // Mobil menüyü kapat
             const mobMenu = document.getElementById('mobile-menu');
             if (mobMenu) mobMenu.classList.add('hidden');
             
@@ -427,33 +456,30 @@
         function requestQuote(name) {
             showPage('contact');
             document.getElementById('contact-subject').value = "Teklif Talebi: " + name;
-            document.getElementById('contact-message').innerText = name + " ürünü/paketi hakkında detaylı bilgi ve satın alma koşullarını öğrenmek istiyorum.";
+            document.getElementById('contact-message').innerText = name + " ürünü hakkında detaylı teklif almak istiyorum.";
         }
 
-        // Render Mağaza
+        // Ürünleri listele
         const grid = document.getElementById('product-grid');
-        products.forEach(p => {
-            grid.innerHTML += `
-                <div class="product-card bg-white rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 group border border-slate-100 flex flex-col h-full">
-                    <div class="h-56 overflow-hidden bg-slate-200 relative">
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition z-10"></div>
-                        <img src="${p.img}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" 
-                             onerror="this.src='https://placehold.co/400x300/3b82f6/white?text=${encodeURIComponent(p.name)}'">
-                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-900 z-20 shadow-sm">
-                            ${p.category}
+        if(grid) {
+            products.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition cursor-pointer group" onclick="viewProduct(${p.id})">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-xs font-bold text-blue-600 shadow-sm">${p.category}</div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-slate-900 mb-2 truncate">${p.name}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-blue-600 font-extrabold">${p.price.toLocaleString('tr-TR')} ₺</span>
+                                <span class="text-slate-400 text-xs font-medium">İncele <i class="fas fa-chevron-right ml-1"></i></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-bold text-slate-800 text-lg mb-2 line-clamp-1">${p.name}</h3>
-                        <p class="text-sm text-slate-500 mb-4 line-clamp-2">${p.desc}</p>
-                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-slate-50">
-                            <p class="text-blue-600 font-extrabold text-xl">${p.price.toLocaleString('tr-TR')} ₺</p>
-                            <button onclick="viewProduct(${p.id})" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition shadow-md">İncele</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
     </script>
 </body>
 </html>
