@@ -68,7 +68,6 @@
                     <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
                     <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
                     <button onclick="showPage('ai-assistant')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="nav-ai-assistant">AI Asistan</button>
-                    <button onclick="showPage('calculator')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-contact">Bütçe Hesapla</button>
                     <button onclick="showPage('contact')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-contact">İletişim</button>
                 </div>
                 <div class="md:hidden flex items-center">
@@ -84,7 +83,6 @@
             <button onclick="showPage('projects')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşlerimiz</button>
             <button onclick="showPage('about')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Biz Kimiz?</button>
             <button onclick="showPage('shop')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Mağaza</button>
-             <button onclick="showPage('calculator')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Bütçe hesapla</button>
             <button onclick="showPage('contact')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İletişim</button>
             <button onclick="showPage('ai-assistant')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded text-blue-600"> Mimar AI</button>
         </div>
@@ -304,53 +302,6 @@
         </div>
     </div>
 </section>
-<section id="calculator" class="py-20 bg-slate-50 border-t border-b border-slate-200">
-    <div class="max-w-4xl mx-auto px-4">
-        <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
-            <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <i class="fas fa-calculator text-blue-600"></i> Proje Maliyeti Hesapla
-            </h2>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="space-y-4">
-                    <label class="block font-semibold text-slate-700">Proje Türü</label>
-                    <select id="project-type" class="w-full p-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all" onchange="calculateTotal()">
-                        <option value="0">Seçiniz...</option>
-                        <option value="48000">E-Ticaret Script (48k ₺)</option>
-                        <option value="32000">RPG Oyun Seti (32k ₺)</option>
-                        <option value="65000">Fitness / Mobil App (65k ₺)</option>
-                        <option value="15000">Kurumsal Tanıtım Sitesi (15k ₺)</option>
-                    </select>
-
-                    <div class="space-y-3 mt-6">
-                        <label class="block font-semibold text-slate-700">Ekstralar</label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" value="5000" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" onchange="calculateTotal()">
-                            <span class="text-slate-600 group-hover:text-blue-600 transition-colors">Admin Paneli (+5.000 ₺)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" value="8000" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" onchange="calculateTotal()">
-                            <span class="text-slate-600 group-hover:text-blue-600 transition-colors">Çoklu Dil Desteği (+8.000 ₺)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" value="12000" class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500" onchange="calculateTotal()">
-                            <span class="text-slate-600 group-hover:text-blue-600 transition-colors">7/24 Teknik Destek (+12.000 ₺)</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="bg-blue-600 rounded-2xl p-8 text-white flex flex-col justify-center items-center text-center">
-                    <p class="text-blue-100 mb-2">Tahmini Proje Bütçesi</p>
-                    <div id="total-price" class="text-5xl font-extrabold mb-6">0 ₺</div>
-                    <button onclick="document.getElementById('ai-assistant').scrollIntoView({behavior:'smooth'})" 
-                            class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition-all shadow-lg active:scale-95">
-                        Mimar ile Detaylandır
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
         <section id="contact" class="page-content pt-32 pb-20">
             <div class="max-w-6xl mx-auto px-4">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 bg-white p-8 md:p-16 rounded-[2.5rem] shadow-xl border border-slate-100">
@@ -428,7 +379,6 @@
                         <li><button onclick="showPage('home')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Anasayfa</button></li>
                         <li><button onclick="showPage('services')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Hizmetler</button></li>
                         <li><button onclick="showPage('projects')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> İşlerimiz</button></li>
-                         <li><button onclick="showPage('calculator')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i>Bütçe Hesapla</button></li>
                         <li><button onclick="showPage('about')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Biz Kimiz?</button></li>
                         <li><button onclick="showPage('ai-assistant')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> AI Asistan</button></li>
                         <li><button onclick="showPage('shop')" class="hover:text-blue-400 transition flex items-center"><i class="fas fa-chevron-right text-xs mr-2 text-slate-600"></i> Mağaza</button></li>
@@ -698,6 +648,7 @@ document.getElementById('ai-input').addEventListener('keypress', (e) => {
     </script>
 </body>
 </html>
+
 
 
 
