@@ -67,6 +67,7 @@
                     <button onclick="showPage('projects')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-projects">İşlerimiz</button>
                     <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
                     <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
+                    <button onclick="showPage('partners')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-partners">İşbirliklerimiz</button>
                     <button onclick="showPage('ai-assistant')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="nav-ai-assistant">AI Asistan</button>
                     <button onclick="showPage('contact')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-contact">İletişim</button>
                 </div>
@@ -79,6 +80,7 @@
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg absolute w-full">
             <button onclick="showPage('home')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Anasayfa</button>
+            <button onclick="showPage('partners')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşbirliklerimiz</button>
             <button onclick="showPage('services')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Hizmetler</button>
             <button onclick="showPage('projects')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşlerimiz</button>
             <button onclick="showPage('about')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Biz Kimiz?</button>
@@ -119,7 +121,37 @@
                 </div>
             </div>
         </section>
+<section id="partners" class="page-content pt-32 pb-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">Ekosistemimiz</span>
+            <h2 class="text-4xl font-bold mt-2 mb-6 text-slate-900">Güçlü İşbirlikleri</h2>
+            <p class="text-slate-600 text-lg leading-relaxed">
+                YBG13™ olarak, sektörün öncü oluşumlarıyla birlikte dijital dünyayı şekillendiriyoruz.
+            </p>
+        </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <div class="group bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 hover:shadow-2xl transition duration-500 text-center">
+                <div class="w-32 h-32 mx-auto mb-6 bg-white rounded-3xl shadow-sm flex items-center justify-center overflow-hidden group-hover:scale-105 transition duration-500">
+                    <img src="https://via.placeholder.com/150?text=MEDCELL" alt="Medcell Studio Logo" class="w-24 h-24 object-contain">
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">Medcell Studio</h3>
+                <p class="text-blue-600 font-medium mb-4">Stratejik Çözüm Ortağı</p>
+                <p class="text-slate-600 leading-relaxed">Yaratıcı içerik üretimi ve dijital medya stratejilerinde ortak projeler yürüttüğümüz vizyoner stüdyo.</p>
+            </div>
+
+            <div class="group bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 hover:shadow-2xl transition duration-500 text-center">
+                <div class="w-32 h-32 mx-auto mb-6 bg-white rounded-3xl shadow-sm flex items-center justify-center overflow-hidden group-hover:scale-105 transition duration-500">
+                    <img src="https://via.placeholder.com/150?text=ANKA" alt="ANKA YAZILIM Logo" class="w-24 h-24 object-contain">
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">ANKA YAZILIM</h3>
+                <p class="text-blue-600 font-medium mb-4">Teknoloji Partneri</p>
+                <p class="text-slate-600 leading-relaxed">Yüksek performanslı yazılım mimarileri ve altyapı geliştirmelerinde güç birliği yaptığımız partnerimiz.</p>
+            </div>
+        </div>
+    </div>
+</section>
         <section id="projects" class="page-content pt-32 pb-20 bg-white">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-16 max-w-3xl mx-auto">
@@ -661,7 +693,6 @@ document.getElementById('ai-input').addEventListener('keypress', (e) => {
     </script>
 </body>
 </html>
-
 
 
 
