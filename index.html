@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -67,6 +68,7 @@
                     <button onclick="showPage('projects')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-projects">İşlerimiz</button>
                     <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
                     <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
+                    <button onclick="showPage('news')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-news">Haberler</button>
                     <button onclick="showPage('partners')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-partners">İşbirliklerimiz</button>
                     <button onclick="showPage('ai-assistant')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="nav-ai-assistant">AI Asistan</button>
                     <button onclick="showPage('contact')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-contact">İletişim</button>
@@ -81,6 +83,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg absolute w-full">
             <button onclick="showPage('home')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Anasayfa</button>
             <button onclick="showPage('partners')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşbirliklerimiz</button>
+            <button onclick="showPage('news')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Haberler</button>
             <button onclick="showPage('services')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Hizmetler</button>
             <button onclick="showPage('projects')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşlerimiz</button>
             <button onclick="showPage('about')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Biz Kimiz?</button>
@@ -91,7 +94,28 @@
     </nav>
 
     <main class="flex-grow">
-        
+        <section id="news" class="page-content pt-32 pb-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <span class="text-blue-600 font-bold tracking-widest uppercase text-sm">YBG13 Güncel</span>
+            <h2 class="text-4xl font-bold mt-2 mb-6 text-slate-900">Teknoloji Haberleri</h2>
+            <p class="text-slate-600 text-lg">Sektördeki son gelişmeler ve atölyemizden en yeni haberler.</p>
+        </div>
+
+        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            </div>
+    </div>
+</section>
+
+<section id="news-detail" class="page-content pt-32 pb-20">
+    <div class="max-w-4xl mx-auto px-4">
+        <button onclick="showPage('news')" class="mb-8 text-slate-600 hover:text-blue-600 flex items-center font-medium transition">
+            <i class="fas fa-arrow-left mr-2"></i> Haberlere Dön
+        </button>
+        <div id="news-detail-content" class="bg-white rounded-[2rem] shadow-xl overflow-hidden p-8 md:p-12 border border-slate-100">
+            </div>
+    </div>
+</section>
         <section id="home" class="page-content active pt-32 pb-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
                 <div class="text-center lg:text-left flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -347,7 +371,7 @@
             
             <div id="chat-messages" class="flex-grow p-6 overflow-y-auto space-y-4 bg-slate-50 flex flex-col">
                 <div class="bg-blue-100 text-blue-800 p-4 rounded-2xl rounded-tl-none max-w-[80%] self-start text-sm shadow-sm">
-                    Merhaba! Ben YBG13'ün gerçek AI asistanıyım. Yazılım, tasarım veya projelerimiz hakkında konuşmaya hazırım.(aı api hatalıdır hatanın üstünde çalışıyoruz)
+                    AI asistanın api bağlantısı hatalıdır hata üstünde uğraşıyoruz
                 </div>
             </div>
 
@@ -384,7 +408,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-slate-900">Ofis</h4>
-                                    <p class="text-slate-600">Maslak, İstanbul / Türkiye</p>
+                                    <p class="text-slate-600">Sinop Burnu / Sinop / Türkiye</p>
                                 </div>
                             </div>
                         </div>
@@ -459,7 +483,7 @@
                     <ul class="space-y-4 text-sm">
                         <li class="flex items-start">
                             <i class="fas fa-map-marker-alt mt-1 mr-3 text-blue-500"></i>
-                            <span>sinop burnu zeytinlik<br>Sinop burnu Sinop</span>
+                            <span>Zeytinlik martı sok.<br>Sinop ince burun , SİNOP</span>
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-envelope mr-3 text-blue-500"></i>
@@ -699,10 +723,82 @@ document.getElementById('ai-input').addEventListener('keypress', (e) => {
         priceDisplay.innerText = total.toLocaleString('tr-TR') + " ₺";
     }
 }
+// Haber Verileri
+const newsData = [
+  {
+        id: 3,
+        title: "Yeni iş birliğimiz! ANKAYAZILIM",
+        date: "6 Mart 2026",
+        category: "Oyun",
+        image: "https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/WhatsApp%20Image%202026-03-03%20at%2015.38.03.jpeg",
+        summary: "Yeni işbirliğimiz;",
+        content: "şirketimiz ybg13™ Anka yazılım ile işbirliği imzalamıştır"
+    },
+{
+        id: 1,
+        title: "Yeni iş birliğimiz! Medcell",
+        date: "6 Mart 2026",
+        category: "Oyun",
+        image: "https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/WhatsApp%20Image%202026-03-08%20at%2000.08.06.jpeg",
+        summary: "Yeni işbirliğimiz;",
+        content: "şirketimiz ybg13™ Medcell ile işbirliği imzalamıştır"
+    },
+    {
+        id: 2,
+        title: "Yeni iş birliğimiz! Devdex",
+        date: "4 Mart 2026",
+        category: "Oyun",
+        image: "https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/WhatsApp%20Image%202026-03-08%20at%2000.38.47.jpeg",
+        summary: "Yeni işbirliğimiz;",
+        content: "şirketimiz ybg13™ dev dex ile işbirliği imzalamıştır"
+    }
+];
+
+// Haberleri Grid'e Basma Fonksiyonu
+function renderNews() {
+    const newsGrid = document.getElementById('news-grid');
+    if(!newsGrid) return;
+    
+    newsGrid.innerHTML = newsData.map(news => `
+        <div class="bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:shadow-lg transition duration-300">
+            <img src="${news.image}" class="w-full h-48 object-cover">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-blue-600 uppercase">${news.category}</span>
+                    <span class="text-xs text-slate-400">${news.date}</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-900">${news.title}</h3>
+                <p class="text-slate-600 text-sm mb-4">${news.summary}</p>
+                <button onclick="viewNewsDetail(${news.id})" class="text-blue-600 font-bold text-sm hover:underline">Devamını Oku <i class="fas fa-arrow-right ml-1"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Haber Detayı Görüntüleme
+function viewNewsDetail(id) {
+    const news = newsData.find(n => n.id === id);
+    const detailContent = document.getElementById('news-detail-content');
+    
+    detailContent.innerHTML = `
+        <img src="${news.image}" class="w-full h-[400px] object-cover rounded-2xl mb-8">
+        <div class="flex items-center gap-4 mb-4">
+            <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">${news.category}</span>
+            <span class="text-slate-400 text-sm">${news.date}</span>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6">${news.title}</h1>
+        <div class="prose max-w-none text-slate-600 leading-relaxed text-lg">
+            ${news.content}
+        </div>
+    `;
+    showPage('news-detail');
+}
+
+// Mevcut window.onload veya script sonuna ekle
+renderNews();
     </script>
 </body>
 </html>
-
 
 
 
