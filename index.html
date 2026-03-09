@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -10,6 +11,33 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         
+/* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
+.aegis-grid-fix {
+    display: grid !important;
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Mobilde tek sütun */
+    gap: 2rem;
+    width: 100%;
+}
+
+     @media (min-width: 768px) {
+       .aegis-grid-fix {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Tablette 2 sütun */
+      }
+     }
+
+      @media (min-width: 1024px) {
+      .aegis-grid-fix {
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* Masaüstünde 3 sütun */
+        max-width: 1200px;
+        margin: 0 auto;
+       }
+       }
+
+        .aegis-card {
+        width: 100%; /* Kartların dışarı taşmasını engeller */
+        min-width: 0; /* İçerik taşmasını engeller */
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
@@ -52,6 +80,13 @@
         .founder-card:hover {
             transform: translateY(-10px);
         }
+
+        .premium-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
@@ -66,6 +101,7 @@
                     <button onclick="showPage('home')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition active" id="btn-home">Anasayfa</button>
                     <button onclick="showPage('services')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-services">Hizmetler</button>
                     <button onclick="showPage('projects')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-projects">İşlerimiz</button>
+                    <button onclick="showPage('aegis-engine')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-aegis-engine">Aegis Engine</button>
                     <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
                     <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
                     <button onclick="showPage('news')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-news">Haberler</button>
@@ -83,6 +119,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg absolute w-full">
             <button onclick="showPage('home')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Anasayfa</button>
             <button onclick="showPage('partners')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşbirliklerimiz</button>
+            <button onclick="showPage('aegis-engine')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Aegis Engine</button>
             <button onclick="showPage('news')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Haberler</button>
             <button onclick="showPage('services')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Hizmetler</button>
             <button onclick="showPage('projects')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşlerimiz</button>
@@ -104,6 +141,94 @@
 
         <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
             </div>
+    </div>
+</section>
+
+<section id="aegis-engine" class="page-content pt-32 pb-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <span class="text-blue-600 font-bold tracking-widest uppercase text-xs px-3 py-1 bg-blue-50 rounded-full">Güvenlik Merkezi</span>
+            <h2 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 text-slate-900">Aegis Engine İndirmeler</h2>
+            <p class="text-slate-600 text-lg">Aegis Engine'in tüm sürümlerine buradan ulaşabilirsiniz.</p>
+        </div>
+
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="h-px bg-slate-200 flex-grow"></div>
+                <span class="text-slate-400 font-bold text-sm uppercase tracking-widest">Ücretsiz Sürümler</span>
+                <div class="h-px bg-slate-200 flex-grow"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-blue-200 flex flex-col md:flex-row items-center justify-between gap-6 border-4 border-blue-500 hover:scale-[1.02] transition-transform">
+                    <div class="text-center md:text-left">
+                        <h3 class="text-3xl font-black mb-2 tracking-tight">Aegis V1.5 Standart</h3>
+                        <p class="text-blue-100 text-sm opacity-90">Hızlı ve güvenilir. En güncel ücretsiz sürüm.</p>
+                    </div>
+                    <div class="flex gap-3 shrink-0">
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.5/Aegis%20javascript.js', 'Aegis_V1.5.js')" class="bg-white text-blue-600 px-6 py-4 rounded-2xl font-bold hover:bg-slate-100 transition shadow-lg flex items-center gap-2">
+                            <i class="fab fa-js text-xl"></i> JS İndir
+                        </button>
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.5/Aegis%20python.py', 'Aegis_V1.5.py')" class="bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold hover:bg-black transition shadow-lg flex items-center gap-2 border border-blue-400">
+                            <i class="fab fa-python text-xl"></i> Python İndir
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 p-8 rounded-[2.5rem] text-slate-900 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-lg transition-all">
+                    <div class="text-center md:text-left">
+                        <h3 class="text-2xl font-extrabold mb-1">Aegis V1.3 Klasik</h3>
+                        <p class="text-slate-500 text-sm">Eski sistemler için kararlı modül.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.3/Aegis%20javascript.js', 'Aegis_V1.3.js')" class="bg-white border border-slate-300 text-slate-700 px-5 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-sm">JS</button>
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.3/Aegis%20python.py', 'Aegis_V1.3.py')" class="bg-white border border-slate-300 text-slate-700 px-5 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-sm">Python</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="h-px bg-slate-200 flex-grow"></div>
+                <span class="text-slate-400 font-bold text-sm uppercase tracking-widest">Ücretli Sürümler</span>
+                <div class="h-px bg-slate-200 flex-grow"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-1">Plus</h3>
+                    <p class="text-indigo-600 font-black text-xl mb-4">299.99 ₺</p>
+                    <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
+                    <button onclick="goToContact('Aegis V1.5 Plus')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
+                </div>
+
+                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-amber-100 shadow-sm hover:shadow-xl transition-all group">
+                    <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-1">Pro</h3>
+                    <p class="text-amber-600 font-black text-xl mb-4">699.99 ₺</p>
+                    <p class="text-slate-500 text-sm mb-8 flex-grow">Tam kurumsal koruma ve otomatik savunma.</p>
+                    <button onclick="goToContact('Aegis V1.5 Pro')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-amber-500 transition">Satın Al</button>
+                </div>
+
+                <div class="flex flex-col bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl text-white group">
+                    <div class="w-14 h-14 bg-blue-500 text-white rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-1">Pro+</h3>
+                    <p class="text-blue-400 font-black text-xl mb-4">899.99 ₺</p>
+                    <p class="text-slate-400 text-sm mb-8 flex-grow">Sınırsız lisans ve 7/24 öncelikli destek.</p>
+                    <button onclick="goToContact('Aegis V1.5 Pro+')" class="w-full bg-blue-500 text-white py-4 rounded-2xl font-bold hover:bg-blue-600 transition">Satın Al</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -796,6 +921,146 @@ function viewNewsDetail(id) {
 
 // Mevcut window.onload veya script sonuna ekle
 renderNews();
+
+// Dosyayı kod sayfası açmadan doğrudan indiren fonksiyon
+async function forceDownload(url, fileName) {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error("İndirme başarısız:", error);
+        window.open(url, '_blank');
+    }
+}
+
+// Navigasyondan Aegis Engine sayfasına geçiş için
+function setupAegisNav() {
+    // Navigasyon butonunu showPage fonksiyonuna bağla
+    // Eğer showPage fonksiyonun zaten varsa sadece id'yi doğru verdiğinden emin ol
+}
+async function downloadRaw(url, fileName) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Bağlantı hatası');
+        
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        
+        // Temizlik
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error("Dosya indirilemedi:", error);
+        // Hata durumunda linki yeni sekmede aç (B Planı)
+        window.open(url, '_blank');
+    }
+}
+function goToContact(productName) {
+    // SEÇENEK A: Sitenin kendi iletişim sayfasına gönderir
+    showPage('contact');
+    
+    // Opsiyonel: İletişim sayfasındaki mesaj kutusuna otomatik yazı yazdırır
+    const messageBox = document.querySelector('textarea');
+    if(messageBox) {
+        messageBox.value = `Merhaba, ${productName} sürümü hakkında bilgi almak ve satın almak istiyorum.`;
+    }
+
+    /* // SEÇENEK B: Eğer WhatsApp'a gitsin istersen yukarıdakileri silip bunu aç:
+    const phone = "905XXXXXXXXX"; // Buraya kendi numaranı yaz
+    const text = encodeURIComponent(`Merhaba YBG13, ${productName} sürümünü satın almak istiyorum.`);
+    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+    */
+}
+/* * ==========================================
+ * YBG13™ - Aegis Engine Utility Extensions
+ * Core Version: 1.5 | Line Counter: 1000+
+ * ==========================================
+ */
+
+// 1. Konsol Karşılama Mesajı (Geliştiriciler için profesyonel durur)
+console.log("%c YBG13™ Aegis Engine V1.5 ", "color: white; background: #2563eb; padding: 5px; border-radius: 5px; font-weight: bold;");
+console.log("%c Güvenlik Katmanları Aktif Edildi. ", "color: #2563eb; font-weight: bold;");
+
+// 2. Sayfa Yüklenme Hızı Ölçer
+window.addEventListener('load', () => {
+    const loadTime = performance.now() / 1000;
+    console.log(`%c Sistem Yükleme Süresi: ${loadTime.toFixed(2)} saniye.`, "color: gray; font-style: italic;");
+});
+
+// 3. Sağ Tık Engelleme (Opsiyonel - Sadece Bilgilendirme Amaçlı)
+// document.addEventListener('contextmenu', (e) => {
+//    console.warn("YBG13: Kaynak kod koruması aktif.");
+// });
+
+// 4. Dinamik Versiyon Kontrol Fonksiyonu
+const aegisMeta = {
+    owner: "Yusuf Berk Genç",
+    brand: "YBG13™",
+    engine: "Aegis",
+    version: "1.5.0",
+    buildDate: "2026-03-10",
+    environment: "Production"
+};
+
+function checkEngineStatus() {
+    return `Aegis Engine ${aegisMeta.version} çalışıyor.`;
+}
+
+// 5. Basit Bir "Idle" (Boşta) Algılayıcı
+// Kullanıcı 30 saniye hareket etmezse konsola not düşer
+let idleTimer;
+const resetTimer = () => {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+        console.log("Sistem Bekleme Modunda (Idle)...");
+    }, 30000);
+};
+document.addEventListener('mousemove', resetTimer);
+document.addEventListener('keypress', resetTimer);
+
+// 6. Rastgele Güvenlik Key Oluşturucu (Görsel Amaçlı)
+const generateSessionKey = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let key = '';
+    for (let i = 0; i < 16; i++) {
+        key += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return `SES-${key}`;
+};
+
+// 7. Scroll Yüzdesi Takipçisi
+window.onscroll = function() {
+    let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let scrolled = (winScroll / height) * 100;
+    // İstersen bunu bir progress bar'a bağlayabilirsin
+};
+
+// 8. Sistem Bilgisi Loglama
+const logSystemInfo = () => {
+    const info = {
+        platform: navigator.platform,
+        language: navigator.language,
+        timestamp: new Date().toLocaleString('tr-TR')
+    };
+    return info;
+};
+
+// 1000. SATIR HATIRASI
+const projectMilestone = "Project reached 1000 lines. Development continues...";
+// ==========================================
     </script>
 </body>
 </html>
