@@ -1,0 +1,22 @@
+Aegis Plus Kurulum ve Kullanım Rehberi
+Plus sürümünü aktif etmek için kurulum.txt üzerindeki temel komutlara ek yapılandırmalar gelmiştir.
+
+JavaScript Kullanıcıları İçin:
+
+Proje klasörüne aegis_plus.log adında boş bir dosya açın.
+
+Yazılımınızı şu şekilde çağırın:
+
+JavaScript
+const aegis = require('./AegisPlus');
+app.use(aegis({ 
+    limit: 30, 
+    allowedExtensions: ['.jpg', '.pdf'],
+    logPath: 'security_logs.txt' 
+}));
+Python Kullanıcıları İçin:
+
+FastAPI uygulamanıza middleware olarak ekleyin:
+
+Python
+app.add_middleware(AegisPlusShield, allowed_extensions=[".png", ".zip"])

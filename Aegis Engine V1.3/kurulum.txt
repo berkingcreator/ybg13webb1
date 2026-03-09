@@ -1,0 +1,18 @@
+🛠️ Kurulum ve Dağıtım Rehberi
+Müşterilerin bu iki devasa kalkanı nasıl kullanacaklarına dair kısa bir rehber:
+
+Python Kullanıcıları İçin:
+aegis_ai.py dosyasını projenize kopyalayın.
+
+FastAPI kullanıyorsanız: app.add_middleware(AegisAdvancedShield) komutunu ekleyin.
+
+Uygulamanız artık her isteği otomatik tarayacaktır.
+
+----------------------------------------------------------------------------
+
+JavaScript Kullanıcıları İçin:
+npm install crypto (Genelde yerleşik gelir).
+
+Ana dosyanıza const aegis = require('./aegis_turbo'); satırını ekleyin.
+
+app.use(aegis({ limit: 50 })); şeklinde aktif edin.
