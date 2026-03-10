@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -11,13 +10,51 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         
-/* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
-.aegis-grid-fix {
+    /* Ana kapsayıcıyı bir ızgaraya dönüştür */
+.card-wrapper {
+    display: grid;
+    /* Kartların genişliğini otomatik ayarlar, yan yana dizer */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 20px;
+    align-items: stretch; /* Boyları eşitler */
+    padding: 20px;
+}
+
+/* Kartların kendi iç düzeni */
+.card {
+    position: relative;
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* İçerikleri (başlık, buton) yayar */
+    overflow: hidden; /* DIŞARI TAŞMAYI KESİNLİKLE ENGELLER */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Pro+ gibi koyu kartlar için özel ayar */
+.card.dark {
+    background: #0f172a;
+    color: #fff;
+    z-index: 2; /* Diğerlerinden üstte durmasını sağlar */
+}
+
+/* Butonların yan yana düzgün durması için */
+.button-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Sığmazsa alt satıra geçer, yandaki kartı bozmaz */
+    margin-top: 15px;
+}
+        
+    /* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
+    .aegis-grid-fix {
     display: grid !important;
     grid-template-columns: repeat(1, minmax(0, 1fr)); /* Mobilde tek sütun */
     gap: 2rem;
     width: 100%;
-}
+   }
 
      @media (min-width: 768px) {
        .aegis-grid-fix {
@@ -101,7 +138,7 @@
                     <button onclick="showPage('home')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition active" id="btn-home">Anasayfa</button>
                     <button onclick="showPage('services')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-services">Hizmetler</button>
                     <button onclick="showPage('projects')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-projects">İşlerimiz</button>
-                    <button onclick="showPage('aegis-engine')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-aegis-engine">Aegis Engine</button>
+                    <button onclick="showPage('aegis-engine')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-aegis-engine">Güvenlik Yazılımları</button>
                     <button onclick="showPage('about')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-about">Biz Kimiz?</button>
                     <button onclick="showPage('shop')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-shop">Mağaza</button>
                     <button onclick="showPage('news')" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition" id="btn-news">Haberler</button>
@@ -119,7 +156,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 space-y-4 shadow-lg absolute w-full">
             <button onclick="showPage('home')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Anasayfa</button>
             <button onclick="showPage('partners')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşbirliklerimiz</button>
-            <button onclick="showPage('aegis-engine')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Aegis Engine</button>
+            <button onclick="showPage('aegis-engine')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Güvenlik Yazılımları</button>
             <button onclick="showPage('news')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Haberler</button>
             <button onclick="showPage('services')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">Hizmetler</button>
             <button onclick="showPage('projects')" class="block w-full text-left font-medium p-2 hover:bg-slate-50 rounded">İşlerimiz</button>
@@ -149,8 +186,8 @@
         
         <div class="text-center mb-16 max-w-3xl mx-auto">
             <span class="text-blue-600 font-bold tracking-widest uppercase text-xs px-3 py-1 bg-blue-50 rounded-full">Güvenlik Merkezi</span>
-            <h2 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 text-slate-900">Aegis Engine İndirmeler</h2>
-            <p class="text-slate-600 text-lg">Aegis Engine'in tüm sürümlerine buradan ulaşabilirsiniz.</p>
+            <h2 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 text-slate-900">Aegis Engine ve NovaGate İndirmeler</h2>
+            <p class="text-slate-600 text-lg">Aegis Engine'in ve NovaGate'in tüm sürümlerine buradan ulaşabilirsiniz.</p>
         </div>
 
         <div class="mb-12">
@@ -160,30 +197,42 @@
                 <div class="h-px bg-slate-200 flex-grow"></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-2xl shadow-blue-200 flex flex-col md:flex-row items-center justify-between gap-6 border-4 border-blue-500 hover:scale-[1.02] transition-transform">
-                    <div class="text-center md:text-left">
-                        <h3 class="text-3xl font-black mb-2 tracking-tight">Aegis V1.5 Standart</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-xl flex flex-col justify-between border-4 border-blue-500 hover:scale-[1.02] transition-transform overflow-hidden">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-black mb-2 tracking-tight">Aegis V1.5 Standart</h3>
                         <p class="text-blue-100 text-sm opacity-90">Hızlı ve güvenilir. En güncel ücretsiz sürüm.</p>
                     </div>
-                    <div class="flex gap-3 shrink-0">
-                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.5/Aegis%20javascript.js', 'Aegis_V1.5.js')" class="bg-white text-blue-600 px-6 py-4 rounded-2xl font-bold hover:bg-slate-100 transition shadow-lg flex items-center gap-2">
-                            <i class="fab fa-js text-xl"></i> JS İndir
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.5/Aegis%20javascript.js', 'Aegis_V1.5.js')" class="flex-1 bg-white text-blue-600 px-4 py-3 rounded-2xl font-bold hover:bg-slate-100 transition shadow-md flex items-center justify-center gap-2 text-sm">
+                            <i class="fab fa-js text-lg"></i> JS İndir
                         </button>
-                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.5/Aegis%20python.py', 'Aegis_V1.5.py')" class="bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold hover:bg-black transition shadow-lg flex items-center gap-2 border border-blue-400">
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.5/Aegis%20python.py', 'Aegis_V1.5.py')" class="flex-1 bg-slate-900 text-white px-4 py-3 rounded-2xl font-bold hover:bg-black transition shadow-md flex items-center justify-center gap-2 border border-blue-400 text-sm">
+                            <i class="fab fa-python text-lg"></i> Python
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-xl flex flex-col justify-between border-4 border-blue-500 hover:scale-[1.02] transition-transform overflow-hidden">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-black mb-2 tracking-tight">NovaGate Standart</h3>
+                        <p class="text-blue-100 text-sm opacity-90">Hızlı ve güvenilir. En güncel ücretsiz sürüm.</p>
+                    </div>
+                    <div class="flex">
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/NoveGAte/NoveGate%20V1.3/NoveGate.py', 'NovaGate.py')" class="w-full bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold hover:bg-black transition shadow-lg flex items-center justify-center gap-2 border border-blue-400">
                             <i class="fab fa-python text-xl"></i> Python İndir
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-slate-100 p-8 rounded-[2.5rem] text-slate-900 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-lg transition-all">
-                    <div class="text-center md:text-left">
+                <div class="bg-slate-100 p-8 rounded-[2.5rem] text-slate-900 border border-slate-200 flex flex-col justify-between hover:shadow-lg transition-all overflow-hidden">
+                    <div class="mb-6">
                         <h3 class="text-2xl font-extrabold mb-1">Aegis V1.3 Klasik</h3>
                         <p class="text-slate-500 text-sm">Eski sistemler için kararlı modül.</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.3/Aegis%20javascript.js', 'Aegis_V1.3.js')" class="bg-white border border-slate-300 text-slate-700 px-5 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-sm">JS</button>
-                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.3/Aegis%20python.py', 'Aegis_V1.3.py')" class="bg-white border border-slate-300 text-slate-700 px-5 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-sm">Python</button>
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.3/Aegis%20javascript.js', 'Aegis_V1.3.js')" class="flex-1 bg-white border border-slate-300 text-slate-700 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-sm">JS</button>
+                        <button onclick="downloadRaw('https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Aegis%20Engine%20V1.3/Aegis%20python.py', 'Aegis_V1.3.py')" class="flex-1 bg-white border border-slate-300 text-slate-700 py-3 rounded-xl font-bold hover:bg-slate-200 transition text-sm">Python</button>
                     </div>
                 </div>
             </div>
@@ -196,39 +245,48 @@
                 <div class="h-px bg-slate-200 flex-grow"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
                     <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                         <i class="fas fa-crown"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-1">Plus</h3>
-                    <p class="text-indigo-600 font-black text-xl mb-4">299.99 ₺</p>
+                    <h3 class="text-xl font-bold mb-1">NovaGate 2</h3>
+                    <p class="text-indigo-600 font-black text-lg mb-4">499.99 ₺</p>
+                    <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
+                    <button onclick="goToContact('NovaGate 2')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
+                </div>
+
+                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Plus</h3>
+                    <p class="text-indigo-600 font-black text-lg mb-4">299.99 ₺</p>
                     <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
                     <button onclick="goToContact('Aegis V1.5 Plus')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
                 </div>
 
-                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-amber-100 shadow-sm hover:shadow-xl transition-all group">
+                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-amber-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
                     <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                         <i class="fas fa-shield-check"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-1">Pro</h3>
-                    <p class="text-amber-600 font-black text-xl mb-4">699.99 ₺</p>
+                    <h3 class="text-xl font-bold mb-1">Pro</h3>
+                    <p class="text-amber-600 font-black text-lg mb-4">699.99 ₺</p>
                     <p class="text-slate-500 text-sm mb-8 flex-grow">Tam kurumsal koruma ve otomatik savunma.</p>
                     <button onclick="goToContact('Aegis V1.5 Pro')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-amber-500 transition">Satın Al</button>
                 </div>
 
-                <div class="flex flex-col bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl text-white group">
+                <div class="flex flex-col bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl text-white group overflow-hidden">
                     <div class="w-14 h-14 bg-blue-500 text-white rounded-2xl flex items-center justify-center text-2xl mb-6">
                         <i class="fas fa-rocket"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-1">Pro+</h3>
-                    <p class="text-blue-400 font-black text-xl mb-4">899.99 ₺</p>
+                    <h3 class="text-xl font-bold mb-1">Pro+</h3>
+                    <p class="text-blue-400 font-black text-lg mb-4">899.99 ₺</p>
                     <p class="text-slate-400 text-sm mb-8 flex-grow">Sınırsız lisans ve 7/24 öncelikli destek.</p>
                     <button onclick="goToContact('Aegis V1.5 Pro+')" class="w-full bg-blue-500 text-white py-4 rounded-2xl font-bold hover:bg-blue-600 transition">Satın Al</button>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 
@@ -876,6 +934,15 @@ const newsData = [
         image: "https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/WhatsApp%20Image%202026-03-08%20at%2000.38.47.jpeg",
         summary: "Yeni işbirliğimiz;",
         content: "şirketimiz ybg13™ dev dex ile işbirliği imzalamıştır"
+    },
+     {
+        id: 4,
+        title: "NOVAGATE YAYINDA",
+        date: "10 Mart 2026",
+        category: "Oyun",
+        image: "https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/WhatsApp%20Image%202026-03-08%20at%2000.38.47.jpeg",
+        summary: "novagate;",
+        content: "."
     }
 ];
 
