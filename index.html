@@ -1133,13 +1133,11 @@ const logSystemInfo = () => {
 // 1000. SATIR HATIRASI
 const projectMilestone = "Project reached 1000 lines. Development continues...";
 // ==========================================
-    document.onkeydown = function(e) {
- (e.ctrlKey && (e.shiftKey && (e.keyCode == 73 || e.keyCode == 74) || e.keyCode == 85)) {
-            return false;
-        }
-    };
-        
-    </script>
+document.onkeydown = function(e) {
+            if (e.ctrlKey && (e.shiftKey && (e.keyCode == 73 || e.keyCode == 74) || e.keyCode == 85)) {
+                return false;
+            }
+        };t>
 </body>
 </html>
 
