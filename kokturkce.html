@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamga Engine | Premium Edition</title>
+    <title>Köktürkçe Çeviri - YBG13™</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -24,19 +24,17 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Sayfayı Flexbox yaparak Footer'ı en alta itiyoruz */
         body {
             background-color: var(--bg);
             color: var(--text-dark);
             font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
-            padding: 40px 20px;
             overflow-x: hidden;
         }
 
-        /* Arka Plan Dekorasyonu */
         body::before {
             content: "";
             position: fixed;
@@ -51,7 +49,9 @@
         .container {
             width: 100%;
             max-width: 1000px;
-            z-index: 1;
+            padding: 60px 20px;
+            margin: 0 auto;
+            flex: 1; /* İçeriği yayarak footer'ı aşağı iter */
         }
 
         header {
@@ -61,7 +61,7 @@
         }
 
         header h1 {
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 700;
             letter-spacing: -3px;
             margin-bottom: 8px;
@@ -72,15 +72,13 @@
 
         header p {
             color: var(--text-muted);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 300;
         }
 
-        /* Bento Grid Layout */
         .bento-grid {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
-            grid-template-rows: auto auto;
             gap: 24px;
         }
 
@@ -98,14 +96,6 @@
         .glass-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 50px -10px rgba(0,0,0,0.08);
-            border-color: rgba(255,255,255,0.8);
-        }
-
-        /* Giriş Alanı */
-        .input-card {
-            grid-column: 1 / 2;
-            display: flex;
-            flex-direction: column;
         }
 
         .label-row {
@@ -120,94 +110,82 @@
             color: var(--primary);
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         textarea {
             width: 100%;
-            height: 240px;
+            height: 200px;
             background: transparent;
             border: none;
             outline: none;
-            font-size: 1.5rem;
-            font-weight: 400;
+            font-size: 1.4rem;
             color: var(--text-dark);
             line-height: 1.5;
             resize: none;
         }
 
-        textarea::placeholder { color: #C7C7CC; }
-
-        /* Çıktı Alanı */
-        .output-card {
-            grid-column: 2 / 3;
-            background: linear-gradient(135deg, #ffffff 0%, #f9f9fb 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
         #gkOutput {
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             color: var(--text-dark);
             direction: rtl;
             text-align: right;
             word-wrap: break-word;
-            padding-top: 10px;
-            min-height: 150px;
+            min-height: 120px;
             transition: var(--transition);
-        }
-
-        /* Bilgi Kartı */
-        .info-card {
-            grid-column: 1 / 3;
-            padding: 24px 40px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .info-card span {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Aksiyon Butonu */
-        .action-bar {
-            margin-top: auto;
-            display: flex;
-            gap: 12px;
         }
 
         .btn {
-            padding: 14px 28px;
-            border-radius: 16px;
+            padding: 12px 24px;
+            border-radius: 14px;
             border: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
             background: var(--text-dark);
             color: white;
+            width: 100%;
+            margin-top: 20px;
         }
 
-        .btn-primary:hover {
-            background: #434343;
-            transform: scale(1.02);
+        .btn:hover { background: #434343; transform: scale(1.02); }
+
+        /* Geliştirilmiş Modern Footer */
+        .site-footer {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding: 40px 0;
+            width: 100%;
+            margin-top: auto;
         }
 
-        /* Animasyonlar */
+        .footer-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .footer-inner p {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .footer-inner a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .footer-inner a:hover { color: var(--primary); }
+
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -215,72 +193,51 @@
 
         @media (max-width: 850px) {
             .bento-grid { grid-template-columns: 1fr; }
-            .input-card, .output-card, .info-card { grid-column: 1 / 2; }
-            header h1 { font-size: 2.5rem; }
+            header h1 { font-size: 2.8rem; }
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D2D2D7; border-radius: 10px; }
-
-   .site-footer {
-    background-color: #ffffff; /* Temiz, beyaz bir görünüm */
-    border-top: 1px solid #eaeaea; /* İnce, premium bir çizgi */
-    padding: 30px 0;
-    color: #666;
-    display: flex;
-    justify-content: center; /* Yatayda ortalar */
-    align-items: center; /* Dikeyde ortalar */
-}
-
-.footer-content p {
-    margin: 0;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    font-weight: 400;
-}
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>KÖKTÜRKÇE ÇEVİRİ</h1>
+        <h1>Köktürkçe Çeviri</h1>
         <p>Geleceği yazmak için köklere dönüş.</p>
     </header>
 
     <div class="bento-grid">
-        <div class="glass-card input-card">
+        <div class="glass-card">
             <div class="label-row">
                 <span class="badge">Modern Türkçe</span>
                 <span style="font-size: 0.8rem; color: #AEAEB2;" id="charCount">0 Karakter</span>
             </div>
-            <textarea id="trInput" placeholder="bir şeyler yaz..."></textarea>
+            <textarea id="trInput" placeholder="Türkçe bir metin girin..."></textarea>
         </div>
 
-        <div class="glass-card output-card">
+        <div class="glass-card">
             <div class="label-row">
                 <span class="badge" style="background: rgba(0,0,0,0.05); color: #000;">Köktürk Damga</span>
             </div>
             <div id="gkOutput"></div>
-            <div class="action-bar">
-                <button class="btn btn-primary" onclick="copyText()">
-                    Kopyala
-                </button>
-            </div>
+            <button class="btn" id="copyBtn" onclick="copyText()">Metni Kopyala</button>
         </div>
-
-    <footer class="site-footer footer-content">
-        <p>©2026 <a href="https://www.ybg13.com">YBG13™</a> - Tüm Hakları Saklıdır.</p>
-    </footer>
+    </div>
 </div>
 
-<script>
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p>© 2026 <a href="https://ybg13.com">YBG13™</a> — Yerli Yazılım ve Teknoloji. Tüm Hakları Saklıdır.</p>
+    </div>
+</footer>
 
+<script>
     const thickConsonants = { 'b':'𐰉', 'd':'𐰑', 'g':'𐰍', 'k':'𐰴', 'l':'𐰞', 'n':'𐰣', 'r':'𐰺', 's':'𐰽', 't':'𐱃', 'y':'𐰖' };
     const thinConsonants = { 'b':'𐰋', 'd':'𐰓', 'g':'𐰏', 'k':'𐰚', 'l':'𐰜', 'n':'𐰤', 'r':'𐰼', 's':'𐰾', 't':'𐱅', 'y':'𐰘' };
-    const neutralConsonants = { 'ç':'𐰲', 'm':'𐰢', 'p':'𐰯', 'ş':'𐱁', 'z':'𐰔', 'v':'𐰋', 'h':'𐰴' };
+    const neutralConsonants = { 
+        'ç':'𐰲', 'm':'𐰢', 'p':'𐰯', 'ş':'𐱁', 'z':'𐰔', 'v':'𐰋', 'h':'𐰴',
+        'f':'𐰯', 
+        'j':'𐰲' 
+    };
     const vowels = { 'a':'𐰀', 'e':'𐰀', 'ı':'𐰃', 'i':'𐰃', 'o':'𐰆', 'u':'𐰆', 'ö':'𐰇', 'ü':'𐰇' };
 
     const trInput = document.getElementById('trInput');
@@ -298,11 +255,11 @@
     }
 
     function translate(text) {
+        if(!text) return "";
         const words = text.split(/\s+/);
         let result = [];
 
         words.forEach(word => {
-            if (!word) return;
             let translatedWord = "";
             let harmony = getHarmony(word);
             let lower = word.toLowerCase();
@@ -317,34 +274,28 @@
             result.push(translatedWord);
         });
 
-        return result.join(' : ');
+        return result.join(' ⁚ '); // Antik ayraç
     }
 
     trInput.addEventListener('input', (e) => {
         const val = e.target.value;
         gkOutput.innerText = translate(val);
         charCount.innerText = `${val.length} Karakter`;
-        
-    
-        gkOutput.style.opacity = "0.5";
-        setTimeout(() => gkOutput.style.opacity = "1", 50);
     });
 
     function copyText() {
         const text = gkOutput.innerText;
         if (!text) return;
         navigator.clipboard.writeText(text).then(() => {
-            const btn = document.querySelector('.btn-primary');
-            const originalText = btn.innerText;
-            btn.innerText = "Kopyalandı!";
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "Başarıyla Kopyalandı";
             btn.style.background = "#34C759";
             setTimeout(() => {
-                btn.innerText = originalText;
+                btn.innerText = "Metni Kopyala";
                 btn.style.background = "var(--text-dark)";
             }, 2000);
         });
     }
 </script>
-
 </body>
 </html>
