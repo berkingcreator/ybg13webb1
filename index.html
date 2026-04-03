@@ -58,43 +58,47 @@ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     flex-wrap: wrap; /* Sığmazsa alt satıra geçer, yandaki kartı bozmaz */
     margin-top: 15px;
 }
-/* Grid ve Kart Düzenleme Kodları */
 
-/* 1. Grid kapsayıcılarının iç içe geçip sıkışmasını engeller */
-.grid, [class*="grid-cols-"] {
-    display: grid !important;
-    gap: 1.5rem !important;
-    align-items: stretch !important;
+        /* --- YBG13™ MASTER GRID & CARD FIX --- */
+
+/* 1. Grid İçinde Grid Hatasını Çözer */
+/* Eğer bir grid içine başka bir grid girmişse, içtekini serbest bırakır */
+.grid .grid, 
+[class*="grid-cols-"] [class*="grid-cols-"] {
+    display: contents !important; /* Bu komut, gereksiz kapsayıcıyı 'görünmez' yapar ve içindeki kartları ana grid'e dahil eder */
 }
 
-/* 2. Eğer bir grid içinde başka bir grid varsa, içindekinin tüm satırı kaplamasını sağlar */
-/* Bu, "iç içe girme" görüntüsünü büyük oranda çözer */
-.grid .grid, [class*="grid-cols-"] [class*="grid-cols-"] {
-    grid-column: 1 / -1 !important;
+/* 2. Kartların Sıkışmasını ve Taşmasını Engeller */
+.grid > div, 
+.aegis-card, 
+section[id] .flex-col {
+    min-width: 0 !important; /* İçeriğin kartı genişletmesini önler */
     width: 100% !important;
-}
-
-/* 3. Kartların içeriğinin dışarı taşmasını ve grid'i bozmasını önler */
-.grid > div, .aegis-card, .card {
-    min-width: 0 !important; /* İçeriğin grid sütununu genişletmesini önler */
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    overflow: hidden !important;
-    word-wrap: break-word !important;
 }
 
-/* 4. Admin panelindeki gibi yatay kartlarda (flex) elemanların üst üste binmesini önler */
-.flex.items-center {
-    flex-wrap: wrap !important; 
-    gap: 1rem !important;
-}
-
-/* 5. Resimlerin kart boyutunu patlatmasını engeller */
+/* 3. Resimlerin ve Yazıların Grid'i Patlatmasını Önler */
 .grid img {
     max-width: 100% !important;
     height: auto !important;
     object-fit: cover !important;
+}
+
+/* 4. Alt Alta Binme ve Boşluk Sorunları İçin */
+#news-grid, 
+#aegis-engine .grid {
+    display: grid !important;
+    gap: 1.5rem !important; /* Kartlar arası boşluk */
+    align-items: stretch !important;
+}
+
+/* 5. Mobilde Kartları Tek Sütuna Zorlar */
+@media (max-width: 767px) {
+    .grid, [class*="grid-cols-"] {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
 }
     /* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
     .aegis-grid-fix {
