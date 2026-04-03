@@ -58,7 +58,21 @@ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     flex-wrap: wrap; /* Sığmazsa alt satıra geçer, yandaki kartı bozmaz */
     margin-top: 15px;
 }
-        
+        nav {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 2rem !important;
+}
+
+nav > div, 
+nav > ul {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1.5rem !important;
+    white-space: nowrap !important;
+}
     /* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
     .aegis-grid-fix {
     display: grid !important;
