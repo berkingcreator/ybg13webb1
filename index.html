@@ -58,20 +58,43 @@ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     flex-wrap: wrap; /* Sığmazsa alt satıra geçer, yandaki kartı bozmaz */
     margin-top: 15px;
 }
-        nav {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100% !important;
-    gap: 2rem !important;
+/* Grid ve Kart Düzenleme Kodları */
+
+/* 1. Grid kapsayıcılarının iç içe geçip sıkışmasını engeller */
+.grid, [class*="grid-cols-"] {
+    display: grid !important;
+    gap: 1.5rem !important;
+    align-items: stretch !important;
 }
 
-nav > div, 
-nav > ul {
+/* 2. Eğer bir grid içinde başka bir grid varsa, içindekinin tüm satırı kaplamasını sağlar */
+/* Bu, "iç içe girme" görüntüsünü büyük oranda çözer */
+.grid .grid, [class*="grid-cols-"] [class*="grid-cols-"] {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+}
+
+/* 3. Kartların içeriğinin dışarı taşmasını ve grid'i bozmasını önler */
+.grid > div, .aegis-card, .card {
+    min-width: 0 !important; /* İçeriğin grid sütununu genişletmesini önler */
+    height: 100% !important;
     display: flex !important;
-    align-items: center !important;
-    gap: 1.5rem !important;
-    white-space: nowrap !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    word-wrap: break-word !important;
+}
+
+/* 4. Admin panelindeki gibi yatay kartlarda (flex) elemanların üst üste binmesini önler */
+.flex.items-center {
+    flex-wrap: wrap !important; 
+    gap: 1rem !important;
+}
+
+/* 5. Resimlerin kart boyutunu patlatmasını engeller */
+.grid img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
 }
     /* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
     .aegis-grid-fix {
