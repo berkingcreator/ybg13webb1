@@ -59,47 +59,6 @@ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     margin-top: 15px;
 }
 
-        /* --- YBG13™ MASTER GRID & CARD FIX --- */
-
-/* 1. Grid İçinde Grid Hatasını Çözer */
-/* Eğer bir grid içine başka bir grid girmişse, içtekini serbest bırakır */
-.grid .grid, 
-[class*="grid-cols-"] [class*="grid-cols-"] {
-    display: contents !important; /* Bu komut, gereksiz kapsayıcıyı 'görünmez' yapar ve içindeki kartları ana grid'e dahil eder */
-}
-
-/* 2. Kartların Sıkışmasını ve Taşmasını Engeller */
-.grid > div, 
-.aegis-card, 
-section[id] .flex-col {
-    min-width: 0 !important; /* İçeriğin kartı genişletmesini önler */
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-/* 3. Resimlerin ve Yazıların Grid'i Patlatmasını Önler */
-.grid img {
-    max-width: 100% !important;
-    height: auto !important;
-    object-fit: cover !important;
-}
-
-/* 4. Alt Alta Binme ve Boşluk Sorunları İçin */
-#news-grid, 
-#aegis-engine .grid {
-    display: grid !important;
-    gap: 1.5rem !important; /* Kartlar arası boşluk */
-    align-items: stretch !important;
-}
-
-/* 5. Mobilde Kartları Tek Sütuna Zorlar */
-@media (max-width: 767px) {
-    .grid, [class*="grid-cols-"] {
-        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-    }
-}
     /* Masaüstünde kartların birbirine girmesini engelleyen düzenleme */
     .aegis-grid-fix {
     display: grid !important;
@@ -308,57 +267,49 @@ section[id] .flex-col {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
-                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">NovaGate 2</h3>
-                    <p class="text-indigo-600 font-black text-lg mb-4">499.99 ₺</p>
-                    <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
-                    <button onclick="goToContact('NovaGate 2')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
-                </div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    
+    <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <i class="fas fa-crown"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-1">NovaGate 2</h3>
+        <p class="text-indigo-600 font-black text-lg mb-4">499.99 ₺</p>
+        <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
+        <button onclick="goToContact('NovaGate 2')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
+    </div>
 
-                           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
-                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">NovaGate 4</h3>
-                    <p class="text-indigo-600 font-black text-lg mb-4">149 $</p>
-                    <p class="text-slate-500 text-sm mb-8 flex-grow">AES-256-GCM ve PBKDF2 algoritmalarına sahiptir.</p>
-                    <button onclick="goToContact('NovaGate 4')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
-                </div>
-                
-                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
-                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">Aegis Engine Plus</h3>
-                    <p class="text-indigo-600 font-black text-lg mb-4">299.99 ₺</p>
-                    <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
-                    <button onclick="goToContact('Aegis V1.5 Plus')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
-                </div>
+    <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <i class="fas fa-crown"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-1">NovaGate 4</h3>
+        <p class="text-indigo-600 font-black text-lg mb-4">149 $</p>
+        <p class="text-slate-500 text-sm mb-8 flex-grow">AES-256-GCM ve PBKDF2 algoritmalarına sahiptir.</p>
+        <button onclick="goToContact('NovaGate 4')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
+    </div>
 
-                <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-amber-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
-                    <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                        <i class="fas fa-shield-check"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">Aegis Engine Pro</h3>
-                    <p class="text-amber-600 font-black text-lg mb-4">699.99 ₺</p>
-                    <p class="text-slate-500 text-sm mb-8 flex-grow">Tam kurumsal koruma ve otomatik savunma.</p>
-                    <button onclick="goToContact('Aegis V1.5 Pro')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-amber-500 transition">Satın Al</button>
-                </div>
+    <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-indigo-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <i class="fas fa-crown"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-1">Aegis Engine Plus</h3>
+        <p class="text-indigo-600 font-black text-lg mb-4">299.99 ₺</p>
+        <p class="text-slate-500 text-sm mb-8 flex-grow">Gelişmiş güvenlik filtreleri ve hızlı tarama.</p>
+        <button onclick="goToContact('Aegis V1.5 Plus')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
+    </div>
 
-                <div class="flex flex-col bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl text-white group overflow-hidden">
-                    <div class="w-14 h-14 bg-blue-500 text-white rounded-2xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-1">Aegis Engine Pro+</h3>
-                    <p class="text-blue-400 font-black text-lg mb-4">899.99 ₺</p>
-                    <p class="text-slate-400 text-sm mb-8 flex-grow">Sınırsız lisans ve 7/24 öncelikli destek.</p>
-                    <button onclick="goToContact('Aegis V1.5 Pro+')" class="w-full bg-blue-500 text-white py-4 rounded-2xl font-bold hover:bg-blue-600 transition">Satın Al</button>
-                </div>
-            </div>
+    <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-amber-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
+        <div class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+            <i class="fas fa-shield-check"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-1">Aegis Engine Pro</h3>
+        <p class="text-amber-600 font-black text-lg mb-4">699.99 ₺</p>
+        <p class="text-slate-500 text-sm mb-8 flex-grow">Tam kurumsal koruma ve otomatik savunma.</p>
+        <button onclick="goToContact('Aegis V1.5 Pro')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-amber-500 transition">Satın Al</button>
+    </div>
+
+</div>
         </div>
     </div>
 </section>
