@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Güvenlik Güncellemesi | YBG13™ Altyapı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00ffcc;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-gray: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .patch-card {
+            background: var(--card-bg);
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .patch-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 15px 0 5px;
+            color: white;
+        }
+
+        .version {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .content {
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        .update-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .update-item:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateX(5px);
+        }
+
+        .update-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+
+        .update-title {
+            font-weight: bold;
+            color: white;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            letter-spacing: 1px;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 255, 204, 0) 0%, rgba(0, 255, 204, 0.1) 50%, rgba(0, 255, 204, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="patch-card">
+    <div class="scanline"></div>
+    <div class="header">
+        <span class="badge"><i class="fas fa-shield-halved"></i> Güvenlik Yaması</span>
+        <h1>Sistem Güncellemesi</h1>
+        <div class="version">4.0.0 -> 4.0.57</div>
+    </div>
+
+    <div class="content">
+        <p>YBG13™ altyapısında tespit edilen kritik bir güvenlik açığı (Authentication Bypass) nedeniyle tüm yönetim panelleri yeni nesil mimariye taşınmıştır.</p>
+
+        <div class="update-item">
+            <i class="fab fa-python"></i>
+            <div>
+                <span class="update-title">Server-Side (Vercel) Geçişi</span>
+                <p style="font-size: 0.85rem; margin: 0;">Kimlik doğrulama işlemleri artık kullanıcı tarayıcısında değil, yüksek güvenlikli Python (Flask) sunucularında gerçekleştirilmektedir.</p>
+            </div>
+        </div>
+
+        <div class="update-item">
+            <i class="fas fa-user-secret"></i>
+            <div>
+                <span class="update-title">Gelişmiş Kriptografi</span>
+                <p style="font-size: 0.85rem; margin: 0;">Şifre kontrolleri sunucu taraflı izole edilmiş, kaynak kodun dışarıdan okunması veya manipüle edilmesi imkansız hale getirilmiştir.</p>
+            </div>
+        </div>
+
+        <div class="update-item">
+            <i class="fas fa-network-wired"></i>
+            <div>
+                <span class="update-title">NovaGate v4.1 Entegrasyonu</span>
+                <p style="font-size: 0.85rem; margin: 0;">Erişim anahtarları (tokens) artık sunucu onaylı ve zaman aşımı özelliğine sahip şekilde yönetilmektedir.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p style="font-size: 0.8rem; color: var(--text-gray);">© 2026 YBG13™ Yama Notları. Tüm hakları saklıdır.</p>
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Ana Sayfaya Dön</a>
+    </div>
+</div>
+
+</body>
+</html>
