@@ -2,103 +2,190 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YBG13™ | Çalışma Var!</title>
+    <meta name="Yama güncellermeleri">
+    <title>Yama Güncellermeleri</title>
     <style>
-        /* CSS Kısmı */
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            overflow: hidden;
-        }
+       /* YBG13™ Kurumsal Renk Paleti ve Font Ayarları */
+:root {
+    --primary-bg: #0f1113;        /* Koyu arka plan */
+    --card-bg: #1a1d21;           /* Kart arka planı */
+    --accent-blue: #007bff;       /* YBG13 Vurgu Mavisi */
+    --text-main: #e0e0e0;         /* Ana metin rengi */
+    --text-muted: #a0a0a0;        /* İkincil metin rengi */
+    --border-color: #2c3136;      /* Kenarlık rengi */
+}
 
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 3rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            max-width: 500px;
-            animation: fadeIn 1.5s ease-out;
-        }
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            display: inline-block;
-            animation: bounce 2s infinite;
-        }
+h5 {
+color: blue;
+}
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
+h1 {
+    color: white;
+    font-size: 2.5rem;
+    border-bottom: 3px solid var(--accent-blue);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
 
-        p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
+h1 + p {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 40px;
+    text-align: center;
+}
 
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #ffcc00;
-            border-radius: 50%;
-            margin: 20px auto;
-            animation: spin 1s linear infinite;
-        }
+/* Güncelleme Kartları Konteyneri */
+div {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    max-width: 800px;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        /* Animasyonlar */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-color: var(--accent-blue);
+}
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
-            60% {transform: translateY(-10px);}
-        }
+/* Güncelleme Başlıkları */
+h3 {
+    color: var(--accent-blue);
+    font-size: 1.4rem;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    border-left: 4px solid var(--accent-blue);
+    padding-left: 15px;
+}
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+/* Güncelleme İçeriği */
+p {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    white-space: pre-line; /* Metindeki satır boşluklarını korur */
+}
 
-        .footer {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+
+
+/* Mobil Uyumluluk */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    div {
+        padding: 15px;
+    }
+}
     </style>
 </head>
 <body>
+    <h1>Güvenlik Yamaları</h1>
+    <p>Yeni çıkan ve ya iptal edilen güvenlik güncellemelerine burdan ulaşabilirsiniz</p>
+    <h5><a href="https://www.ybg13.com"><span class="h5">siteye geri dön</span></a></h5>
+    <div>
+        <h3>4.0.73 güncellemesi</h3>
+        <p>4.0.73 "Vanguard" Güncelleme Detayları
+1. Kritik Güvenlik Müdahalesi:
+Bu güncellemenin en temel çıkış sebebi, sistemde tespit edilen ciddi bir güvenlik açığının kapatılmasıydı. "Vanguard" ismi, sistemi koruyan bir öncü birlik gibi bu açığı tamamen yamamak ve güvenliği sağlamlaştırmak için seçildi.
 
-    <div class="container">
-        <div class="icon">🚀</div>
-        <h1>Çalışma Var!</h1>
-        <p>Sizlere daha iyi bir deneyim sunmak için mutfakta bir şeyler hazırlıyoruz.</p>
-        
-        <div class="loader"></div>
-        
-        <p>Çok yakında buradayız.</p>
+2. Firebase Authentication Entegrasyonu:
+Kullanıcı giriş sistemleri tamamen modernize edildi. Artık kullanıcı doğrulamaları Firebase altyapısı üzerinden yapılarak, hesap güvenliği Google standartlarına getirildi.
 
-        <div class="footer">
-            © 2026 YBG13™ Software
-        </div>
+3. Sunucu Taraflı Doğrulama (Server-Side Validation):
+İstemci tarafında oluşabilecek manipülasyonları önlemek amacıyla, tüm kritik veri akışları sunucu tarafında doğrulanmaya başlandı. Bu, hile veya yetkisiz erişim denemelerine karşı büyük bir bariyer oluşturdu.
+
+4. Aegis Engine v5 Arayüz Optimizasyonu:
+Siber güvenlik yazılımın olan Aegis Engine'in arayüzü bu sürümle birlikte daha akıcı ve kullanıcı dostu hale getirildi. Performans iyileştirmeleri sayesinde yazılım, sistem kaynaklarını (RAM ve CPU) çok daha verimli kullanmaya başladı.
+
+5. Hata Düzeltmeleri:
+İptal edilen 4.0.57 sürümünde planlanan tüm iyileştirmeler ve kullanıcıların raporladığı küçük hatalar bu sürümle birlikte tamamen çözüldü.</p>
     </div>
 
+    <div>
+        <h3>4.0.57 sürümünün iptali</h3>
+        <p>v4.0.57 Sürümünün İptal Gerekçesi
+Daha önce planlanan v4.0.57 güncellemesi, yerel kimlik doğrulama protokolleri (Local Auth) ve statik şifreleme metotları üzerine inşa edilmişti. Ancak yapılan siber güvenlik sızma testlerinde (Penetration Tests), bu mimarinin "Brute-Force" saldırılarına ve istemci taraflı (Client-Side) manipülasyonlara karşı potansiyel zafiyetler barındırabileceği tespit edilmiştir.
+
+YBG13™ olarak, "Yarım koruma, koruma değildir" ilkesiyle bu sürümü tamamen iptal ederek, tüm altyapıyı modern bulut tabanlı güvenlik sistemlerine taşımaya karar verdik.</p>
+    </div>
+
+    <div>
+        <h3>4.0.57 güncellemesi</h3>
+        <p>1. Yerel Kimlik Doğrulama (Local Auth):
+Bu sürümde odak noktası, kullanıcı bilgilerinin yerel protokoller üzerinden doğrulanmasıydı. Ancak bu sistemin, merkezi ve bulut tabanlı sistemlere kıyasla daha kısıtlı bir güvenlik çemberi sunduğu fark edildi.
+
+2. Statik Şifreleme Metotları:
+Veri güvenliği için statik şifreleme yöntemleri kullanılıyordu. Test aşamasında, bu yöntemlerin gelişmiş siber saldırılara karşı yeterince esnek olmadığı analiz edildi.
+
+3. Sızma Testi (Penetration Test) Bulguları:
+Yapılan güvenlik taramalarında, 4.0.57 sürümünün Brute-Force (Kaba Kuvvet) saldırılarına karşı potansiyel zafiyetler barındırabileceği ve istemci taraflı (client-side) manipülasyonlara açık olduğu tespit edildi.
+
+4. Geliştirme Süreci:
+Aegis Engine'in eski modülleri üzerine inşa edilmiş olan bu sürüm, aslında performans iyileştirmeleri vaat ediyordu; fakat güvenlik zafiyetleri performansın önüne geçtiği için yayınlanmadan durduruldu.
+
+Sonuç:
+Senin kararınla, bu sürümdeki mimari riskli bulunduğu için tamamen rafa kaldırıldı ve tüm altyapı Firebase entegrasyonu ile sunucu taraflı doğrulamaya (Vanguard projesine) taşındı.</p>
+    </div>
+
+    <div>
+        <h3>4.0.45 güncellemesi</h3>
+        <p>1. Temel Altyapı Revizyonu:
+Bu sürüm, projenin 4. nesil (v4) mimarisinin tam anlamıyla oturtulduğu aşamaydı. Daha önceki 3.x sürümlerinden kalan eski kod blokları temizlenerek, Aegis Engine ve diğer sistemlerin birbirleriyle daha uyumlu çalışması sağlandı.
+
+2. Yerel Veritabanı ve Önbellek Optimizasyonu:
+Vanguard sürümündeki bulut entegrasyonundan önce, bu sürümde yerel veritabanı sorgularının hızlandırılmasına odaklanmıştın. Yazılımın açılış hızı ve veriye erişim süresi bu güncelleme ile ciddi oranda iyileştirilmişti.
+
+3. Modüler Arayüz (UI) Geçişi:
+Kullanıcı arayüzünde ilk büyük modernleşme adımları bu sürümde atıldı. Pencereler ve butonlar daha modüler bir yapıya kavuşturuldu; bu da ileride yapacağın Aegis Engine v5 arayüz geliştirmeleri için temel oluşturdu.
+
+4. Ağ Tarama Motoru İyileştirmeleri:
+Siber güvenlik araçların için ağ üzerindeki aktif cihazları tespit etme ve ping sürelerini ölçme gibi temel fonksiyonlar 4.0.45 ile daha kararlı hale getirildi. Hatalı sonuç verme (false-positive) oranları minimize edildi.
+
+5. Hata Günlükleme (Logging) Sistemi:
+Sistemde oluşan hataların daha kolay takip edilebilmesi için gelişmiş bir günlükleme yapısı eklendi. Bu sayede, 4.0.57'de fark edeceğin güvenlik açıklarını tespit etmeni sağlayacak altyapı aslında bu sürümle hazırlanmış oldu.
+
+Özetle: 4.0.45 sürümü, "Vanguard" gibi büyük güvenlik devrimlerinden önce sistemin performans ve stabilite açısından zirve yaptığı, operasyonel olarak en kararlı sürümlerden biriydi.</p>
+    </div>
+
+    <div>
+        <h3>3.9.96 güncellemesi</h3>
+        <p>1. v4 Geçiş Hazırlığı (Migration Readiness):
+Bu sürümün ana amacı, mevcut kod yapısını 4.0 sürümüne hazırlamaktı. Veri yapıları ve dosya sistemleri, yeni nesil mimariyle çakışmayacak şekilde yeniden organize edildi.
+
+2. Legacy Kod Temizliği:
+3.0 sürümünden beri biriken ve artık kullanılmayan ("deprecated") eski kodlar tamamen temizlendi. Bu sayede yazılımın boyutu küçültüldü ve çalışma hızı artırıldı.
+
+3. Kararlılık ve Yama Paketi:
+3.x serisindeki bilinen tüm küçük hatalar (buglar) bu sürümle kapatıldı. 3.9.96, kullanıcılara sunulan "en hatasız 3. nesil sürümü" olarak planlanmıştı.
+
+4. Gelişmiş Şifreleme Temelleri:
+NovaGate projenin ilk temelleri olan basit şifreleme yöntemleri bu sürümde optimize edildi. Daha sonra 4.0.57 ve 4.0.73 sürümlerinde geliştireceğin güvenlik protokollerinin ilk prototipleri bu aşamada denendi.
+
+5. Dokümantasyon ve Loglama:
+Sürüm notlarının ve sistem günlüklerinin (logs) tutulma biçimi standartlaştırıldı. Bu, senin bir yazılımcı olarak disiplinini artıran ve YBG13™ standartlarını oluşturan bir adımdı.
+
+Özetle: 3.9.96, bir devrin kapanışıydı. Bu güncelleme ile "Eski Sistem"e veda edip, 4.0 ile başlayacak olan profesyonel, Firebase destekli ve yüksek güvenlikli yeni döneme kapı açmış oldun.</p>
+    </div>
+<footer>©2026 Security Team! all rights reserved | powered by: <a href="https:www.ybg13.com" target="_blank">YBG13™</a></footer>
+    
 </body>
 </html>
