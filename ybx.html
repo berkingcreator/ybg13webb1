@@ -1,13 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YBX Network | YBG13™ </title>
+    <title>YBX Network | YBG13™</title>
     <style>
-        /* ==========================================================================
-           YBX NETWORK V8 ULTIMATE - CORE CSS (YBG13™ MİMARİSİ)
-           ========================================================================== */
         :root {
             --bg-color: #f4f7f6;
             --card-bg: #ffffff;
@@ -24,10 +22,24 @@
             --editor-bg: #1e1e1e;
             --editor-text: #d4d4d4;
             --ymail-theme: #8e44ad;
+            --dm-theme: #10ac84;
             --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             --radius: 12px;
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+
+/* ==========================================
+   YBX BİLDİRİM (TOAST) SİSTEMİ CSS
+   ========================================== */
+#notification-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
+.toast-notify { background: #fff; padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); min-width: 280px; max-width: 350px; cursor: pointer; animation: slideInRight 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; position: relative; overflow: hidden; border-left: 5px solid var(--primary-blue); transition: transform 0.2s; }
+.toast-notify:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+.toast-notify.dm-toast { border-left-color: var(--dm-theme); }
+.toast-notify.ymail-toast { border-left-color: var(--ymail-theme); }
+.toast-title { font-weight: 800; font-size: 15px; margin-bottom: 5px; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+.toast-desc { font-size: 13px; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@keyframes slideInRight { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
 
         /* GENEL AYARLAR VE SCROLLBAR */
         body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-dark); overflow-x: hidden; }
@@ -50,6 +62,9 @@
         
         #btn-nav-ymail { color: var(--ymail-theme); }
         #btn-nav-ymail:hover, #btn-nav-ymail.active-nav { background: rgba(142, 68, 173, 0.1); }
+
+        #btn-nav-dm { color: var(--dm-theme); }
+        #btn-nav-dm:hover, #btn-nav-dm.active-nav { background: rgba(16, 172, 132, 0.1); }
 
         /* SAYFA YAPISI VE ANİMASYONLAR */
         section.page { display: none; padding: 50px 20px; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.4s ease-out; min-height: calc(100vh - 80px); }
@@ -101,6 +116,49 @@
         .ymail-locked-box { text-align: center; padding: 80px 40px; background: #fff; border-radius: var(--radius); border: 2px dashed var(--border-color); }
         .ymail-locked-box h2 { color: var(--ymail-theme); margin-top: 0; font-size: 32px; }
         .ymail-locked-box p { color: var(--text-light); font-size: 16px; margin-bottom: 30px; }
+
+        /* DM / MESAJLAŞMA SİSTEMİ CSS */
+        .dm-locked-box { text-align: center; padding: 80px 40px; background: #fff; border-radius: var(--radius); border: 2px dashed var(--border-color); }
+        .dm-locked-box h2 { color: var(--dm-theme); margin-top: 0; font-size: 32px; }
+        
+        .dm-header { background: linear-gradient(135deg, #10ac84, #01a3a4); color: white; border: none; padding: 25px 40px; border-radius: var(--radius); margin-bottom: 25px; box-shadow: var(--shadow); }
+        .dm-container { display: flex; height: 65vh; border: 1px solid var(--border-color); border-radius: var(--radius); overflow: hidden; background: #fff; box-shadow: var(--shadow); }
+        .dm-sidebar { width: 320px; background: #f8f9fa; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .dm-sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: #fff;}
+        .dm-chat-list { flex: 1; overflow-y: auto; }
+        .dm-chat-item { padding: 15px 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; gap: 5px; }
+        .dm-chat-item:hover, .dm-chat-item.active-chat { background: #eef2f5; border-left: 4px solid var(--dm-theme); }
+        .dm-chat-name { font-weight: 700; color: var(--text-dark); font-size: 15px; }
+        .dm-chat-last { font-size: 13px; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .dm-main { flex: 1; display: flex; flex-direction: column; background: #fff; transition: background 0.3s; position: relative; }
+        .dm-chat-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: #fff; transition: background 0.3s; }
+        .dm-chat-title { font-weight: 800; font-size: 18px; color: var(--text-dark); display: flex; align-items: center; gap: 10px;}
+        .dm-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f4f7f6; transition: background 0.3s; }
+        .msg-bubble { max-width: 70%; padding: 12px 18px; border-radius: 18px; font-size: 15px; line-height: 1.4; position: relative; word-wrap: break-word; }
+        .msg-sent { background: var(--dm-theme); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .msg-received { background: #ffffff; border: 1px solid var(--border-color); color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg-sender-name { font-size: 11px; font-weight: bold; margin-bottom: 4px; opacity: 0.8; }
+        .dm-input-area { padding: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; background: #fff; transition: background 0.3s; }
+        .dm-input-area input { margin: 0; border-radius: 25px; }
+        .dm-input-area button { width: auto; padding: 0 30px; border-radius: 25px; }
+
+        /* GİZLİ MOD (SECRET MODE) CSS */
+        .dm-main.secret-mode { background: #1e272e; }
+        .dm-main.secret-mode .dm-chat-header { background: #ff3f34; border-bottom-color: #ff3f34; }
+        .dm-main.secret-mode .dm-chat-title { color: white; }
+        .dm-main.secret-mode .dm-messages { background: #1e272e; }
+        .dm-main.secret-mode .dm-input-area { background: #2d3436; border-top-color: #485460; }
+        .dm-main.secret-mode .dm-input-area input { background: #485460; color: white; border-color: #485460; }
+        
+        .msg-hidden-style { border: 2px dashed #ff3f34 !important; animation: blink-border 2s infinite; }
+        @keyframes blink-border { 0% { border-color: #ff3f34; } 50% { border-color: transparent; } 100% { border-color: #ff3f34; } }
+
+        /* CHECKBOX LIST (Grup Kurma) */
+        .user-check-list { max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-bottom: 20px; background: #f8f9fa; }
+        .user-check-item { display: flex; align-items: center; gap: 10px; padding: 8px; border-bottom: 1px solid #eee; }
+        .user-check-item:last-child { border-bottom: none; }
+        .user-check-item input[type="checkbox"] { width: auto; margin: 0; transform: scale(1.2); }
 
         /* ARAMA VE LİSTELEME SATIRLARI */
         .search-row { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border-color); background: #fff; border-radius: 10px; margin-bottom: 12px; transition: var(--transition); border: 1px solid transparent; }
@@ -162,6 +220,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
+<div id="notification-container"></div>
 <body>
 
     <header>
@@ -170,7 +229,9 @@
             <button onclick="navigasyon('browser')" id="btn-nav-browser" class="active-nav">🌐 Tarayıcı</button>
             <button onclick="navigasyon('directory')" id="btn-nav-directory">🗂️ Ağ Dizini</button>
             <button onclick="navigasyon('education')" id="btn-nav-education">📚 Eğitim</button>
-            <button onclick="navigasyon('ymail')" id="btn-nav-ymail">📧 YMail</button> <button onclick="navigasyon('login')" id="btn-nav-login">🔑 Giriş</button>
+            <button onclick="navigasyon('dm')" id="btn-nav-dm">💬 DM / Sohbet</button>
+            <button onclick="navigasyon('ymail')" id="btn-nav-ymail">📧 YMail</button>
+            <button onclick="navigasyon('login')" id="btn-nav-login">🔑 Giriş</button>
             <button onclick="navigasyon('register')" id="btn-nav-register">📝 Kayıt</button>
             <button onclick="navigasyon('panel')" id="btn-nav-panel" class="hidden">⚙️ Kontrol Paneli</button>
             <button onclick="navigasyon('admin')" id="btn-nav-admin" class="hidden">👑 YBG13™ Kurucu</button>
@@ -187,7 +248,6 @@
             <input type="text" id="url-input" placeholder="Ağa bağlanmak için alan adı girin (örn: projem.ybg)" onkeypress="if(event.key === 'Enter') surf()">
             <button class="btn btn-surf" onclick="surf()">Ağa Bağlan</button>
         </div>
-        <div class="quick-links">
         <iframe id="browser-frame"></iframe>
     </section>
 
@@ -237,8 +297,56 @@
         </div>
     </section>
 
+    <section id="page-dm" class="page">
+        <div id="dm-locked" class="dm-locked-box">
+            <h2>💬 YBX Güvenli İletişim (DM)</h2>
+            <p>Gerçek zamanlı ağ içi mesajlaşma, gruplar ve Gizli Mod'u kullanmak için giriş yapmalısınız.</p>
+            <button class="btn" style="max-width: 250px; background: var(--dm-theme);" onclick="navigasyon('login')">Sisteme Giriş Yap</button>
+        </div>
+
+        <div id="dm-unlocked" class="hidden">
+            <div class="dm-header">
+                <h2 style="margin:0; font-size:24px;">💬 YBX DM & Gruplar</h2>
+                <p style="margin:5px 0 0 0; opacity:0.9;">Ağ içi özel, şifrelenmiş canlı iletişim platformu.</p>
+            </div>
+
+            <div class="dm-container">
+                <div class="dm-sidebar">
+                    <div class="dm-sidebar-header">
+                        <strong style="color: var(--text-dark);">Sohbetler</strong>
+                        <button class="btn" style="width:auto; padding: 6px 12px; font-size:12px; background:var(--dm-theme);" onclick="openCreateChatModal()">+ Yeni</button>
+                    </div>
+                    <div id="dm-chat-list" class="dm-chat-list">
+                        <div style="padding:20px; text-align:center; color:gray; font-size:13px;">Sohbetler yükleniyor...</div>
+                    </div>
+                </div>
+
+                <div id="dm-main-area" class="dm-main">
+                    <div id="dm-placeholder" style="display:flex; height:100%; justify-content:center; align-items:center; flex-direction:column; color:gray;">
+                        <span style="font-size:50px; margin-bottom:10px;">💬</span>
+                        <p>Başlamak için bir sohbet seçin veya yeni oluşturun.</p>
+                    </div>
+
+                    <div id="dm-active-chat" class="hidden" style="display:flex; flex-direction:column; height:100%;">
+                        <div class="dm-chat-header">
+                            <div class="dm-chat-title" id="dm-current-title">Sohbet Adı</div>
+                            <div style="display:flex; gap:10px;">
+                                <button id="btn-block-user" class="btn btn-outline" style="width:auto; padding: 8px 15px; font-size:13px; color:var(--danger); border-color:var(--danger);" onclick="blockCurrentChatUser()">🚫 Engelle</button>
+                                <button id="btn-secret-mode" class="btn btn-danger" style="width:auto; padding: 8px 15px; font-size:13px; background:#fff; border-color:#ff3f34; color:#ff3f34;" onclick="toggleSecretMode()">🕵️ Gizli Mod (Kapalı)</button>
+                            </div>
+                        </div>
+                        <div id="dm-messages" class="dm-messages"></div>
+                        <div class="dm-input-area">
+                            <input type="text" id="dm-message-input" placeholder="Güvenli mesajınızı yazın..." onkeypress="if(event.key === 'Enter') sendDMMessage()">
+                            <button class="btn" style="background:var(--dm-theme);" onclick="sendDMMessage()">Gönder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="page-ymail" class="page">
-        
         <div id="ymail-locked" class="ymail-locked-box">
             <h2>🔒 YMail Güvenli İletişim Terminali</h2>
             <p>Kurumsal ağ içi e-posta servisini kullanmak ve kapalı devrede mesajlaşmak için sisteme giriş yapmalısınız.</p>
@@ -262,17 +370,14 @@
                 </div>
 
                 <div id="ymail-inbox" class="ymail-tab">İletiler sunucudan çekiliyor...</div>
-                
                 <div id="ymail-sent" class="ymail-tab hidden">Giden iletiler çekiliyor...</div>
                 
                 <div id="ymail-compose" class="ymail-tab hidden" style="max-width: 800px; margin: 0 auto;">
                     <h3 style="color: var(--ymail-theme); margin-top: 0;">Yeni İleti Oluştur</h3>
-                    
                     <label style="font-size:14px; font-weight:600; margin-bottom:8px; display:block;">Alıcıyı Ağ Rehberinden Seçin:</label>
                     <select id="ymail-to" style="font-family: monospace;">
                         <option value="">-- Veritabanı Yükleniyor... --</option>
                     </select>
-                    
                     <input type="text" id="ymail-subject" placeholder="E-Posta Konusu">
                     <textarea id="ymail-body" rows="8" placeholder="Mesajınızı buraya yazın... (NovaGate şifreleme protokolleri üzerinden iletilecektir)"></textarea>
                     <button class="btn btn-special" onclick="sendYMail()">Gönderimi Başlat</button>
@@ -283,8 +388,13 @@
 
     <section id="page-panel" class="page">
         <div class="card" style="background: linear-gradient(135deg, var(--primary-blue), #00a8ff); color: white; border: none;">
-            <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;">Sisteme Hoş Geldin, <span id="user-display-name"></span></h2>
-            <p style="margin:0; font-size:16px;">Günlük domain tescil hakkınız: <strong id="user-limit-text" style="background: rgba(0,0,0,0.2); padding: 5px 12px; border-radius: 8px;">Yükleniyor...</strong></p>
+            <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;">
+                Sisteme Hoş Geldin, <span id="user-display-name"></span>
+            </h2>
+            <p style="margin:0; font-size:16px;">
+                Günlük domain tescil hakkınız: 
+                <strong id="user-limit-text" style="background: rgba(0,0,0,0.2); padding: 5px 12px; border-radius: 8px;">Yükleniyor...</strong>
+            </p>
         </div>
 
         <div class="card">
@@ -314,9 +424,18 @@
         <div class="card">
             <h2>📊 YBX Network Genel İstatistikleri</h2>
             <div class="stats-box">
-                <div class="stat-card"><h3 id="stat-total-sites">0</h3><p>Aktif Web Projesi</p></div>
-                <div class="stat-card"><h3 id="stat-total-visits">0</h3><p>Toplam Ziyaret (Trafik)</p></div>
-                <div class="stat-card"><h3>%99.9</h3><p>Sunucu Uptime (Aktiflik)</p></div>
+                <div class="stat-card">
+                    <h3 id="stat-total-sites">0</h3>
+                    <p>Aktif Web Projesi</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat-total-visits">0</h3>
+                    <p>Toplam Ziyaret (Trafik)</p>
+                </div>
+                <div class="stat-card">
+                    <h3>%99.9</h3>
+                    <p>Sunucu Uptime (Aktiflik)</p>
+                </div>
             </div>
         </div>
     </section>
@@ -329,16 +448,33 @@
         <div class="card" style="border: 2px solid var(--admin-gold);">
             <h2 style="color: var(--admin-gold);">⭐ Özel Uzantı Atama Motoru</h2>
             <p style="color: var(--text-light); margin-bottom: 25px;">Sistem limitlerini yoksayarak herhangi bir kullanıcıya istediğiniz uzantıyı (.edu, .med, .şirket) süresiz tahsis edin.</p>
+            
             <select id="admin-user-select" style="border-color: var(--admin-gold);"><option value="">Kullanıcı Veritabanı Yükleniyor...</option></select>
             <input type="text" id="admin-domain-input" placeholder="Atanacak tam domain adresini girin (Örn: guvenlik.edu)" style="border-color: var(--admin-gold);">
+            
             <button class="btn btn-admin" onclick="adminAssignDomain()" style="font-size: 18px; padding: 18px;">Ağa Kaydet ve Mühürle</button>
         </div>
     </section>
 
+    <div id="create-chat-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeModal('create-chat-modal')">×</span>
+            <h2 style="color: var(--dm-theme); margin-top:0;">💬 Yeni Sohbet / Grup</h2>
+            <p style="font-size:14px; color:var(--text-light);">Rehberden kişi seçin. Birden fazla kişi seçerseniz otomatik olarak Grup oluşturulur.</p>
+            <input type="text" id="chat-group-name" placeholder="Grup Adı (Sadece Grup ise yazın)">
+            <label style="font-size:14px; font-weight:bold; margin-bottom:10px; display:block;">Kişileri Seçin:</label>
+            <div id="chat-user-check-list" class="user-check-list"></div>
+            <button class="btn" style="background: var(--dm-theme);" onclick="startNewChat()">Sohbeti Başlat</button>
+        </div>
+    </div>
+
     <div id="whois-modal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-btn" onclick="closeModal('whois-modal')">×</span>
-            <div class="whois-header"><h2>🔍 YBX WHOIS Sorgusu</h2><p>Uluslararası alan adı kayıt bilgileri ve sunucu detayları.</p></div>
+            <div class="whois-header">
+                <h2>🔍 YBX WHOIS Sorgusu</h2>
+                <p>Uluslararası alan adı kayıt bilgileri ve sunucu detayları.</p>
+            </div>
             <div class="whois-grid" id="whois-details"></div>
             <button class="btn btn-outline" id="whois-contact-btn" style="margin-top: 15px;">Sahibine İletişim E-Postası Gönder</button>
         </div>
@@ -405,12 +541,14 @@
         
         window.currentUser = null;
         window.userYmail = null; 
+        window.blockedUsers = []; 
 
         window.editingDomain = null;
         window.transferringDomain = null;
         window.applyingDomain = null;
-        window.currentViewedMail = null; // Yanıtlamak için tutulan mail bilgisi
+        window.currentViewedMail = null;
 
+        // UI VE NAVİGASYON FONKSİYONLARI
         window.navigasyon = function(pageId) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             document.querySelectorAll('section.page').forEach(p => p.classList.remove('active'));
@@ -422,26 +560,40 @@
             
             if(pageId === 'panel' && window.currentUser) { loadUserDomains(); updateLimitUI(); loadNetworkStats(); }
             if(pageId === 'directory') loadDirectory();
+            if(pageId === 'admin' && window.currentUser?.email === ADMIN_EMAIL) loadAdminPanel();
             
             // YMAIL EKRANI GÖSTERİM KONTROLÜ
             if(pageId === 'ymail') {
                 if(window.currentUser) {
                     document.getElementById('ymail-locked').classList.add('hidden');
                     document.getElementById('ymail-unlocked').classList.remove('hidden');
-                    showYMailTab('inbox'); // Direkt gelen kutusunu aç
+                    showYMailTab('inbox'); 
                     loadYMail();
-                    loadYMailUsers(); // Açılır menüdeki rehberi çek
+                    loadYMailUsers(); 
                 } else {
                     document.getElementById('ymail-locked').classList.remove('hidden');
                     document.getElementById('ymail-unlocked').classList.add('hidden');
                 }
             }
             
-            if(pageId === 'admin' && window.currentUser?.email === ADMIN_EMAIL) loadAdminPanel();
+            // DM EKRANI GÖSTERİM KONTROLÜ
+            if(pageId === 'dm') {
+                if(window.currentUser) {
+                    document.getElementById('dm-locked').classList.add('hidden');
+                    document.getElementById('dm-unlocked').classList.remove('hidden');
+                    initDM(); 
+                } else {
+                    document.getElementById('dm-locked').classList.remove('hidden');
+                    document.getElementById('dm-unlocked').classList.add('hidden');
+                }
+            }
         };
 
-        window.closeModal = function(modalId) { document.getElementById(modalId).classList.remove('active'); };
+        window.closeModal = function(modalId) { 
+            document.getElementById(modalId).classList.remove('active'); 
+        };
 
+        // KİMLİK DOĞRULAMA
         window.register = async function() {
             const company = document.getElementById('reg-company').value.trim();
             const email = document.getElementById('reg-email').value.toLowerCase().trim();
@@ -451,8 +603,17 @@
             try {
                 const userDoc = await db.collection("users").doc(email).get();
                 if(userDoc.exists) return alert("Hata: Bu e-posta adresi zaten sistemimizde kayıtlı.");
-                await db.collection("users").doc(email).set({ company, email, password: pass, regDate: new Date().toISOString().split('T')[0], regCount: 0 });
-                alert("🎉 Kayıt Başarılı! Sisteme giriş yapabilirsiniz."); navigasyon('login');
+                
+                await db.collection("users").doc(email).set({ 
+                    company: company, 
+                    email: email, 
+                    password: pass, 
+                    regDate: new Date().toISOString().split('T')[0], 
+                    regCount: 0,
+                    blocked_users: [] 
+                });
+                alert("🎉 Kayıt Başarılı! Sisteme giriş yapabilirsiniz."); 
+                navigasyon('login');
             } catch (error) { alert("Veritabanı Hatası: " + error.message); }
         };
 
@@ -465,9 +626,10 @@
                 const userDoc = await db.collection("users").doc(email).get();
                 if (userDoc.exists && userDoc.data().password === pass) {
                     window.currentUser = userDoc.data();
-                    
                     const cleanCompanyName = window.currentUser.company.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
                     window.userYmail = cleanCompanyName + '@ymail.ybg';
+                    
+                    window.blockedUsers = window.currentUser.blocked_users || [];
                     
                     document.getElementById('btn-nav-login').classList.add('hidden');
                     document.getElementById('btn-nav-register').classList.add('hidden');
@@ -481,12 +643,20 @@
                         document.getElementById('btn-nav-admin').classList.remove('hidden');
                     }
                     navigasyon('panel');
+                    // Başarılı girişten hemen sonra bildirim sistemini çalıştır
+if(window.startNotificationListeners) window.startNotificationListeners();
                 } else { alert("Hatalı E-Posta veya Şifre girdiniz!"); }
             } catch (error) { alert("Giriş yapılırken sunucu bağlantı hatası oluştu."); }
         };
 
         window.logout = function() {
             window.currentUser = null; window.userYmail = null; window.currentViewedMail = null;
+           
+            if(window.globalYmailUnsub) window.globalYmailUnsub();
+            if(window.globalDMUnsub) window.globalDMUnsub();
+            if(window.chatsUnsubscribe) window.chatsUnsubscribe();
+            if(window.messagesUnsubscribe) window.messagesUnsubscribe();
+            
             document.getElementById('login-pass').value = '';
             document.getElementById('btn-nav-login').classList.remove('hidden');
             document.getElementById('btn-nav-register').classList.remove('hidden');
@@ -496,15 +666,257 @@
             navigasyon('login');
         };
 
-        // ============================================================================
-        // YMAIL GELİŞMİŞ FONKSİYONLARI (REHBER & YANITLAMA EKLENDİ)
-        // ============================================================================
+        /* ==========================================================================
+           YBX DM (MESSENGER & GRUP) SİSTEMİ
+           ========================================================================== */
+        window.currentDMId = null;
+        window.currentDMType = null;
+        window.isSecretMode = false;
+        window.chatsUnsubscribe = null;
+        window.messagesUnsubscribe = null;
+
+        window.initDM = function() {
+            const listDiv = document.getElementById('dm-chat-list');
+            listDiv.innerHTML = "<div style='padding:20px; text-align:center;'>Ağ bağlantısı kuruluyor...</div>";
+
+            window.chatsUnsubscribe = db.collection("chats")
+                .where("members", "array-contains", window.userYmail)
+                .onSnapshot(snapshot => {
+                    let chats = [];
+                    snapshot.forEach(doc => {
+                        let data = doc.data();
+                        
+                        let isBlocked = false;
+                        if(data.type === 'direct') {
+                            const otherUser = data.members.find(m => m !== window.userYmail);
+                            if(window.blockedUsers.includes(otherUser)) isBlocked = true;
+                        }
+
+                        if(!isBlocked) chats.push({ id: doc.id, ...data });
+                    });
+
+                    chats.sort((a, b) => new Date(b.lastMessageTime || 0) - new Date(a.lastMessageTime || 0));
+                    renderChatList(chats);
+                });
+        };
+
+        function renderChatList(chats) {
+            const listDiv = document.getElementById('dm-chat-list');
+            if(chats.length === 0) {
+                listDiv.innerHTML = "<div style='padding:20px; text-align:center; color:gray;'>Henüz mesaj yok.</div>";
+                return;
+            }
+
+            let html = "";
+            chats.forEach(chat => {
+                let displayName = chat.name;
+                if(chat.type === 'direct') {
+                    displayName = chat.members.find(m => m !== window.userYmail) || "Bilinmeyen Kullanıcı";
+                }
+                
+                let activeClass = (chat.id === window.currentDMId) ? "active-chat" : "";
+                html += `
+                <div class="dm-chat-item ${activeClass}" onclick="openDMChat('${chat.id}', '${displayName}', '${chat.type}')">
+                    <div class="dm-chat-name">${chat.type === 'group' ? '👥 ' : '👤 '}${displayName}</div>
+                    <div class="dm-chat-last">${chat.lastMessage || "..."}</div>
+                </div>`;
+            });
+            listDiv.innerHTML = html;
+        }
+
+        window.openDMChat = function(chatId, displayName, type) {
+            window.currentDMId = chatId;
+            window.currentDMType = type;
+            
+            document.getElementById('dm-placeholder').style.display = "none";
+            document.getElementById('dm-active-chat').classList.remove('hidden');
+            document.getElementById('dm-current-title').innerText = displayName;
+
+            if(type === 'group') document.getElementById('btn-block-user').classList.add('hidden');
+            else document.getElementById('btn-block-user').classList.remove('hidden');
+
+            if(window.isSecretMode) toggleSecretMode();
+
+            if(window.messagesUnsubscribe) window.messagesUnsubscribe();
+            
+            const msgsDiv = document.getElementById('dm-messages');
+            msgsDiv.innerHTML = "<div style='text-align:center; color:gray; margin-top:20px;'>Veriler çözümleniyor...</div>";
+
+            window.messagesUnsubscribe = db.collection("chats").doc(chatId).collection("messages")
+                .orderBy("timestamp")
+                .onSnapshot(snapshot => {
+                    let html = "";
+                    snapshot.forEach(doc => {
+                        let msg = doc.data();
+                        let isMe = msg.sender === window.userYmail;
+                        let bubbleClass = isMe ? "msg-sent" : "msg-received";
+                        let hiddenClass = msg.isHidden ? "msg-hidden-style" : "";
+                        let senderName = type === 'group' && !isMe ? `<div class="msg-sender-name">${msg.sender}</div>` : "";
+
+                        if(msg.isHidden && !isMe && !msg.readTriggered) {
+                            db.collection("chats").doc(chatId).collection("messages").doc(doc.id).update({ readTriggered: true });
+                            setTimeout(() => {
+                                db.collection("chats").doc(chatId).collection("messages").doc(doc.id).delete();
+                            }, 10000); 
+                        }
+
+                        html += `
+                        <div class="msg-bubble ${bubbleClass} ${hiddenClass}">
+                            ${senderName}
+                            ${msg.text}
+                        </div>`;
+                    });
+                    msgsDiv.innerHTML = html;
+                    msgsDiv.scrollTop = msgsDiv.scrollHeight; 
+                });
+                
+            document.querySelectorAll('.dm-chat-item').forEach(item => item.classList.remove('active-chat'));
+            if(event) event.currentTarget.classList.add('active-chat');
+        };
+
+        window.sendDMMessage = async function() {
+            if(!window.currentDMId) return;
+            const input = document.getElementById('dm-message-input');
+            const text = input.value.trim();
+            if(!text) return;
+
+            input.value = ""; 
+
+            const msgData = {
+                sender: window.userYmail,
+                text: text,
+                timestamp: new Date().toISOString(),
+                isHidden: window.isSecretMode
+            };
+
+            await db.collection("chats").doc(window.currentDMId).collection("messages").add(msgData);
+            
+            let displayMsg = window.isSecretMode ? "🕵️ Gizli bir mesaj gönderildi." : text;
+            await db.collection("chats").doc(window.currentDMId).update({
+                lastMessage: displayMsg,
+                lastMessageTime: new Date().toISOString()
+            });
+        };
+
+        window.toggleSecretMode = function() {
+            window.isSecretMode = !window.isSecretMode;
+            const btn = document.getElementById('btn-secret-mode');
+            const mainArea = document.getElementById('dm-main-area');
+            
+            if(window.isSecretMode) {
+                btn.innerHTML = "🕵️ GİZLİ MOD AÇIK";
+                btn.style.background = "#ff3f34";
+                btn.style.color = "white";
+                mainArea.classList.add('secret-mode');
+            } else {
+                btn.innerHTML = "🕵️ Gizli Mod (Kapalı)";
+                btn.style.background = "white";
+                btn.style.color = "#ff3f34";
+                mainArea.classList.remove('secret-mode');
+            }
+        };
+
+        window.blockCurrentChatUser = async function() {
+            if(!window.currentDMId || window.currentDMType === 'group') return;
+            
+            if(!confirm("⚠️ DİKKAT: Bu kullanıcıyı engellerseniz size bir daha mesaj gönderemez (Shadowban uygulanır). Emin misiniz?")) return;
+
+            const chatDoc = await db.collection("chats").doc(window.currentDMId).get();
+            const otherUser = chatDoc.data().members.find(m => m !== window.userYmail);
+
+            if(otherUser) {
+                window.blockedUsers.push(otherUser);
+                await db.collection("users").doc(window.currentUser.email).update({
+                    blocked_users: window.blockedUsers
+                });
+
+                alert(`🚫 İşlem Başarılı: ${otherUser} kalıcı olarak engellendi. Artık mesajları terminalinize ulaşmayacak.`);
+                
+                document.getElementById('dm-active-chat').classList.add('hidden');
+                document.getElementById('dm-placeholder').style.display = "flex";
+                window.currentDMId = null;
+            }
+        };
+
+        window.openCreateChatModal = async function() {
+            const listDiv = document.getElementById('chat-user-check-list');
+            listDiv.innerHTML = "Kullanıcılar yükleniyor...";
+            document.getElementById('chat-group-name').value = ""; 
+            
+            try {
+                const snap = await db.collection("users").get();
+                let html = "";
+                snap.forEach(doc => {
+                    const u = doc.data();
+                    const ymailAddr = u.company.replace(/[^a-zA-Z0-9]/g, '').toLowerCase() + '@ymail.ybg';
+                    
+                    if(ymailAddr !== window.userYmail) {
+                        html += `
+                        <label class="user-check-item">
+                            <input type="checkbox" value="${ymailAddr}">
+                            <span>🏢 ${u.company} (${ymailAddr})</span>
+                        </label>`;
+                    }
+                });
+                listDiv.innerHTML = html;
+                document.getElementById('create-chat-modal').classList.add('active');
+            } catch(e) { listDiv.innerHTML = "Hata oluştu."; }
+        };
+
+        window.startNewChat = async function() {
+            const checkboxes = document.querySelectorAll('#chat-user-check-list input[type="checkbox"]:checked');
+            let selectedUsers = [];
+            checkboxes.forEach(cb => selectedUsers.push(cb.value));
+
+            if(selectedUsers.length === 0) return alert("Lütfen en az bir kişi seçin.");
+
+            const groupName = document.getElementById('chat-group-name').value.trim();
+            selectedUsers.push(window.userYmail); 
+
+            let isGroup = selectedUsers.length > 2 || groupName !== "";
+            let chatName = isGroup ? (groupName || "İsimsiz YBX Grubu") : "";
+
+            try {
+                if(!isGroup) {
+                    const existingChatSnap = await db.collection("chats")
+                        .where("type", "==", "direct")
+                        .where("members", "array-contains", window.userYmail)
+                        .get();
+                    
+                    let foundExisting = false;
+                    existingChatSnap.forEach(doc => {
+                        let members = doc.data().members;
+                        if(members.includes(selectedUsers[0])) { 
+                            foundExisting = true;
+                            closeModal('create-chat-modal');
+                            openDMChat(doc.id, selectedUsers[0], 'direct');
+                        }
+                    });
+                    if(foundExisting) return; 
+                }
+
+                const newChatRef = await db.collection("chats").add({
+                    type: isGroup ? 'group' : 'direct',
+                    name: chatName,
+                    members: selectedUsers,
+                    lastMessage: "Sohbet oluşturuldu.",
+                    lastMessageTime: new Date().toISOString()
+                });
+
+                closeModal('create-chat-modal');
+                openDMChat(newChatRef.id, isGroup ? chatName : selectedUsers[0], isGroup ? 'group' : 'direct');
+
+            } catch(e) { alert("Sohbet oluşturuldu: "); }
+        };
+
+        /* ==========================================================================
+           YMAIL FONKSİYONLARI
+           ========================================================================== */
         window.showYMailTab = function(tabName) {
             document.querySelectorAll('.ymail-tab').forEach(tab => tab.classList.add('hidden'));
             document.getElementById('ymail-' + tabName).classList.remove('hidden');
         };
 
-        // YMail Yeni İleti İçin Sistemdeki Kişileri Çekme
         window.loadYMailUsers = async function() {
             const selectBox = document.getElementById('ymail-to');
             selectBox.innerHTML = '<option value="">-- Ağ Rehberi Yükleniyor... --</option>';
@@ -513,7 +925,6 @@
                 const snap = await db.collection("users").get();
                 let options = '<option value="">-- YBX Ağındaki Bir Alıcıyı Seçin --</option>';
                 
-                // Sistemin otomatik Kurucu adresini de en başa ekle
                 options += `<option value="admin@ymail.ybg">🛡️ YBG13™ Kurucu Yönetimi (admin@ymail.ybg)</option>`;
                 
                 snap.forEach(doc => {
@@ -521,16 +932,13 @@
                     const cleanName = u.company.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
                     const ymailAddr = cleanName + '@ymail.ybg';
                     
-                    // Kendisine mail atamasın
                     if(ymailAddr !== window.userYmail) {
                         options += `<option value="${ymailAddr}">🏢 ${u.company} (${ymailAddr})</option>`;
                     }
                 });
                 
                 selectBox.innerHTML = options;
-            } catch(e) {
-                console.error("Rehber çekilemedi: ", e);
-            }
+            } catch(e) { console.error("Rehber çekilemedi: ", e); }
         };
 
         window.loadYMail = async function() {
@@ -580,14 +988,11 @@
                 });
                 sentDiv.innerHTML = sentHtml || "<p style='text-align:center; color:var(--text-light); padding:30px;'>Henüz hiç ileti göndermediniz.</p>";
 
-            } catch(e) {
-                console.error(e);
-                inboxDiv.innerHTML = "<p style='color:red;'>Veriler çekilirken hata oluştu.</p>";
-            }
+            } catch(e) { inboxDiv.innerHTML = "<p style='color:red;'>Veriler çekilirken hata oluştu.</p>"; }
         };
 
         window.sendYMail = async function() {
-            const to = document.getElementById('ymail-to').value; // Artık dropdown'dan geliyor
+            const to = document.getElementById('ymail-to').value; 
             const subject = document.getElementById('ymail-subject').value.trim();
             const body = document.getElementById('ymail-body').value.trim();
 
@@ -620,17 +1025,15 @@
             if(!doc.exists) return;
             const data = doc.data();
             
-            window.currentViewedMail = data; // Yanıtlamak için hafızada tut
+            window.currentViewedMail = data; 
 
             document.getElementById('ymail-view-subject').innerText = data.subject;
             document.getElementById('ymail-view-from').innerText = "Kimden: " + data.from;
             document.getElementById('ymail-view-to').innerText = "Kime: " + data.to;
             document.getElementById('ymail-view-body').innerText = data.body;
             
-            // Eğer gönderilenler kutusundaysa veya kendimize yanıt atıyorsak yanıtla butonunu gizle
             if(isInbox) {
                 document.getElementById('btn-ymail-reply').classList.remove('hidden');
-                // Okunmadıysa okundu yap
                 if(!data.isRead) {
                     await db.collection("ymails").doc(mailId).update({ isRead: true });
                     loadYMail(); 
@@ -642,31 +1045,28 @@
             document.getElementById('ymail-view-modal').classList.add('active');
         };
 
-        // YENİ: YANITLA (REPLY) FONKSİYONU
         window.replyYMail = function() {
             if(!window.currentViewedMail) return;
             
             closeModal('ymail-view-modal');
             showYMailTab('compose');
             
-            // Seçimi orijinal gönderene ayarla (Dropdown'da o değer yoksa seçilmez, ama loadYMailUsers'dan gelmiş olmalı)
             const toSelect = document.getElementById('ymail-to');
             toSelect.value = window.currentViewedMail.from;
             
-            // Konunun başına Re: ekle (eğer yoksa)
             let newSubject = window.currentViewedMail.subject;
             if(!newSubject.startsWith("Re: ")) { newSubject = "Re: " + newSubject; }
             document.getElementById('ymail-subject').value = newSubject;
             
-            // Eski mesajı alıntı yap
             document.getElementById('ymail-body').value = "\n\n-------------------------------\nOrijinal Mesaj:\n" + window.currentViewedMail.body;
             
-            // Odaklan
             document.getElementById('ymail-body').focus();
             document.getElementById('ymail-body').setSelectionRange(0, 0);
         };
-        // ============================================================================
 
+        /* ==========================================================================
+           DOMAİN SORGULAMA, TESCİL, YÖNETİM VE LİMİT FONKSİYONLARI
+           ========================================================================== */
         async function checkLimit() {
             if(window.currentUser.email === ADMIN_EMAIL) return true;
             const today = new Date().toISOString().split('T')[0];
@@ -742,7 +1142,7 @@
             
             db.collection("ymails").add({
                 from: window.userYmail,
-                to: "admin@ymail.ybg",
+                to: "admin@ymail.ybg", 
                 subject: subject,
                 body: body,
                 timestamp: new Date().toISOString(),
@@ -849,6 +1249,81 @@
             snapshot.forEach(doc => { totalSites++; totalVisits += (doc.data().visits || 0); });
             document.getElementById('stat-total-sites').innerText = totalSites; document.getElementById('stat-total-visits').innerText = totalVisits;
         }
+
+        // ==========================================================
+// YBX GLOBAL BİLDİRİM (TOAST) VE REAL-TIME DİNLEYİCİLERİ
+// ==========================================================
+
+window.globalYmailUnsub = null;
+window.globalDMUnsub = null;
+
+// Ekrana Bildirim Çıkartan Fonksiyon
+window.showNotification = function(title, desc, type, onClickCallback) {
+    const container = document.getElementById('notification-container');
+    const toast = document.createElement('div');
+    toast.className = `toast-notify ${type}-toast`;
+    
+    let icon = type === 'dm' ? '💬' : '📧';
+    toast.innerHTML = `<div class="toast-title">${icon} ${title}</div><div class="toast-desc">${desc}</div>`;
+    
+    if (onClickCallback) {
+        toast.onclick = () => { onClickCallback(); toast.remove(); };
+    }
+    
+    container.appendChild(toast);
+    
+    // 5 Saniye sonra ekrandan kaybolur
+    setTimeout(() => {
+        toast.style.animation = 'fadeOutRight 0.4s ease-in forwards';
+        setTimeout(() => toast.remove(), 400);
+    }, 5000); 
+};
+
+// Kullanıcı Giriş Yaptığında Arka Planda Dinlemeye Başlayan Sistem
+window.startNotificationListeners = function() {
+    // 1. YMail Yeni Mesaj Dinleyicisi
+    window.globalYmailUnsub = db.collection("ymails").where("to", "==", window.userYmail)
+        .onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === "added") {
+                    let mail = change.doc.data();
+                    // Spam engelleme: Sadece son 10 saniye içinde gelen YENİ maillere bildirim at
+                    let ageInMs = new Date() - new Date(mail.timestamp);
+                    if(!mail.isRead && ageInMs < 10000) { 
+                        showNotification("Yeni YMail", mail.subject, "ymail", () => {
+                            navigasyon('ymail');
+                        });
+                    }
+                }
+            });
+        });
+
+    // 2. DM (Mesajlaşma) Yeni Mesaj Dinleyicisi
+    window.globalDMUnsub = db.collection("chats").where("members", "array-contains", window.userYmail)
+        .onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                // Eğer sohbette yeni bir aktivite (güncelleme) olduysa
+                if (change.type === "modified") {
+                    let chat = change.doc.data();
+                    // O an bu sohbetin içinde aktif olarak mesajlaşıyorsak bildirim atma!
+                    if (change.doc.id === window.currentDMId) return;
+                    
+                    let senderName = chat.type === 'direct' ? chat.members.find(m => m !== window.userYmail) : chat.name;
+                    
+                    // Son mesajı biz atmadıysak bildirim ver
+                    if(!chat.lastMessage.includes("Gizli bir mesaj gönderildi.") && chat.lastMessageTime) {
+                        let ageInMs = new Date() - new Date(chat.lastMessageTime);
+                        if(ageInMs < 10000) { // Sadece yeni atılmışsa
+                            showNotification(senderName, chat.lastMessage, "dm", () => {
+                                navigasyon('dm');
+                                openDMChat(change.doc.id, senderName, chat.type);
+                            });
+                        }
+                    }
+                }
+            });
+        });
+};
 
         window.loadDirectory = async function() {
             const dirList = document.getElementById('directory-list');
