@@ -5,87 +5,538 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YBX Network | YBG13™</title>
     <style>
-        /* YBX MODERN TASARIM V6 - DETAYLI WHOIS & 1 YIL LİMİTİ */
+        /* YBX MODERN TASARIM - YBG13™ (GENİŞLETİLMİŞ CSS) */
         :root {
-            --bg-color: #f4f7f6;
+            --bg-color: #f0f4f8;
             --card-bg: #ffffff;
-            --primary-blue: #005bb5;
-            --primary-hover: #004488;
-            --text-dark: #1a252f;
-            --text-light: #7f8c8d;
-            --border-color: #dce4ec;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --special: #8e44ad;
-            --admin-gold: #f39c12;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            --radius: 8px;
+            --primary-blue: #0984e3;
+            --primary-hover: #074a80;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --border-color: #dfe6e9;
+            --success: #00b894;
+            --danger: #d63031;
+            --special: #6c5ce7;
+            --admin-gold: #fdcb6e;
+            --editor-bg: #1e1e1e;
+            --editor-text: #d4d4d4;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
         }
 
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-dark); overflow-x: hidden; }
-
-        header { background: var(--card-bg); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 26px; font-weight: 900; color: var(--primary-blue); letter-spacing: -1px; }
-        .logo span { font-weight: 400; color: var(--text-light); font-size: 16px; letter-spacing: 0; }
+        body { 
+            margin: 0; 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-dark); 
+            overflow-x: hidden; 
+        }
         
-        nav button { background: transparent; border: none; color: var(--text-light); font-size: 15px; font-weight: 600; padding: 8px 14px; margin-left: 5px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
-        nav button:hover, nav button.active-nav { background: #eef2f5; color: var(--primary-blue); }
-        #btn-nav-admin { color: var(--admin-gold); border: 1px solid transparent; }
-        #btn-nav-admin:hover, #btn-nav-admin.active-nav { background: #fdf2e9; border-color: var(--admin-gold); }
+        /* SCROLLBAR TASARIMI */
+        ::-webkit-scrollbar { 
+            width: 8px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: #b2bec3; 
+            border-radius: 10px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: #636e72; 
+        }
 
-        section.page { display: none; padding: 40px 20px; max-width: 1100px; margin: 0 auto; animation: fadePage 0.2s ease-in; min-height: calc(100vh - 65px); }
-        section.page.active { display: block; }
-        @keyframes fadePage { from { opacity: 0; } to { opacity: 1; } }
-
-        section#page-browser.active { display: flex; flex-direction: column; padding: 0; max-width: 100%; background: #fff; }
-        #browser-bar { display: flex; padding: 10px 20px; background: #f0f3f5; border-bottom: 1px solid var(--border-color); align-items: center; gap: 10px; }
-        #browser-bar input { margin: 0; font-family: monospace; font-size: 16px; flex-grow: 1; border-radius: 20px; padding: 10px 20px; border: 1px solid var(--border-color); }
-        #browser-bar button { margin: 0; border-radius: 20px; padding: 10px 25px; }
-        #browser-frame { flex-grow: 1; border: none; width: 100%; }
-
-        .auth-container { max-width: 450px; margin: 20px auto; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 25px; border: 1px solid var(--border-color); }
-        .card h2 { margin-top: 0; font-size: 22px; color: var(--primary-blue); border-bottom: 2px solid #f4f7f6; padding-bottom: 15px; margin-bottom: 20px; }
+        /* HEADER & NAVBAR */
+        header { 
+            background: var(--card-bg); 
+            padding: 15px 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
         
-        input, textarea, select { width: 100%; padding: 14px; margin-bottom: 15px; background: #fdfefe; border: 1px solid var(--border-color); border-radius: 6px; box-sizing: border-box; font-size: 15px; font-family: inherit; }
-        input:focus, textarea:focus, select:focus { border-color: var(--primary-blue); outline: none; box-shadow: 0 0 0 3px rgba(0, 91, 181, 0.1); }
+        .logo { 
+            font-size: 28px; 
+            font-weight: 900; 
+            color: var(--primary-blue); 
+            letter-spacing: -1px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
         
-        .btn { width: 100%; padding: 14px; background: var(--primary-blue); color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .btn:hover { background: var(--primary-hover); }
-        .btn-outline { background: transparent; border: 2px solid var(--primary-blue); color: var(--primary-blue); }
-        .btn-outline:hover { background: var(--primary-blue); color: #fff; }
-        .btn-success { background: var(--success); }
-        .btn-danger { background: #fff; border: 1px solid var(--danger); color: var(--danger); }
-        .btn-danger:hover { background: var(--danger); color: #fff; }
-        .btn-special { background: var(--special); color: #fff; }
-        .btn-special:hover { background: #732d91; }
-        .btn-admin { background: var(--admin-gold); color: #fff; }
-
-        .search-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .search-domain { font-size: 18px; font-weight: bold; font-family: monospace; }
-        .search-status { font-size: 12px; padding: 5px 10px; border-radius: 4px; font-weight: bold; }
-        .status-free { background: #e8f8f5; color: var(--success); }
-        .status-taken { background: #fdedec; color: var(--danger); }
-        .status-special { background: #f4ecf8; color: var(--special); }
-        .search-action button { width: auto; padding: 8px 20px; font-size: 13px; margin: 0; }
-
-        .dir-item { display: flex; flex-direction: column; padding: 20px; border: 1px solid var(--border-color); border-radius: var(--radius); margin-bottom: 15px; background: #fff; cursor: pointer; }
-        .dir-item:hover { border-color: var(--primary-blue); box-shadow: var(--shadow); }
-        .dir-title { font-size: 18px; font-weight: bold; color: var(--primary-blue); margin-bottom: 5px; }
-        .dir-url { font-size: 14px; color: var(--success); font-family: monospace; }
+        .logo span { 
+            font-weight: 500; 
+            color: var(--text-light); 
+            font-size: 16px; 
+            letter-spacing: 0; 
+            background: #eef2f5; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+        }
         
-        /* DETAYLI WHOIS MODAL */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-box { background: #fff; padding: 30px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); position: relative; }
-        .close-btn { position: absolute; top: 20px; right: 25px; font-size: 24px; cursor: pointer; color: #888; font-weight: bold; }
-        .close-btn:hover { color: #000; }
-        .whois-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 15px; }
-        .whois-row strong { color: var(--text-dark); }
-        .whois-row span { color: var(--primary-blue); font-family: monospace; font-size: 16px; }
+        nav { 
+            display: flex; 
+            gap: 5px; 
+            flex-wrap: wrap; 
+        }
+        
+        nav button { 
+            background: transparent; 
+            border: none; 
+            color: var(--text-light); 
+            font-size: 15px; 
+            font-weight: 600; 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+        }
+        
+        nav button:hover, nav button.active-nav { 
+            background: rgba(9, 132, 227, 0.1); 
+            color: var(--primary-blue); 
+        }
+        
+        #btn-nav-admin { 
+            color: #e17055; 
+            border: 1px solid transparent; 
+        }
+        
+        #btn-nav-admin:hover, #btn-nav-admin.active-nav { 
+            background: rgba(253, 203, 110, 0.15); 
+            border-color: var(--admin-gold); 
+            color: #d35400; 
+        }
 
-        .hidden { display: none !important; }
+        /* SAYFA GEÇİŞLERİ */
+        section.page { 
+            display: none; 
+            padding: 40px 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            animation: slideUp 0.3s ease-out; 
+            min-height: calc(100vh - 80px); 
+        }
+        
+        section.page.active { 
+            display: block; 
+        }
+        
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* BROWSER SAYFASI ÖZEL */
+        section#page-browser.active { 
+            display: flex; 
+            flex-direction: column; 
+            padding: 0; 
+            max-width: 100%; 
+            height: calc(100vh - 75px); 
+            background: #fff; 
+        }
+        
+        #browser-bar { 
+            display: flex; 
+            padding: 12px 25px; 
+            background: #f8f9fa; 
+            border-bottom: 1px solid var(--border-color); 
+            align-items: center; 
+            gap: 15px; 
+            z-index: 10; 
+        }
+        
+        .browser-controls button { 
+            background: #fff; 
+            border: 1px solid var(--border-color); 
+            padding: 8px 12px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            color: var(--text-light); 
+        }
+        
+        .browser-controls button:hover { 
+            background: #eef2f5; 
+            color: var(--primary-blue); 
+        }
+        
+        #browser-bar input { 
+            margin: 0; 
+            font-family: 'Consolas', monospace; 
+            font-size: 15px; 
+            flex-grow: 1; 
+            border-radius: 25px; 
+            padding: 12px 25px; 
+            border: 1px solid var(--border-color); 
+            background: #fff; 
+            transition: 0.3s; 
+        }
+        
+        #browser-bar input:focus { 
+            border-color: var(--primary-blue); 
+            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.15); 
+            outline: none; 
+        }
+        
+        #browser-bar button.btn-surf { 
+            border-radius: 25px; 
+            padding: 12px 30px; 
+            margin: 0; 
+        }
+        
+        .quick-links { 
+            padding: 8px 25px; 
+            background: #fff; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            gap: 10px; 
+            font-size: 13px; 
+            color: var(--text-light); 
+            align-items: center; 
+        }
+        
+        .quick-links span { 
+            cursor: pointer; 
+            background: #f0f4f8; 
+            padding: 4px 10px; 
+            border-radius: 12px; 
+            transition: 0.2s; 
+        }
+        
+        .quick-links span:hover { 
+            background: #e1e8ed; 
+            color: var(--primary-blue); 
+        }
+
+        #browser-frame { 
+            flex-grow: 1; 
+            border: none; 
+            width: 100%; 
+            background: #fff; 
+        }
+
+        /* ORTAK KARTLAR & FORMLAR */
+        .auth-container { 
+            max-width: 480px; 
+            margin: 40px auto; 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            padding: 35px; 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow); 
+            margin-bottom: 30px; 
+            border: 1px solid rgba(0,0,0,0.04); 
+        }
+        
+        .card h2 { 
+            margin-top: 0; 
+            font-size: 24px; 
+            color: var(--text-dark); 
+            border-bottom: 2px solid #f0f4f8; 
+            padding-bottom: 15px; 
+            margin-bottom: 25px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+        }
+        
+        input, textarea, select { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 18px; 
+            background: #f8f9fa; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 15px; 
+            transition: 0.3s; 
+        }
+        
+        input:focus, textarea:focus, select:focus { 
+            border-color: var(--primary-blue); 
+            background: #fff; 
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.15); 
+        }
+        
+        /* EDİTÖR */
+        #editor-code { 
+            background: var(--editor-bg); 
+            color: var(--editor-text); 
+            font-family: 'Consolas', 'Courier New', monospace; 
+            font-size: 14px; 
+            border: 1px solid #333; 
+            line-height: 1.5; 
+            padding: 20px; 
+            border-radius: 8px; 
+        }
+        
+        #editor-code:focus { 
+            border-color: var(--primary-blue); 
+            box-shadow: 0 0 10px rgba(9, 132, 227, 0.3); 
+        }
+
+        /* BUTONLAR */
+        .btn { 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--primary-blue); 
+            color: #fff; 
+            font-size: 16px; 
+            font-weight: 600; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            display: inline-flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
+        .btn:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(-1px); 
+            box-shadow: 0 4px 12px rgba(9, 132, 227, 0.3); 
+        }
+        
+        .btn-outline { 
+            background: transparent; 
+            border: 2px solid var(--primary-blue); 
+            color: var(--primary-blue); 
+        }
+        
+        .btn-outline:hover { 
+            background: var(--primary-blue); 
+            color: #fff; 
+        }
+        
+        .btn-success { 
+            background: var(--success); 
+        }
+        
+        .btn-success:hover { 
+            background: #00997a; 
+            box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3); 
+        }
+        
+        .btn-danger { 
+            background: #fff; 
+            border: 2px solid var(--danger); 
+            color: var(--danger); 
+        }
+        
+        .btn-danger:hover { 
+            background: var(--danger); 
+            color: #fff; 
+            box-shadow: 0 4px 12px rgba(214, 48, 49, 0.3); 
+        }
+        
+        .btn-special { 
+            background: var(--special); 
+            color: #fff; 
+        }
+        
+        .btn-admin { 
+            background: linear-gradient(135deg, #fdcb6e, #e17055); 
+            color: #fff; 
+            border: none; 
+        }
+
+        /* LİSTELER VE SATIRLAR */
+        .search-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 18px; 
+            border-bottom: 1px solid var(--border-color); 
+            background: #fff; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            transition: 0.2s; 
+            border: 1px solid transparent; 
+        }
+        
+        .search-row:hover { 
+            border-color: var(--border-color); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+        }
+        
+        .search-domain { 
+            font-size: 18px; 
+            font-weight: 700; 
+            font-family: 'Consolas', monospace; 
+            color: var(--text-dark); 
+        }
+        
+        .search-status { 
+            font-size: 13px; 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+        }
+        
+        .status-free { background: rgba(0, 184, 148, 0.1); color: var(--success); }
+        .status-taken { background: rgba(214, 48, 49, 0.1); color: var(--danger); }
+        .status-special { background: rgba(108, 92, 231, 0.1); color: var(--special); }
+        
+        .search-action button { 
+            width: auto; 
+            padding: 10px 20px; 
+            font-size: 14px; 
+            margin: 0; 
+        }
+
+        /* REHBER DİZİN TASARIMI */
+        .dir-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+        
+        .dir-item { 
+            display: flex; 
+            flex-direction: column; 
+            padding: 25px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius); 
+            background: #fff; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        
+        .dir-item::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 4px; 
+            height: 100%; 
+            background: var(--primary-blue); 
+            opacity: 0; 
+            transition: 0.3s; 
+        }
+        
+        .dir-item:hover { 
+            transform: translateY(-3px); 
+            box-shadow: var(--shadow); 
+            border-color: var(--primary-blue); 
+        }
+        
+        .dir-item:hover::before { 
+            opacity: 1; 
+        }
+        
+        .dir-title { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: var(--text-dark); 
+            margin-bottom: 8px; 
+        }
+        
+        .dir-url { 
+            font-size: 14px; 
+            color: var(--primary-blue); 
+            font-family: 'Consolas', monospace; 
+            background: #f0f4f8; 
+            padding: 6px 10px; 
+            border-radius: 6px; 
+            display: inline-block; 
+            width: fit-content; 
+            margin-bottom: 10px;
+        }
+        
+        .dir-stats { 
+            font-size: 12px; 
+            color: var(--text-light); 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-weight: 600; 
+        }
+
+        /* VIDEO EĞİTİM ALANI */
+        .video-container { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            background: #000; 
+            box-shadow: var(--shadow); 
+            margin-top: 20px; 
+        }
+        
+        .video-container video, .video-container iframe { 
+            width: 100%; 
+            height: 500px; 
+            border: none; 
+            display: block; 
+        }
+
+        /* İSTATİSTİK KARTLARI */
+        .stats-box { 
+            display: flex; 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+        
+        .stat-card { 
+            flex: 1; 
+            background: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center; 
+            border: 1px solid var(--border-color); 
+        }
+        
+        .stat-card h3 { 
+            margin: 0 0 10px 0; 
+            color: var(--primary-blue); 
+            font-size: 28px; 
+        }
+        
+        .stat-card p { 
+            margin: 0; 
+            color: var(--text-light); 
+            font-size: 14px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+        }
+
+        /* YARDIMCI SINIFLAR */
+        .hidden { 
+            display: none !important; 
+        }
+        
+        .loader { 
+            text-align: center; 
+            padding: 40px; 
+            color: var(--text-light); 
+            font-weight: 600; 
+            animation: pulse 1.5s infinite; 
+        }
+        
+        @keyframes pulse { 
+            0% { opacity: 0.5; } 
+            50% { opacity: 1; } 
+            100% { opacity: 0.5; } 
+        }
     </style>
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
@@ -94,39 +545,59 @@
     <header>
         <div class="logo">YBX <span>Network</span></div>
         <nav>
-            <button onclick="navigasyon('browser')" id="btn-nav-browser" class="active-nav">🌐 YBX Tarayıcı</button>
+            <button onclick="navigasyon('browser')" id="btn-nav-browser" class="active-nav">🌐 Tarayıcı</button>
             <button onclick="navigasyon('directory')" id="btn-nav-directory">🗂️ Ağ Dizini</button>
-            <button onclick="navigasyon('login')" id="btn-nav-login">🔑 Giriş Yap</button>
-            <button onclick="navigasyon('register')" id="btn-nav-register">📝 Kayıt Ol</button>
+            <button onclick="navigasyon('education')" id="btn-nav-education">📚 Eğitim</button>
+            <button onclick="navigasyon('login')" id="btn-nav-login">🔑 Giriş</button>
+            <button onclick="navigasyon('register')" id="btn-nav-register">📝 Kayıt</button>
             <button onclick="navigasyon('panel')" id="btn-nav-panel" class="hidden">⚙️ Panel</button>
-            <button onclick="navigasyon('admin')" id="btn-nav-admin" class="hidden">👑 Admin Paneli</button>
+            <button onclick="navigasyon('admin')" id="btn-nav-admin" class="hidden">👑 Kurucu</button>
             <button onclick="logout()" id="btn-nav-logout" class="hidden">🚪 Çıkış</button>
         </nav>
     </header>
 
     <section id="page-browser" class="page active">
         <div id="browser-bar">
-            <span style="font-weight:bold; color:var(--primary-blue); font-size: 18px;">YBX</span>
-            <input type="text" id="url-input" placeholder="Ağa bağlanmak için alan adı girin (örn: site.ybg)">
-            <button class="btn" onclick="surf()">Bağlan</button>
+            <div class="browser-controls">
+                <button onclick="navigasyon('directory')" title="Ana Sayfa">🏠</button>
+                <button onclick="surf()" title="Yenile">🔄</button>
+            </div>
+            <input type="text" id="url-input" placeholder="Ağa bağlanmak için alan adı girin (örn: projem.ybg)" onkeypress="if(event.key === 'Enter') surf()">
+            <button class="btn btn-surf" onclick="surf()">Bağlan</button>
         </div>
         <iframe id="browser-frame"></iframe>
     </section>
 
     <section id="page-directory" class="page">
         <div class="card">
-            <h2>🗂️ YBX Ağ Rehberi</h2>
-            <p>YBX ağına kayıtlı aktif web sitelerini burada keşfedin.</p>
-            <div id="directory-list">Ağ taranıyor...</div>
+            <h2>🗂️ YBX Ağ Rehberi <span>(Popülerliğe Göre)</span></h2>
+            <p style="color: var(--text-light); margin-top: -10px; margin-bottom: 25px;">Ağdaki siteler ziyaret edilme sayısına göre listelenmektedir.</p>
+            <div id="directory-list" class="dir-grid">
+                <div class="loader">Ağ protokolleri ve sıralamalar çekiliyor...</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-education" class="page">
+        <div class="card">
+            <h2>📚 YBX & YBG13™ Eğitim Merkezi</h2>
+            <p style="color: var(--text-light); line-height: 1.6;">YBX ağına nasıl proje yüklenir, Aegis Engine nasıl entegre edilir ve sistemin temelleri hakkında detaylı video rehberimiz.</p>
+            
+            <div class="video-container">
+                <video controls poster="https://via.placeholder.com/1200x500/0984e3/ffffff?text=YBG13+Egitim+Videosu+Yukleniyor...">
+                    <source src="BURAYA_VIDEO_LINKI_GELECEK.mp4" type="video/mp4">
+                    Tarayıcınız video etiketini desteklemiyor.
+                </video>
+            </div>
         </div>
     </section>
 
     <section id="page-login" class="page">
         <div class="auth-container">
             <div class="card">
-                <h2 style="text-align: center;">Sisteme Giriş Yap</h2>
+                <h2 style="justify-content:center;">Sisteme Giriş</h2>
                 <input type="email" id="login-email" placeholder="E-Posta Adresi">
-                <input type="password" id="login-pass" placeholder="Şifre">
+                <input type="password" id="login-pass" placeholder="Şifre" onkeypress="if(event.key === 'Enter') login()">
                 <button class="btn" onclick="login()">Giriş Yap</button>
             </div>
         </div>
@@ -135,37 +606,36 @@
     <section id="page-register" class="page">
         <div class="auth-container">
             <div class="card">
-                <h2 style="text-align: center;">Yeni Ağ Kaydı</h2>
+                <h2 style="justify-content:center;">Yeni Ağ Kaydı</h2>
                 <input type="text" id="reg-company" placeholder="Kullanıcı / Şirket Adı">
                 <input type="email" id="reg-email" placeholder="E-Posta Adresi">
                 <input type="password" id="reg-pass" placeholder="Şifre">
-                <button class="btn btn-outline" onclick="register()">Şimdi Kayıt Ol</button>
+                <button class="btn btn-outline" onclick="register()">Kayıt Ol</button>
             </div>
         </div>
     </section>
 
     <section id="page-panel" class="page">
-        <div class="card" style="background: var(--primary-blue); color: white;">
-            <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2);">Hoş Geldin, <span id="user-display-name"></span></h2>
-            <p style="margin:0; font-size:14px;">Günlük ücretsiz kayıt hakkınız: <strong id="user-limit-text">Hesaplanıyor...</strong></p>
-            <p style="margin-top:10px; font-size:12px; color:#eef2f5;">Tüm alan adları 1 yıllığına tescil edilir.</p>
+        <div class="card" style="background: linear-gradient(135deg, var(--primary-blue), #00a8ff); color: white; border: none;">
+            <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;">Hoş Geldin, <span id="user-display-name"></span></h2>
+            <p style="margin:0; font-size:15px;">Günlük kayıt hakkı: <strong id="user-limit-text" style="background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 6px;">...</strong></p>
         </div>
 
         <div class="card">
             <h2>🌍 Domain Sorgula (1 Yıllık)</h2>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="search-root" placeholder="Kök isim girin (örn: projem)..." style="margin:0;">
-                <button class="btn" onclick="searchDomains()" style="width:150px; margin:0;">Sorgula</button>
+            <div style="display: flex; gap: 15px;">
+                <input type="text" id="search-root" placeholder="Kök isim girin..." style="margin:0;" onkeypress="if(event.key === 'Enter') searchDomains()">
+                <button class="btn" onclick="searchDomains()" style="width:180px; margin:0;">Sorgula</button>
             </div>
-            <div id="search-results" style="margin-top: 20px;"></div>
+            <div id="search-results" style="margin-top: 25px;"></div>
         </div>
 
         <div id="editor-section" class="card hidden" style="border: 2px solid var(--primary-blue);">
-            <h2 id="editor-title">Siteyi Düzenle</h2>
-            <textarea id="editor-code" rows="12" style="font-family: monospace;"></textarea>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn" onclick="saveCode()">💾 Yayına Al</button>
-                <button class="btn btn-danger" onclick="closeEditor()" style="width: 150px;">İptal</button>
+            <h2 id="editor-title" style="color: var(--primary-blue);">Siteyi Düzenle</h2>
+            <textarea id="editor-code" rows="16"></textarea>
+            <div style="display: flex; gap: 15px; margin-top: 15px;">
+                <button class="btn btn-success" onclick="saveCode()">💾 Yayına Al</button>
+                <button class="btn btn-danger" onclick="closeEditor()" style="width: 200px;">İptal</button>
             </div>
         </div>
 
@@ -173,51 +643,34 @@
             <h2>📦 Sahip Olduğun Domainler</h2>
             <div id="domain-list">Yükleniyor...</div>
         </div>
+
+        <div class="card">
+            <h2>📊 YBX Ağ İstatistikleri</h2>
+            <div class="stats-box">
+                <div class="stat-card">
+                    <h3 id="stat-total-sites">0</h3>
+                    <p>Aktif Proje</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="stat-total-visits">0</h3>
+                    <p>Toplam Ziyaret (Trafik)</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="page-admin" class="page">
-        <div class="card" style="background: linear-gradient(135deg, #f39c12, #d35400); color: white; border:none;">
-            <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.3); font-size: 26px;">👑 YBG13™ Kurucu Paneli</h2>
-            <p style="margin:0;">Tüm sistem, limitler ve özel alan adları sizin kontrolünüzdedir.</p>
-        </div>
-
-        <div class="card" style="border: 2px solid var(--admin-gold);">
-            <h2 style="color: var(--admin-gold);">⭐ Özel Uzantı (Domain) Tanımla</h2>
-            <p style="font-size: 14px; color: var(--text-light);">İstediğiniz bir kullanıcıya (veya kendinize) serbest uzantılı (.edu, medcell.medcell vb.) alan adı tanımlayın. (Admin atamaları süresizdir).</p>
-            
-            <label style="font-weight: bold; font-size: 14px;">1. Kayıtlı Kullanıcıyı Seçin:</label>
-            <select id="admin-user-select"><option value="">Yükleniyor...</option></select>
-
-            <label style="font-weight: bold; font-size: 14px;">2. Atanacak Tam Alan Adını Yazın:</label>
-            <input type="text" id="admin-domain-input" placeholder="örn: sistem.edu VEYA yusuf.test">
-
-            <button class="btn btn-admin" onclick="adminAssignDomain()">Mühürle ve Kaydet</button>
+        <div class="card" style="background: linear-gradient(135deg, #e17055, #d35400); color: white; border:none;">
+            <h2 style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2);">👑 YBG13™ Kurucu Paneli</h2>
+            <p>Sistemi bypass ederek istediğiniz bir kullanıcıya uzantı tanımlayın.</p>
+            <select id="admin-user-select" style="color: black;"><option value="">Yükleniyor...</option></select>
+            <input type="text" id="admin-domain-input" placeholder="örn: sistem.edu" style="color: black;">
+            <button class="btn btn-admin" onclick="adminAssignDomain()">Ağa Kaydet</button>
         </div>
     </section>
 
-    <div id="whois-modal" class="modal-overlay hidden">
-        <div class="modal-box">
-            <span class="close-btn" onclick="closeWhois()">✖</span>
-            <h2 style="color: var(--primary-blue); margin-top:0; border-bottom: 2px solid #eee; padding-bottom: 10px;">🔍 WHOIS Kayıtları</h2>
-            <div id="whois-details"></div>
-            <button class="btn btn-outline" id="whois-contact-btn" style="margin-top: 20px;">Sahibine İletişim E-Postası Gönder</button>
-        </div>
-    </div>
-
     <script>
-        window.navigasyon = function(pageId) {
-            window.scrollTo(0, 0); 
-            document.querySelectorAll('section.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            const btn = document.getElementById('btn-nav-' + pageId);
-            if(btn) btn.classList.add('active-nav');
-            
-            if(pageId === 'panel' && window.currentUser) { loadUserDomains(); updateLimitUI(); }
-            if(pageId === 'directory') loadDirectory();
-            if(pageId === 'admin' && window.currentUser?.email === ADMIN_EMAIL) loadAdminPanel();
-        };
-
+        // FIREBASE KURULUMU
         const firebaseConfig = {
             apiKey: "AIzaSyD7q6LIDuCRP85qsxbFULPPPZh2i9q7hHA",
             authDomain: "tarayici-ad66f.firebaseapp.com",
@@ -226,39 +679,100 @@
             messagingSenderId: "785759345210",
             appId: "1:785759345210:web:6d99b1374f5757a591f303"
         };
-        firebase.initializeApp(firebaseConfig);
+        
+        if (!firebase.apps.length) { 
+            firebase.initializeApp(firebaseConfig); 
+        }
         const db = firebase.firestore();
 
+        // SABİT DEĞİŞKENLER
         const ADMIN_EMAIL = "yusufberkgenc5758@gmail.com";
         const PUBLIC_TLDS = ['.ybg', '.ybg13', '.ybg13.tr', '.ab', '.ba', '.cot'];
         
         window.currentUser = null;
         window.editingDomain = null;
 
-        // --- AUTH ---
-        window.register = async function() {
-            const company = document.getElementById('reg-company').value;
-            const email = document.getElementById('reg-email').value.toLowerCase();
-            const pass = document.getElementById('reg-pass').value;
-            if(!company || !email || !pass) return alert("Eksik bilgi!");
+        // SAYFA YÖNLENDİRME (NAVIGASYON)
+        window.navigasyon = function(pageId) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            try {
-                await db.collection("users").doc(email).set({
-                    company: company, email: email, password: pass, 
-                    regDate: new Date().toISOString().split('T')[0], regCount: 0 
-                });
-                alert("Kayıt başarılı! Lütfen giriş yapın.");
-                navigasyon('login');
-            } catch (error) { alert("Hata: " + error.message); }
+            // Tüm sayfaları gizle
+            document.querySelectorAll('section.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            // Tüm butonların aktiflik sınıfını kaldır
+            document.querySelectorAll('nav button').forEach(b => {
+                b.classList.remove('active-nav');
+            });
+            
+            // İstenen sayfayı göster
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            // İlgili butonu aktif yap
+            const btn = document.getElementById('btn-nav-' + pageId);
+            if(btn) {
+                btn.classList.add('active-nav');
+            }
+            
+            // Sayfaya özel verileri yükle
+            if(pageId === 'panel' && window.currentUser) { 
+                loadUserDomains(); 
+                updateLimitUI(); 
+                loadNetworkStats(); 
+            }
+            if(pageId === 'directory') {
+                loadDirectory();
+            }
+            if(pageId === 'admin' && window.currentUser?.email === ADMIN_EMAIL) {
+                loadAdminPanel();
+            }
         };
 
-        window.login = async function() {
-            const email = document.getElementById('login-email').value.toLowerCase();
-            const pass = document.getElementById('login-pass').value;
-            if(!email || !pass) return alert("Eksik bilgi!");
+        // KULLANICI KAYIT SİSTEMİ
+        window.register = async function() {
+            const company = document.getElementById('reg-company').value.trim();
+            const email = document.getElementById('reg-email').value.toLowerCase().trim();
+            const pass = document.getElementById('reg-pass').value;
+            
+            if(!company || !email || !pass) {
+                return alert("Lütfen tüm alanları doldurun.");
+            }
             
             try {
                 const userDoc = await db.collection("users").doc(email).get();
+                if(userDoc.exists) {
+                    return alert("Bu mail zaten sistemde kayıtlı.");
+                }
+                
+                await db.collection("users").doc(email).set({ 
+                    company: company, 
+                    email: email, 
+                    password: pass, 
+                    regDate: new Date().toISOString().split('T')[0], 
+                    regCount: 0 
+                });
+                
+                alert("Kayıt Başarılı! Lütfen giriş yapın."); 
+                navigasyon('login');
+                
+            } catch (error) { 
+                alert("Veritabanı Hatası: " + error.message); 
+            }
+        };
+
+        // KULLANICI GİRİŞ SİSTEMİ
+        window.login = async function() {
+            const email = document.getElementById('login-email').value.toLowerCase().trim();
+            const pass = document.getElementById('login-pass').value;
+            
+            if(!email || !pass) {
+                return alert("Lütfen e-posta ve şifrenizi girin.");
+            }
+            
+            try {
+                const userDoc = await db.collection("users").doc(email).get();
+                
                 if (userDoc.exists && userDoc.data().password === pass) {
                     window.currentUser = userDoc.data();
                     
@@ -272,66 +786,91 @@
                         document.getElementById('btn-nav-admin').classList.remove('hidden');
                     }
                     navigasyon('panel');
-                } else { alert("Hatalı E-Posta veya Şifre!"); }
-            } catch (error) { alert("Hata!"); }
+                } else {
+                    alert("Hatalı E-Posta veya Şifre!");
+                }
+            } catch (error) { 
+                alert("Giriş yapılırken bir hata oluştu!"); 
+            }
         };
 
+        // KULLANICI ÇIKIŞ
         window.logout = function() {
-            window.currentUser = null;
+            window.currentUser = null; 
             document.getElementById('login-pass').value = '';
-            document.getElementById('editor-code').value = ''; 
             
             document.getElementById('btn-nav-login').classList.remove('hidden');
             document.getElementById('btn-nav-register').classList.remove('hidden');
             document.getElementById('btn-nav-panel').classList.add('hidden');
             document.getElementById('btn-nav-admin').classList.add('hidden');
             document.getElementById('btn-nav-logout').classList.add('hidden');
-            closeEditor();
+            
             navigasyon('login');
         };
 
-        // --- LİMİTLER ---
+        // GÜNLÜK ALAN ADI KAYIT LİMİT KONTROLÜ
         async function checkLimit() {
-            if(window.currentUser.email === ADMIN_EMAIL) return true;
+            if(window.currentUser.email === ADMIN_EMAIL) {
+                return true;
+            }
+            
             const today = new Date().toISOString().split('T')[0];
             const userRef = db.collection("users").doc(window.currentUser.email);
             const userDoc = await userRef.get();
             let data = userDoc.data();
-
-            if (data.regDate !== today) {
-                await userRef.update({ regDate: today, regCount: 0 });
-                window.currentUser.regCount = 0;
-                return true;
-            } else {
-                if (data.regCount >= 2) { alert("⚠️ Günlük kayıt limitine ulaştınız."); return false; }
-                return true;
+            
+            if (data.regDate !== today) { 
+                await userRef.update({ regDate: today, regCount: 0 }); 
+                window.currentUser.regCount = 0; 
+                return true; 
             }
+            
+            if (data.regCount >= 2) { 
+                alert("Günlük alan adı kayıt limitinize ulaştınız."); 
+                return false; 
+            }
+            
+            return true;
         }
 
+        // LİMİT ARTIRMA
         async function incrementLimit() {
-            if(window.currentUser.email === ADMIN_EMAIL) return;
+            if(window.currentUser.email === ADMIN_EMAIL) {
+                return;
+            }
             const userRef = db.collection("users").doc(window.currentUser.email);
-            await userRef.update({ regCount: (window.currentUser.regCount || 0) + 1 });
+            await userRef.update({ 
+                regCount: (window.currentUser.regCount || 0) + 1 
+            });
             window.currentUser.regCount = (window.currentUser.regCount || 0) + 1;
             updateLimitUI();
         }
 
+        // PANELDEKİ LİMİT YAZISINI GÜNCELLEME
         function updateLimitUI() {
             const limitText = document.getElementById('user-limit-text');
-            if(window.currentUser.email === ADMIN_EMAIL) { limitText.innerText = "Sınırsız (Kurucu Yetkisi)"; } 
-            else { limitText.innerText = `${2 - (window.currentUser.regCount || 0)} adet kaldı.`; }
+            if(window.currentUser.email === ADMIN_EMAIL) { 
+                limitText.innerText = "Sınırsız (Kurucu Yetkisi)"; 
+            } else { 
+                limitText.innerText = `${2 - (window.currentUser.regCount || 0)} adet kaldı`; 
+            }
         }
 
-        // --- ARAMA, DOMAIN & 1 YIL LİMİTİ ---
+        // DOMAIN SORGULAMA SİSTEMİ
         window.searchDomains = async function() {
             const root = document.getElementById('search-root').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
-            if(!root) return alert("İsim girin.");
-            const resultsDiv = document.getElementById('search-results');
-            resultsDiv.innerHTML = "Sorgulanıyor...";
-
-            // Dinamik Şirket Uzantısı (.sirketadin) ve Özel Uzantılar (.edu)
+            if(!root) {
+                return alert("Geçerli bir kök isim giriniz.");
+            }
+            
+            const resultsDiv = document.getElementById('search-results'); 
+            resultsDiv.innerHTML = "Sorgulanıyor, lütfen bekleyin...";
+            
             let safeCompany = window.currentUser.company.toLowerCase().replace(/[^a-z0-9]/g, '');
-            if(!safeCompany) safeCompany = "sirket";
+            if(!safeCompany) {
+                safeCompany = "sirket";
+            }
+            
             const privateTlds = ['.edu', '.edu.ybg', `.${safeCompany}`];
             const allTlds = [...PUBLIC_TLDS, ...privateTlds];
 
@@ -340,199 +879,298 @@
                 const fullDomain = root + tld;
                 const domainDoc = await db.collection("domains").doc(fullDomain).get();
                 
-                let isTaken = false;
-                let isExpired = false;
-
-                if(domainDoc.exists) {
-                    const data = domainDoc.data();
-                    // Süre kontrolü
-                    if(data.expires && new Date() > new Date(data.expires)) {
-                        isExpired = true; // Boşa düşmüş
-                    } else {
-                        isTaken = true;
-                    }
-                }
-
+                let isTaken = domainDoc.exists && (!domainDoc.data().expires || new Date() < new Date(domainDoc.data().expires));
+                let isExpired = domainDoc.exists && (domainDoc.data().expires && new Date() > new Date(domainDoc.data().expires));
                 const isPrivate = privateTlds.includes(tld);
 
-                html += `<div class="search-row"><span class="search-domain">${fullDomain}</span>`;
+                html += `<div class="search-row">
+                            <span class="search-domain">${fullDomain}</span>
+                            <div>`;
+                            
                 if(isTaken) {
-                    html += `<span class="search-status status-taken">Alınmış</span><div class="search-action"><button class="btn btn-outline" onclick="showWhois('${fullDomain}')">Detaylı Whois</button></div>`;
+                    html += `<span class="search-status status-taken">Alınmış</span>`;
                 } else if(isPrivate) {
-                    html += `<span class="search-status status-special">Özel</span><div class="search-action"><button class="btn btn-special" onclick="applyPrivate('${fullDomain}')">Başvuru Yap</button></div>`;
+                    html += `<span class="search-status status-special">Özel</span>`;
                 } else {
-                    html += `<span class="search-status status-free">${isExpired ? 'Süresi Doldu (Boşta)' : 'Boşta'}</span><div class="search-action"><button class="btn btn-success" onclick="buyDomain('${fullDomain}')">1 Yıllık Al</button></div>`;
+                    html += `<button class="btn btn-success" onclick="buyDomain('${fullDomain}')">Tescil Et</button>`;
                 }
-                html += `</div>`;
+                
+                html += `   </div>
+                         </div>`;
             }
             resultsDiv.innerHTML = html;
         };
 
+        // DOMAIN TESCİL ETME (SATIN ALMA)
         window.buyDomain = async function(domain) {
-            if(!await checkLimit()) return;
+            if(!await checkLimit()) {
+                return;
+            }
             
-            // 1 Yıl Sonrasını Hesapla
-            const createdDate = new Date();
-            const expiresDate = new Date();
-            expiresDate.setFullYear(createdDate.getFullYear() + 1);
-
-            const ilkKod = `<html><head><title>${domain}</title></head><body style="text-align:center; padding-top:10%; font-family:sans-serif;"><h2>${domain}</h2><p>YBX Ağında 1 Yıllığına Tescillendi.</p></body></html>`;
+            const createdDate = new Date(); 
+            const expiresDate = new Date(); 
+            expiresDate.setFullYear(createdDate.getFullYear() + 1); // 1 YIL LİMİTİ EKLENDİ
+            
+            const ilkKod = `<!DOCTYPE html>
+<html>
+<head>
+    <title>${domain}</title>
+</head>
+<body style="text-align:center; padding-top:10%; font-family:sans-serif;">
+    <h1>${domain}</h1>
+    <p>Bu site YBX Ağında tescillenmiştir.</p>
+</body>
+</html>`;
             
             await db.collection("domains").doc(domain).set({ 
                 ownerEmail: window.currentUser.email, 
                 html: ilkKod, 
-                created: createdDate.toISOString(),
-                expires: expiresDate.toISOString()
+                created: createdDate.toISOString(), 
+                expires: expiresDate.toISOString(), 
+                visits: 0 
             });
             
-            await incrementLimit();
-            alert(`🎉 ${domain} 1 yıllığına başarıyla kaydedildi!`);
-            searchDomains(); loadUserDomains();
+            await incrementLimit(); 
+            alert(`Başarıyla Tescillendi: ${domain}`); 
+            searchDomains(); 
+            loadUserDomains();
         };
 
-        window.applyPrivate = function(domain) {
-            alert("Özel uzantılar YBG13 onayına tabidir. Kurucuya mail ile yönlendiriliyorsunuz.");
-            window.location.href = `mailto:${ADMIN_EMAIL}?subject=Özel Uzantı Başvurusu: ${domain}&body=Merhaba Yusuf Bey,\n\n${domain} alan adını şirketim (${window.currentUser.company}) için talep ediyorum.`;
-        };
-
-        // --- DETAYLI WHOIS MODAL FONKSİYONLARI ---
-        window.showWhois = async function(domain) {
-            const doc = await db.collection("domains").doc(domain).get();
-            if(!doc.exists) return;
-            
-            const data = doc.data();
-            const createdFormat = data.created ? new Date(data.created).toLocaleDateString('tr-TR') : 'Bilinmiyor';
-            const expiresFormat = data.expires ? new Date(data.expires).toLocaleDateString('tr-TR') : 'Süresiz (Admin)';
-            
-            let statusHtml = `<span style="color:var(--success);">Aktif (ClientTransferProhibited)</span>`;
-
-            let html = `
-                <div class="whois-row"><strong>Alan Adı:</strong> <span>${domain}</span></div>
-                <div class="whois-row"><strong>Kayıt Operatörü:</strong> <span style="color:#7f8c8d;">YBX Network & YBG13™</span></div>
-                <div class="whois-row"><strong>Durum:</strong> ${statusHtml}</div>
-                <div class="whois-row"><strong>Kayıt Tarihi:</strong> <span style="color:#7f8c8d;">${createdFormat}</span></div>
-                <div class="whois-row"><strong>Bitiş Tarihi:</strong> <span style="color:#e74c3c;">${expiresFormat}</span></div>
-                <div class="whois-row"><strong>Sahip E-Posta:</strong> <span style="font-size:14px;">${data.ownerEmail}</span></div>
-            `;
-            
-            document.getElementById('whois-details').innerHTML = html;
-            document.getElementById('whois-contact-btn').onclick = () => {
-                window.location.href = `mailto:${data.ownerEmail}?subject=YBX Ağı: ${domain} Alan Adı İletişimi`;
-            };
-            document.getElementById('whois-modal').classList.remove('hidden');
-        };
-
-        window.closeWhois = function() {
-            document.getElementById('whois-modal').classList.add('hidden');
-        };
-
-        // --- EDİTÖR VE LİSTE ---
+        // KULLANICININ SAHİP OLDUĞU DOMAİNLERİ LİSTELEME
         window.loadUserDomains = async function() {
             const listDiv = document.getElementById('domain-list');
             const snapshot = await db.collection("domains").where("ownerEmail", "==", window.currentUser.email).get();
-            if(snapshot.empty) return listDiv.innerHTML = "<p>Kayıtlı domain yok.</p>";
-
+            
             let html = "";
             snapshot.forEach((doc) => {
-                const data = doc.data();
-                // Süre kontrolü (kullanıcıya süresinin dolduğunu belli et)
-                let isExpired = data.expires && new Date() > new Date(data.expires);
-                let bgStyle = isExpired ? "background:#fdedec; border:1px solid red;" : "background:#fdfefe; border:1px solid #dce4ec;";
-                let statusText = isExpired ? "<span style='color:red; font-size:12px;'>(Süresi Doldu)</span>" : "";
-
-                html += `<div class="search-row" style="${bgStyle} margin-bottom:10px;">
-                    <span class="search-domain">${doc.id} ${statusText}</span>
-                    <div class="search-action"><button class="btn btn-outline" onclick="openEditor('${doc.id}')">Düzenle</button>
-                    <button class="btn btn-danger" onclick="deleteDomain('${doc.id}')">Sil</button></div></div>`;
+                html += `<div class="search-row">
+                            <span class="search-domain">${doc.id}</span>
+                            <div style="display:flex; gap:10px;">
+                                <button class="btn btn-outline" onclick="openEditor('${doc.id}')">Düzenle</button>
+                                <button class="btn btn-danger" onclick="deleteDomain('${doc.id}')">Sil</button>
+                            </div>
+                         </div>`;
             });
-            listDiv.innerHTML = html;
+            
+            listDiv.innerHTML = html || "Sistemde kayıtlı alan adınız bulunmamaktadır.";
         };
 
+        // KOD EDİTÖRÜNÜ AÇMA
         window.openEditor = async function(domain) {
-            document.getElementById('editor-code').value = "Yükleniyor..."; 
-            window.editingDomain = domain;
-            document.getElementById('editor-title').innerText = `${domain} Kodları`;
+            window.editingDomain = domain; 
+            document.getElementById('editor-title').innerText = `${domain} - IDE (Geliştirici Arayüzü)`;
+            
             const docSnap = await db.collection("domains").doc(domain).get();
             document.getElementById('editor-code').value = docSnap.data().html;
+            
             document.getElementById('editor-section').classList.remove('hidden');
         };
 
-        window.closeEditor = function() { window.editingDomain = null; document.getElementById('editor-section').classList.add('hidden'); };
-        window.saveCode = async function() { await db.collection("domains").doc(window.editingDomain).update({ html: document.getElementById('editor-code').value }); alert("✅ Kaydedildi!"); closeEditor(); };
-        window.deleteDomain = async function(domain) { if(confirm("Silinecek?")) { await db.collection("domains").doc(domain).delete(); loadUserDomains(); } };
+        // KOD EDİTÖRÜNÜ KAPATMA
+        window.closeEditor = function() { 
+            window.editingDomain = null; 
+            document.getElementById('editor-section').classList.add('hidden'); 
+        };
 
-        // --- 👑 ADMIN ---
+        // KODU VERİTABANINA KAYDETME
+        window.saveCode = async function() { 
+            await db.collection("domains").doc(window.editingDomain).update({ 
+                html: document.getElementById('editor-code').value 
+            }); 
+            alert("Kodlarınız başarıyla kaydedildi ve ağda yayına alındı!"); 
+            closeEditor(); 
+        };
+
+        // DOMAIN SİLME
+        window.deleteDomain = async function(domain) { 
+            if(confirm(`Emin misiniz? ${domain} kalıcı olarak silinecek.`)) { 
+                await db.collection("domains").doc(domain).delete(); 
+                loadUserDomains(); 
+            } 
+        };
+
+        // KURUCU (ADMIN) PANELİ - KULLANICILARI ÇEKME
         window.loadAdminPanel = async function() {
             const selectBox = document.getElementById('admin-user-select');
-            selectBox.innerHTML = "<option value=''>Çekiliyor...</option>";
             const usersSnap = await db.collection("users").get();
+            
             let options = `<option value="">-- Kullanıcı Seçin --</option>`;
-            usersSnap.forEach(u => { const data = u.data(); options += `<option value="${data.email}">${data.company} (${data.email})</option>`; });
+            usersSnap.forEach(u => { 
+                options += `<option value="${u.data().email}">${u.data().company} (${u.data().email})</option>`; 
+            });
+            
             selectBox.innerHTML = options;
         };
 
+        // KURUCU (ADMIN) DOMAIN ATAMA
         window.adminAssignDomain = async function() {
             const targetEmail = document.getElementById('admin-user-select').value;
             const fullDomain = document.getElementById('admin-domain-input').value.trim().toLowerCase();
-            if(!targetEmail || !fullDomain || !fullDomain.includes('.')) return alert("Geçersiz bilgi.");
-
-            const domainDoc = await db.collection("domains").doc(fullDomain).get();
-            if(domainDoc.exists && !confirm(`Bu domain dolu. Üzerine yazmak istiyor musunuz?`)) return;
-
-            const ilkKod = `<html><head><title>${fullDomain}</title></head><body style="text-align:center; padding-top:10%; font-family:sans-serif;"><h1 style="color: #f39c12;">👑 YBG13 Özel Ağ</h1><h2>${fullDomain}</h2></body></html>`;
-            // Admin atamaları süresizdir
-            await db.collection("domains").doc(fullDomain).set({ ownerEmail: targetEmail, html: ilkKod, created: new Date().toISOString() });
-            alert(`👑 BAŞARILI! "${fullDomain}" atandı.`);
+            
+            if(!targetEmail || !fullDomain) {
+                return alert("Lütfen gerekli alanları doldurun.");
+            }
+            
+            const ilkKod = `<!DOCTYPE html>
+<html>
+<head>
+    <title>${fullDomain}</title>
+</head>
+<body style="text-align:center; padding-top:10%; font-family:sans-serif;">
+    <h1 style="color: #d35400;">👑 ${fullDomain}</h1>
+    <p>Bu alan adı YBG13™ Kurucu Protokolleri ile oluşturulmuştur.</p>
+</body>
+</html>`;
+            
+            await db.collection("domains").doc(fullDomain).set({ 
+                ownerEmail: targetEmail, 
+                html: ilkKod, 
+                created: new Date().toISOString(), 
+                visits: 0 
+            });
+            
+            alert(`Başarılı! ${fullDomain} ağa eklendi.`); 
             document.getElementById('admin-domain-input').value = "";
         };
 
-        // --- REHBER ---
+        // PANEL İSTATİSTİKLERİNİ HESAPLAMA VE GÖSTERME
+        window.loadNetworkStats = async function() {
+            const snapshot = await db.collection("domains").get();
+            let totalSites = 0; 
+            let totalVisits = 0;
+            
+            snapshot.forEach(doc => { 
+                totalSites++; 
+                totalVisits += (doc.data().visits || 0); 
+            });
+            
+            document.getElementById('stat-total-sites').innerText = totalSites;
+            document.getElementById('stat-total-visits').innerText = totalVisits;
+        }
+
+        // AKILLI REHBER (YBG13 FİLTRESİ VE SIRALAMA)
         window.loadDirectory = async function() {
             const dirList = document.getElementById('directory-list');
+            dirList.innerHTML = "<div class='loader'>Ağ taranıyor ve analiz ediliyor...</div>";
+            
             const snapshot = await db.collection("domains").get();
-            if(snapshot.empty) return dirList.innerHTML = "Ağda henüz site yok.";
-            let html = "";
+            let domainsArray = [];
+
             snapshot.forEach((doc) => {
                 let data = doc.data();
-                // Süresi dolanları rehberde gösterme
-                if(data.expires && new Date() > new Date(data.expires)) return;
+                let domainName = doc.id.toLowerCase();
 
-                let titleMatch = data.html.match(/<title>(.*?)<\/title>/i);
-                let title = titleMatch ? titleMatch[1] : "Proje";
-                html += `<div class="dir-item" onclick="openInBrowser('${doc.id}')"><div class="dir-title">${title}</div><div class="dir-url">${doc.id}</div></div>`;
-            });
-            dirList.innerHTML = html || "Ağda aktif site yok.";
-        };
-
-        window.openInBrowser = function(domain) { navigasyon('browser'); document.getElementById('url-input').value = domain; surf(); };
-
-        // --- YBX BROWSER ---
-        window.surf = async function() {
-            let rawInput = document.getElementById('url-input').value.trim().toLowerCase();
-            if(!rawInput) return;
-            const frame = document.getElementById('browser-frame');
-            let domain = rawInput.replace(/^https?:\/\//, '').replace(/^www\./, '');
-
-            if(domain.endsWith('.com')|| domain.endsWith('.info') || domain.endsWith('.online') || domain.endsWith('.biz') ||domain.endsWith('.io') || domain.endsWith('.net') || domain.endsWith('.org')) {
-                frame.srcdoc = `<html><body style="text-align:center; padding-top:10%; font-family:sans-serif; background:#f4f7f6;"><h2 style="color:#e74c3c;">🚫 Dış Ağ Erişimi Engellendi</h2></body></html>`;
-                return;
-            }
-
-            const docSnap = await db.collection("domains").doc(domain).get();
-            if(docSnap.exists) {
-                let data = docSnap.data();
-                // SÜRE KONTROLÜ
+                // 1. KURAL: Deneme amaçlı girilmiş saçma isimleri engelle
+                if(domainName.includes('test') || domainName.includes('ornek') || domainName.includes('example')) {
+                    return;
+                }
+                
+                // 2. KURAL: ybg13 ile başlayanlardan SADECE ybg13.ybg kalsın
+                if(domainName.startsWith('ybg13') && domainName !== 'ybg13.ybg') {
+                    return;
+                }
+                
+                // 3. KURAL: 1 Yıllık tescil süresi dolanları dizinde gösterme
                 if(data.expires && new Date() > new Date(data.expires)) {
-                    frame.srcdoc = `<html><body style="text-align:center; padding-top:10%; font-family:sans-serif; background:#f4f7f6;"><h2 style="color:#e74c3c;">⚠️ Site Yayından Kaldırıldı</h2><p><b>${domain}</b> alan adının 1 yıllık tescil süresi dolmuştur.</p></body></html>`;
                     return;
                 }
 
-                let siteCode = data.html;
-                const kalkan = `<script>console.log('[YBX Güvenlik] Kalkan Aktif.');<\/script>`;
-                frame.srcdoc = siteCode.includes('</head>') ? siteCode.replace('</head>', kalkan + '</head>') : kalkan + siteCode;
-            } else {
-                frame.srcdoc = `<html><body style="text-align:center; padding-top:10%; font-family:sans-serif; background:#f4f7f6;"><h2 style="color:#e74c3c;">404 - site ağa kaydedilmemiş</h2><p><b>${domain}</b> ilk siz kaydedin!.</p></body></html>`;
+                // Sayfanın içinden title (başlık) etiketini yakalama
+                let titleMatch = data.html.match(/<title>(.*?)<\/title>/i);
+                
+                domainsArray.push({
+                    id: doc.id,
+                    title: titleMatch ? titleMatch[1] : "İsimsiz Proje",
+                    visits: data.visits || 0
+                });
+            });
+
+            // En çok ziyaret edilenden en aza doğru sıralama işlemi
+            domainsArray.sort((a, b) => b.visits - a.visits);
+
+            // Eğer dizinde gösterilecek site yoksa uyarı ver
+            if(domainsArray.length === 0) {
+                dirList.innerHTML = "<p style='grid-column: 1 / -1; text-align:center;'>Ağda aktif site bulunamadı.</p>";
+                return;
             }
+
+            // HTML çıktı oluşturma
+            let html = "";
+            domainsArray.forEach(site => {
+                html += `
+                <div class="dir-item" onclick="openInBrowser('${site.id}')">
+                    <div class="dir-title">${site.title}</div>
+                    <div class="dir-url">🌐 ${site.id}</div>
+                    <div class="dir-stats">👁️ ${site.visits} Ziyaret</div>
+                </div>`;
+            });
+            
+            dirList.innerHTML = html;
+        };
+
+        // REHBERDEN TIKLAYINCA TARAYICIYA GİTME
+        window.openInBrowser = function(domain) { 
+            navigasyon('browser'); 
+            document.getElementById('url-input').value = domain; 
+            surf(); 
+        };
+
+        // YBX BROWSER & ZİYARET SAYACI (AEGISJS ENTEGRASYONU)
+        window.surf = async function() {
+            let rawInput = document.getElementById('url-input').value.trim().toLowerCase();
+            if(!rawInput) {
+                return;
+            }
+            
+            const frame = document.getElementById('browser-frame');
+            let domain = rawInput.replace(/^https?:\/\//, '').replace(/^www\./, '');
+
+            // Dış ağ (standart web) erişimini kısıtlama
+            if(domain.match(/\.(com|info|online|biz|io|net|org)$/)) {
+                frame.srcdoc = `
+                <body style="text-align:center; padding-top:15%; font-family:sans-serif; background:#f0f4f8;">
+                    <h2 style="color:#d63031;">🚫 YBX Dış Ağ Erişimi Engellendi</h2>
+                    <p style="color:#636e72;">Bu tarayıcı sadece YBX Network üzerindeki siteleri açar.</p>
+                </body>`;
+                return;
+            }
+
+            // Yükleniyor ekranı simülasyonu
+            frame.srcdoc = `<body style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; color:#636e72;"><h2>Sunucuya Bağlanılıyor...</h2></body>`;
+
+            setTimeout(async () => {
+                const docSnap = await db.collection("domains").doc(domain).get();
+                
+                if(docSnap.exists) {
+                    let data = docSnap.data();
+                    
+                    // Domain süresi geçmiş mi kontrolü
+                    if(data.expires && new Date() > new Date(data.expires)) {
+                        frame.srcdoc = `<body style="text-align:center; padding-top:15%; font-family:sans-serif;"><h2 style="color:#d63031;">⚠️ Bu sitenin tescil süresi dolmuştur.</h2></body>`;
+                        return;
+                    }
+                    
+                    // Veritabanında Ziyaret Sayısını (visits) 1 Arttır
+                    db.collection("domains").doc(domain).update({
+                        visits: firebase.firestore.FieldValue.increment(1)
+                    }).catch(err => console.log("Ziyaret sayacı güncellenemedi", err));
+
+                    let siteCode = data.html;
+                    
+                    // AegisJS Güvenlik Simülasyonu (Konsola yazdırır)
+                    const kalkan = `
+                    <script>
+                        console.log('%c[AegisJS Engine v1.0] Kalkan Aktif. İstemci tarafı güvenlik devrede.', 'color: #00b894; font-weight: bold;');
+                    <\/script>`;
+                    
+                    // Kalkanı head etiketinin sonuna enjekte et
+                    frame.srcdoc = siteCode.includes('</head>') ? siteCode.replace('</head>', kalkan + '\n</head>') : kalkan + siteCode;
+                    
+                } else {
+                    // Site bulunamadı hatası
+                    frame.srcdoc = `<body style="text-align:center; padding-top:15%; font-family:sans-serif;"><h2 style="color:#d63031;">404 - Ağda Bulunamadı</h2><p>Bu alan adı henüz kaydedilmemiş.</p></body>`;
+                }
+            }, 300);
         };
     </script>
 </body>
