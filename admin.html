@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YBG13™ | Admin Dashboard v2.5</title>
+    <title>YBG13™ | Admin Dashboard v2.7</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -35,7 +35,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; }
         body { background: var(--bg); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
-        
         
         #login-screen { position: fixed; inset: 0; z-index: 999; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 20px; transition: 0.3s; }
         .login-card { width: 100%; max-width: 400px; background: var(--card-bg); padding: 40px 30px; text-align: center; border-radius: 24px; box-shadow: var(--card-shadow); border: 1px solid var(--border); transition: 0.3s; }
@@ -147,6 +146,15 @@
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
 
+        #call-modal { display: none; position: fixed; top: 20px; right: 20px; background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--accent); z-index: 10000; animation: slideIn 0.5s; width: 300px; text-align: center; }
+        #call-modal h3 { color: var(--text-main); font-size: 16px; margin-bottom: 5px; }
+        #call-modal p { color: var(--text-dim); font-size: 13px; margin-bottom: 20px; }
+        .call-btns { display: flex; gap: 10px; justify-content: center; }
+        .btn-call-accept { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.2s; }
+        .btn-call-accept:hover { background: #00965e; transform: scale(1.05); }
+        .btn-call-reject { background: var(--danger); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.2s; }
+        .btn-call-reject:hover { background: #d64539; transform: scale(1.05); }
+
         @media (max-width: 1024px) {
             .content-split, .settings-grid { grid-template-columns: 1fr; }
         }
@@ -168,6 +176,19 @@
 <body>
 
     <div id="toast-container"></div>
+    <audio id="remoteAudio" autoplay></audio>
+
+    <div id="call-modal">
+        <div style="font-size: 30px; color: var(--success); margin-bottom: 10px; animation: pulse 1s infinite;"><i class="fas fa-phone-volume"></i></div>
+        <h3 id="call-caller-name">Biri arıyor...</h3>
+        <p>Gelen Sesli Bağlantı İsteği</p>
+        <div class="call-btns">
+            <button class="btn-call-reject" onclick="rejectCall()">Kapat</button>
+            <button class="btn-call-accept" onclick="acceptCall()">Aç</button>
+        </div>
+    </div>
+
+    <style>@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }</style>
 
     <div id="login-screen">
         <div class="login-card">
@@ -222,7 +243,6 @@
                 </div>
             </header>
 
-
             <div id="view-dashboard" class="view-section active">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -257,7 +277,6 @@
                     <div class="section-box">
                         <h3 class="section-title"><i class="fas fa-history text-accent"></i> Son İşlemler (Log)</h3>
                         <div id="activity-logs">
-               
                         </div>
                     </div>
                 </div>
@@ -268,23 +287,27 @@
                     <div style="padding: 20px; background: var(--card-bg); border-bottom: 1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                         <div>
                             <h3 style="font-size:18px; font-weight:800; color:var(--text-main);"><i class="fas fa-user-secret text-accent"></i> Güvenli Kurumsal Ağ</h3>
-                            <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Mesajlar uçtan uca şifrelidir ve 24 saat içinde sunucudan otomatik silinir.</p>
+                            <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Mesajlar uçtan uca şifrelidir.</p>
                         </div>
-                        <div style="background: rgba(1,181,116,0.1); color:var(--success); padding:8px 12px; border-radius:8px; font-size:12px; font-weight:bold;">
-                            <i class="fas fa-lock"></i> Şifreli
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <button onclick="startVoiceCall()" style="background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="fas fa-phone-alt"></i> Sesli Arama</button>
+                            <div style="background: rgba(1,181,116,0.1); color:var(--success); padding:8px 12px; border-radius:8px; font-size:12px; font-weight:bold;">
+                                <i class="fas fa-lock"></i> Şifreli
+                            </div>
                         </div>
                     </div>
                     <div id="main-chat-window"></div>
                     <div class="chat-input-area">
+                        <label for="chatImageInput" style="cursor: pointer; color: var(--accent); font-size: 22px; padding: 10px; transition: 0.2s;"><i class="fas fa-image"></i></label>
+                        <input type="file" id="chatImageInput" accept="image/*" style="display: none;">
                         <input type="text" id="chatInput" placeholder="Ekibe güvenli bir mesaj gönder...">
+                        <button id="cancelEditBtn" style="display: none; background: var(--danger);"><i class="fas fa-times"></i></button>
                         <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
 
-
             <div id="view-visitors" class="view-section">
-                
                 <div class="section-box">
                     <h3 class="section-title"><i class="fas fa-envelope text-accent"></i> İletişim Formu Gelen Kutusu</h3>
                     <div class="table-responsive">
@@ -345,7 +368,6 @@
                 </div>
             </div>
 
-            <!-- 5. HABERLER -->
             <div id="view-news" class="view-section">
                 <div class="section-box">
                     <h3 class="section-title"><i class="fas fa-pen text-accent"></i> Yeni Haber Yaz</h3>
@@ -373,7 +395,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div id="view-projects" class="view-section">
                 <div class="section-box">
@@ -481,7 +502,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc, setDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC0Mv6ovlgvilx8x4W7dPR1UZYLpKduqeI",
@@ -494,6 +515,7 @@
         const productsColl = collection(db, "products"); const newsColl = collection(db, "news");
         const projectsColl = collection(db, "portfolio"); const securityColl = collection(db, "security_versions");
         const chatColl = collection(db, "private_chat"); const settingsRef = doc(db, "settings", "general");
+        const callsColl = collection(db, "voice_calls");
         
         const contactColl = collection(db, "contact_messages");
         const visitorColl = collection(db, "visitor_logs");
@@ -502,6 +524,13 @@
 
         const realTimeDataStats = { products: 0, news: 0, projects: 0, security: 0 };
         let systemChart;
+        let selectedChatImageBase64 = null;
+        let editingMessageId = null;
+
+        let pc = null;
+        let localStream = null;
+        let currentCallId = null;
+        let callUnsubscribe = null;
 
         window.toggleTheme = function() {
             document.body.classList.toggle('dark-mode');
@@ -577,11 +606,107 @@
                 await setDoc(doc(presenceColl, user.uid), { name: user.email.split('@')[0].toUpperCase(), lastSeen: serverTimestamp() });
                 
                 initChart(); startSystemMetrics(); loadLogs(); loadSettings();
-                loadProducts(); loadNews(); loadProjects(); loadSecurity(); loadChat(); loadVisitorData();
+                loadProducts(); loadNews(); loadProjects(); loadSecurity(); loadChat(); loadVisitorData(); listenForCalls();
             } else {
                 document.getElementById('login-screen').style.display = 'flex'; document.getElementById('admin-panel').style.display = 'none';
             }
         });
+
+        async function setupWebRTC() {
+            pc = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'] }] });
+            pc.ontrack = (event) => { document.getElementById('remoteAudio').srcObject = event.streams[0]; };
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+            } catch(e) {
+                showToast("Mikrofon izni alınamadı!", "error");
+                throw e;
+            }
+        }
+
+        window.startVoiceCall = async function() {
+            try {
+                await setupWebRTC();
+                const callDoc = doc(callsColl);
+                currentCallId = callDoc.id;
+
+                pc.onicecandidate = event => {
+                    if (event.candidate) { addDoc(collection(db, "voice_calls", currentCallId, "callerCandidates"), event.candidate.toJSON()); }
+                };
+
+                const offerDescription = await pc.createOffer();
+                await pc.setLocalDescription(offerDescription);
+                const offer = { sdp: offerDescription.sdp, type: offerDescription.type };
+                await setDoc(callDoc, { offer, callerName: auth.currentUser.email.split('@')[0].toUpperCase(), status: 'ringing', time: serverTimestamp() });
+
+                showToast("Ağdaki herkes aranıyor...", "success");
+
+                callUnsubscribe = onSnapshot(callDoc, (snapshot) => {
+                    const data = snapshot.data();
+                    if (!pc.currentRemoteDescription && data && data.answer) {
+                        const answerDescription = new RTCSessionDescription(data.answer);
+                        pc.setRemoteDescription(answerDescription);
+                        showToast("Arama bağlandı!", "success");
+                    }
+                });
+
+                onSnapshot(collection(db, "voice_calls", currentCallId, "calleeCandidates"), (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === 'added') { pc.addIceCandidate(new RTCIceCandidate(change.doc.data())); }
+                    });
+                });
+            } catch(e) {
+                showToast("Arama başlatılamadı.", "error");
+            }
+        };
+
+        function listenForCalls() {
+            onSnapshot(query(callsColl, orderBy("time", "desc")), (snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    const data = change.doc.data();
+                    if (change.type === 'added' && data.status === 'ringing' && data.callerName !== auth.currentUser.email.split('@')[0].toUpperCase()) {
+                        currentCallId = change.doc.id;
+                        document.getElementById('call-caller-name').innerText = data.callerName + " arıyor...";
+                        document.getElementById('call-modal').style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        window.acceptCall = async function() {
+            document.getElementById('call-modal').style.display = 'none';
+            try {
+                await setupWebRTC();
+                const callDoc = doc(db, "voice_calls", currentCallId);
+                
+                pc.onicecandidate = event => {
+                    if (event.candidate) { addDoc(collection(db, "voice_calls", currentCallId, "calleeCandidates"), event.candidate.toJSON()); }
+                };
+
+                const callData = (await getDoc(callDoc)).data();
+                await pc.setRemoteDescription(new RTCSessionDescription(callData.offer));
+                
+                const answerDescription = await pc.createAnswer();
+                await pc.setLocalDescription(answerDescription);
+                const answer = { type: answerDescription.type, sdp: answerDescription.sdp };
+                
+                await updateDoc(callDoc, { answer, status: 'answered' });
+
+                onSnapshot(collection(db, "voice_calls", currentCallId, "callerCandidates"), (snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === 'added') { pc.addIceCandidate(new RTCIceCandidate(change.doc.data())); }
+                    });
+                });
+                showToast("Telsiz görüşmesine katıldınız.", "success");
+            } catch(e) {
+                showToast("Aramaya yanıt verilemedi.", "error");
+            }
+        };
+
+        window.rejectCall = function() {
+            document.getElementById('call-modal').style.display = 'none';
+            currentCallId = null;
+        };
 
         function startSystemMetrics() {
             if(navigator.deviceMemory) document.getElementById('ram-stat').innerText = navigator.deviceMemory + " GB";
@@ -603,21 +728,121 @@
             });
         }
 
-        document.getElementById('sendBtn').onclick = async () => {
-            const inp = document.getElementById('chatInput'); if(!inp.value) return;
-            const msg = inp.value; inp.value = "";
-            await addDoc(chatColl, { uid: auth.currentUser.uid, sender: auth.currentUser.email.split('@')[0].toUpperCase(), text: msg, time: serverTimestamp() });
+        document.getElementById('chatImageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 800; const MAX_HEIGHT = 800;
+                    let width = img.width; let height = img.height;
+                    if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+                    else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                    canvas.width = width; canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    selectedChatImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    showToast("Fotoğraf seçildi.", "success");
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        window.deleteChatMessage = async function(docId) {
+            if(confirm("Mesajı kalıcı olarak silmek istediğinize emin misiniz?")) {
+                try { await deleteDoc(doc(db, "private_chat", docId)); showToast("Mesaj silindi.", "success"); } 
+                catch (e) { showToast("Hata: " + e.message, "error"); }
+            }
         };
-        document.getElementById('chatInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') document.getElementById('sendBtn').click(); });
+
+        window.startEditMessage = function(docId, currentText) {
+            editingMessageId = docId;
+            document.getElementById('chatInput').value = currentText;
+            document.getElementById('cancelEditBtn').style.display = 'flex';
+            document.getElementById('sendBtn').innerHTML = '<i class="fas fa-check"></i>';
+        };
+
+        document.getElementById('cancelEditBtn').onclick = () => {
+            editingMessageId = null;
+            document.getElementById('chatInput').value = '';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('sendBtn').innerHTML = '<i class="fas fa-paper-plane"></i>';
+        };
+
+        document.getElementById('sendBtn').onclick = async () => {
+            const inp = document.getElementById('chatInput');
+            const msg = inp.value;
+            if(!msg && !selectedChatImageBase64) return;
+            
+            const imgData = selectedChatImageBase64;
+            selectedChatImageBase64 = null;
+            document.getElementById('chatImageInput').value = '';
+            inp.value = "";
+            
+            if (editingMessageId) {
+                await updateDoc(doc(db, "private_chat", editingMessageId), { text: msg, isEdited: true });
+                editingMessageId = null;
+                document.getElementById('cancelEditBtn').style.display = 'none';
+                document.getElementById('sendBtn').innerHTML = '<i class="fas fa-paper-plane"></i>';
+            } else {
+                await addDoc(chatColl, { uid: auth.currentUser.uid, sender: auth.currentUser.email.split('@')[0].toUpperCase(), text: msg, imgBase64: imgData || null, time: serverTimestamp() });
+            }
+        };
+
+        document.getElementById('chatInput').addEventListener('keypress', (e) => { 
+            if(e.key === 'Enter') document.getElementById('sendBtn').click(); 
+        });
 
         function loadChat() {
             onSnapshot(query(chatColl, orderBy("time", "asc")), (snap) => {
-                const win = document.getElementById('main-chat-window'); win.innerHTML = "";
+                const win = document.getElementById('main-chat-window');
+                win.innerHTML = "";
                 const limit = Date.now() - (24 * 60 * 60 * 1000);
+                
                 snap.forEach(d => {
-                    const data = d.data(); if(!data.time) return;
+                    const data = d.data();
+                    if(!data.time) return;
+                    
                     if(data.time.toDate().getTime() > limit) {
-                        win.innerHTML += `<div class="msg ${data.uid === auth.currentUser.uid ? 'me' : 'other'}"><small>${data.sender}</small>${data.text}</div>`;
+                        const isMine = data.uid === auth.currentUser.uid;
+                        const isAdmin = auth.currentUser.email === 'yusufberkgenc5758@gmail.com';
+                        
+                        let actions = '';
+                        if (isMine || isAdmin) {
+                            actions += '<div style="display:flex; gap:6px; flex-shrink: 0;">';
+                            if (isMine) {
+                                const safeText = encodeURIComponent(data.text || '');
+                                const editBg = isMine ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.05)";
+                                const editColor = isMine ? "#fff" : "var(--text-main)";
+                                const editHover = isMine ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.1)";
+                                
+                                actions += `<button onclick="startEditMessage('${d.id}', decodeURIComponent('${safeText}'))" style="background: ${editBg}; border: none; color: ${editColor}; cursor: pointer; font-size: 12px; padding: 5px 8px; border-radius: 6px; transition: 0.2s;" onmouseover="this.style.background='${editHover}'" onmouseout="this.style.background='${editBg}'"><i class="fas fa-pen"></i></button>`;
+                            }
+                            if (isMine || isAdmin) {
+                                actions += `<button onclick="deleteChatMessage('${d.id}')" style="background: rgba(238,93,80,0.15); border: none; color: var(--danger); cursor: pointer; font-size: 12px; padding: 5px 8px; border-radius: 6px; transition: 0.2s;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(238,93,80,0.15)'; this.style.color='var(--danger)';"><i class="fas fa-trash"></i></button>`;
+                            }
+                            actions += '</div>';
+                        }
+
+                        let msgContent = data.text ? `<span style="display:block; margin-top:5px; word-break: break-word; font-size: 15px;">${data.text}</span>` : '';
+                        let imgContent = data.imgBase64 ? `<img src="${data.imgBase64}" style="max-width: 100%; border-radius: 12px; margin-top: 10px; border: 1px solid rgba(0,0,0,0.1);">` : '';
+                        let editedTag = data.isEdited ? `<span style="font-size: 10px; opacity: 0.6; margin-top: 5px; display: block; text-align: right;">(Düzenlendi)</span>` : '';
+
+                        let borderBottom = isMine ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)';
+                        
+                        win.innerHTML += `
+                        <div class="msg ${isMine ? 'me' : 'other'}">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 5px; border-bottom: 1px solid ${borderBottom}; padding-bottom: 8px;">
+                                <small style="margin: 0; font-weight: 800; word-break: break-all; line-height: 1.2;">${data.sender}</small>
+                                ${actions}
+                            </div>
+                            ${msgContent}
+                            ${imgContent}
+                            ${editedTag}
+                        </div>`;
                     }
                 });
                 win.scrollTop = win.scrollHeight;
