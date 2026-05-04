@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YBG13™ | Admin Dashboard v2.7</title>
+    <title>YBG13™ | Admin Dashboard v2.6</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -116,7 +116,6 @@
         .msg { padding: 15px 20px; border-radius: 18px; max-width: 70%; font-size: 15px; line-height: 1.5; font-weight: 500; position: relative; }
         .msg.me { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 5px 15px rgba(67,24,255,0.2); }
         .msg.other { background: var(--card-bg); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border); }
-        .msg small { display: block; font-size: 11px; opacity: 0.8; margin-bottom: 5px; font-weight: 700; text-transform: uppercase; }
         .chat-input-area { padding: 20px; background: var(--card-bg); border-top: 1px solid var(--border); display: flex; gap: 15px; align-items: center; }
         .chat-input-area input { margin: 0; flex: 1; border-radius: 30px; padding: 15px 25px; }
         .chat-input-area button { background: var(--accent); color: #fff; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 18px; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
@@ -183,7 +182,7 @@
         <h3 id="call-caller-name">Biri arıyor...</h3>
         <p>Gelen Sesli Bağlantı İsteği</p>
         <div class="call-btns">
-            <button class="btn-call-reject" onclick="rejectCall()">Kapat</button>
+            <button class="btn-call-reject" onclick="rejectCall()">Reddet</button>
             <button class="btn-call-accept" onclick="acceptCall()">Aç</button>
         </div>
     </div>
@@ -290,6 +289,7 @@
                             <p style="font-size:12px; color:var(--text-dim); margin-top:5px;">Mesajlar uçtan uca şifrelidir.</p>
                         </div>
                         <div style="display: flex; gap: 15px; align-items: center;">
+                            <button id="endCallBtn" onclick="endVoiceCall()" style="display: none; background: var(--danger); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="fas fa-phone-slash"></i> Kapat</button>
                             <button onclick="startVoiceCall()" style="background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="fas fa-phone-alt"></i> Sesli Arama</button>
                             <div style="background: rgba(1,181,116,0.1); color:var(--success); padding:8px 12px; border-radius:8px; font-size:12px; font-weight:bold;">
                                 <i class="fas fa-lock"></i> Şifreli
@@ -624,11 +624,25 @@
             }
         }
 
+        window.endVoiceCall = async function(isRemote = false) {
+            if (pc) { pc.close(); pc = null; }
+            if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+            if (currentCallId && !isRemote) {
+                try { await updateDoc(doc(db, "voice_calls", currentCallId), { status: 'ended' }); } catch(e) {}
+            }
+            currentCallId = null;
+            document.getElementById('endCallBtn').style.display = 'none';
+            document.getElementById('remoteAudio').srcObject = null;
+            if(callUnsubscribe) { callUnsubscribe(); callUnsubscribe = null; }
+            showToast("Görüşme sonlandırıldı.", "error");
+        };
+
         window.startVoiceCall = async function() {
             try {
                 await setupWebRTC();
                 const callDoc = doc(callsColl);
                 currentCallId = callDoc.id;
+                document.getElementById('endCallBtn').style.display = 'block';
 
                 pc.onicecandidate = event => {
                     if (event.candidate) { addDoc(collection(db, "voice_calls", currentCallId, "callerCandidates"), event.candidate.toJSON()); }
@@ -643,6 +657,7 @@
 
                 callUnsubscribe = onSnapshot(callDoc, (snapshot) => {
                     const data = snapshot.data();
+                    if (data && data.status === 'ended') { window.endVoiceCall(true); return; }
                     if (!pc.currentRemoteDescription && data && data.answer) {
                         const answerDescription = new RTCSessionDescription(data.answer);
                         pc.setRemoteDescription(answerDescription);
@@ -669,6 +684,9 @@
                         document.getElementById('call-caller-name').innerText = data.callerName + " arıyor...";
                         document.getElementById('call-modal').style.display = 'block';
                     }
+                    if (change.type === 'modified' && data.status === 'ended' && currentCallId === change.doc.id) {
+                        document.getElementById('call-modal').style.display = 'none';
+                    }
                 });
             });
         }
@@ -678,6 +696,7 @@
             try {
                 await setupWebRTC();
                 const callDoc = doc(db, "voice_calls", currentCallId);
+                document.getElementById('endCallBtn').style.display = 'block';
                 
                 pc.onicecandidate = event => {
                     if (event.candidate) { addDoc(collection(db, "voice_calls", currentCallId, "calleeCandidates"), event.candidate.toJSON()); }
@@ -691,6 +710,11 @@
                 const answer = { type: answerDescription.type, sdp: answerDescription.sdp };
                 
                 await updateDoc(callDoc, { answer, status: 'answered' });
+
+                callUnsubscribe = onSnapshot(callDoc, (snapshot) => {
+                    const data = snapshot.data();
+                    if (data && data.status === 'ended') { window.endVoiceCall(true); }
+                });
 
                 onSnapshot(collection(db, "voice_calls", currentCallId, "callerCandidates"), (snapshot) => {
                     snapshot.docChanges().forEach((change) => {
