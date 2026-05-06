@@ -2,101 +2,216 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ffffff">
-    <title>YBG13™ | Geleceği Kodluyoruz - Web, Mobil ve Siber Güvenlik</title>
-    <meta name="description" content="YBG13™; yapay zeka (Onion AI), siber güvenlik motorları (AegisJS, NovaGate), özel işletim sistemleri ve otonom araçlar geliştiren yenilikçi teknoloji şirketidir.">
-    <meta name="keywords" content="YBG13, ybg14, ybg yazılım, YBG13 teknoloji, siber güvenlik, yapay zeka, Onion AI, AegisJS Engine, NovaGate, YBOS, işletim sistemi, Kül-ü Anka, web geliştirme, mobil uygulama, oyun geliştirme">
-    <meta name="author" content="YBG13™ Ekibi">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Gemini_Generated_Image_1dlcn41dlcn41dlc%20(2).png">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Gemini_Generated_Image_1dlcn41dlcn41dlc%20(2).png">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Gemini_Generated_Image_1dlcn41dlcn41dlc%20(2).png">
-    <meta property="og:site_name" content="YBG13™">
-    <meta property="og:title" content="YBG13™ | Geleceği Kodluyoruz">
-    <meta property="og:description" content="AegisJS mimarisinden Onion AI dil modeline kadar geleceğin teknolojilerini YBG13 ile keşfedin.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ybg13.com">
-    <meta property="og:image" content="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Gemini_Generated_Image_1dlcn41dlcn41dlc%20(2).png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="YBG13™ | Teknoloji ve Yazılımın Merkezi">
-    <meta name="twitter:description" content="Siber güvenlik ve yapay zekada yeni nesil otonom çözümler.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Gemini_Generated_Image_1dlcn41dlcn41dlc%20(2).png">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YSosyal beta</title>
     <link rel="stylesheet" href="style.css">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "YBG13™",
-      "alternateName": ["YBG", "YBG13 Yazılım"],
-      "url": "https://ybg13.com",
-      "logo": "https://raw.githubusercontent.com/berkingcreator/ybg13webb1/main/Gemini_Generated_Image_1dlcn41dlcn41dlc%20(2).png",
-      "description": "YBG13™ siber güvenlik, yapay zeka, özel işletim sistemleri ve web geliştirme alanlarında faaliyet gösteren bir teknoloji şirketidir.",
-      "knowsAbout": ["Cybersecurity", "Artificial Intelligence", "Web Development", "Autonomous Systems", "TEKNOFEST"],
-      "founder": {
-        "@type": "Person",
-        "name": "Yusuf Berk Genç",
-        "jobTitle": "CEO & Kurucu"
-      },
-      "member": [
-        {"@type": "Person", "name": "Yiğit Uras Durmuş"},
-        {"@type": "Person", "name": "Mirza Güneş"},
-        {"@type": "Person", "name": "Çağan Alp Kahraman"},
-        {"@type": "Person", "name": "Serhat"}
-      ],
-      "brand": [
-        {"@type": "Brand", "name": "AegisJS Engine"},
-        {"@type": "Brand", "name": "NovaGate"},
-        {"@type": "Brand", "name": "Onion AI"},
-        {"@type": "Brand", "name": "YBOS"},
-        {"@type": "Brand", "name": "Kül-ü Anka"}
-      ]
-    }
-    </script>
+    <!-- Kütüphaneler -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+<body>
 
-    <div id="navbar-container"></div>
-
-    <main class="flex-grow">
-        <section id="home" class="pt-32 pb-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-                <div class="text-center lg:text-left flex flex-col lg:flex-row items-center justify-between gap-12">
-                    <div class="lg:w-1/2">
-                        <div class="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded-full font-semibold text-sm mb-6 border border-blue-100">
-                            Dijital Dünyanın Mimarları
+    <!-- 1. GİRİŞ & KAYIT EKRANI -->
+    <div id="auth-view" class="view active">
+        <div class="auth-wrapper">
+            <div class="auth-left">
+                <h1>YSosyal.</h1>
+                <p>Güvenli ve Özgür Sosyal Ağ</p>
+            </div>
+            <div class="auth-right">
+                <div class="auth-box">
+                    <h2 id="auth-title">Giriş Yap</h2>
+                    <form id="auth-form">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="auth-email" placeholder="E-posta" required>
                         </div>
-                        <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6">
-                            Geleceği <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Kodluyoruz.</span>
-                        </h1>
-                        <p class="text-lg text-slate-600 mb-8 max-w-2xl leading-relaxed">
-                            YBG13™, yenilikçi web çözümleri, mobil uygulamalar ve sürükleyici oyun deneyimleri tasarlayan yeni nesil teknoloji atölyesidir.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <a href="hizmetler.html" class="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200 transform hover:-translate-y-1">Hizmetlerimizi Gör</a>
-                            <a href="magaza.html" class="inline-flex items-center justify-center bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold hover:bg-slate-50 transition shadow-sm hover:shadow-md">Mağazaya Göz At</a>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="auth-password" placeholder="Şifre" required>
                         </div>
+                        <button type="submit" class="btn-primary" id="auth-btn">Devam Et</button>
+                    </form>
+                    <div class="auth-links">
+                        <span id="toggle-auth">Yeni Hesap Oluştur</span>
                     </div>
-
-                    <div class="lg:w-1/2 relative group">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        <div class="relative w-full h-[400px] lg:h-[500px] rounded-[1.8rem] overflow-hidden shadow-2xl bg-slate-900">
-                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000" 
-                                 alt="YBG13 Teknoloji" 
-                                 class="w-full h-full object-cover opacity-80 hover:scale-105 transition duration-700">
-                        </div>
-                    </div>
+                    <div id="auth-error" class="error-msg"></div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
-    <div id="footer-container"></div>
+    
 
+    <!-- 2. ANA UYGULAMA EKRANI -->
+    <div id="app-view" class="view">
+        <div class="app-container">
+            
+            <!-- MOBİL ÜST BAR -->
+            <div class="mobile-top-bar">
+                <h1 class="brand-logo"><i class="fas fa-feather-alt"></i></h1>
+                <button id="hamburger-btn"><i class="fas fa-bars"></i></button>
+            </div>
+
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+            <!-- SOL MENÜ (NAVIGASYON) -->
+            <nav class="sidebar">
+                <h1 class="brand-logo"><i class="fas fa-feather-alt"></i> YSosyal</h1>
+                <ul class="nav-links">
+                    <li data-target="feed-section" class="active"><i class="fas fa-home"></i> <span>Ana Sayfa</span></li>
+                    <li data-target="search-section"><i class="fas fa-search"></i> <span>Keşfet</span></li>
+                    <li data-target="dm-section"><i class="fas fa-envelope"></i> <span>Mesajlar</span></li>
+                    <li data-target="profile-section"><i class="fas fa-user"></i> <span>Profilim</span></li>
+                </ul>
+                <button id="logout-btn" class="btn-danger"><i class="fas fa-sign-out-alt"></i> <span>Çıkış Yap</span></button>
+            </nav>
+
+            <!-- ANA İÇERİK ALANI -->
+            <main class="content-area">
+                
+                <!-- AKIŞ BÖLÜMÜ -->
+                <section id="feed-section" class="content-section active">
+                    <div class="header-title">Ana Sayfa</div>
+                    <div class="create-post">
+                        <textarea id="post-text" placeholder="Neler oluyor?"></textarea>
+                        <div class="post-actions">
+                            <label for="post-image" class="icon-btn"><i class="fas fa-image"></i></label>
+                            <input type="file" id="post-image" accept="image/*" hidden>
+                            <button id="share-post-btn" class="btn-primary rounded-btn">Paylaş</button>
+                        </div>
+                    </div>
+                    <div id="feed-container"></div>
+                </section>
+
+                <!-- KEŞFET BÖLÜMÜ -->
+                <section id="search-section" class="content-section">
+                    <div class="header-title">Keşfet</div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Kullanıcı adı ara...">
+                    </div>
+                    <div id="search-results" class="user-list"></div>
+                </section>
+
+                <!-- MESAJLAR BÖLÜMÜ (GÜNCELLENDİ) -->
+                <section id="dm-section" class="content-section">
+                    <div class="header-title" id="dm-header-title">Gelen Kutusu</div>
+                    <div class="dm-layout">
+                        <div class="dm-sidebar" id="dm-inbox-list">
+                            <div class="empty-state">Mesajlarınız yükleniyor...</div>
+                        </div>
+                        
+                        <div class="dm-chat-area" id="chat-wrapper" style="display: none;">
+                            <div class="chat-header-bar">
+                                <div id="chat-user-info" class="chat-user-info"></div>
+                                <button id="close-chat-btn" class="close-chat"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div id="chat-box" class="chat-box"></div>
+                            <div class="chat-input-area">
+                                <input type="text" id="chat-input" placeholder="Şifreli mesaj yaz...">
+                                <button id="send-msg-btn" class="btn-primary"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                        <div id="no-chat-msg" class="empty-state dm-placeholder-msg">Bir sohbet seçin veya birini arayın.</div>
+                    </div>
+                </section>
+
+<!-- KENDİ PROFİLİM BÖLÜMÜ -->
+<section id="profile-section" class="content-section">
+    <div class="header-title">Profilim</div>
+    <div class="profile-banner-container">
+        <img id="my-banner-img" class="banner-img" src="">
+        <label for="upload-banner" class="edit-btn"><i class="fas fa-camera"></i></label>
+        <input type="file" id="upload-banner" accept="image/*" hidden>
+    </div>
+    <div class="profile-details">
+        <div class="pp-container">
+            <img id="my-pp-img" class="pp-img" src="">
+            <label for="upload-pp" class="edit-btn"><i class="fas fa-camera"></i></label>
+            <input type="file" id="upload-pp" accept="image/*" hidden>
+        </div>
+        
+        <div class="profile-info-wrapper">
+            <input type="text" id="my-username" class="profile-name-input" placeholder="Kullanıcı Adı">
+            <textarea id="my-bio" class="profile-bio-input" placeholder="Biyografi"></textarea>
+            <div id="my-stats" class="profile-stats"></div>
+            <!-- EKLENEN KISIM: Kendi İstatistiklerimiz -->
+            <div id="my-stats" class="profile-stats">
+                <!-- Burası JavaScript ile dolacak -->
+            </div>
+
+            <button id="save-profile-btn" class="btn-primary outline" style="margin-top:15px; width: 100%;">Değişiklikleri Kaydet</button>
+        </div>
+    </div>
+    <div class="my-posts-header">Gönderilerim</div>
+    <div id="my-posts-container"></div>
+</section>
+
+                <!-- BAŞKA KULLANICI PROFİL DETAYI (YENİ EKLENDİ) -->
+                <section id="user-detail-section" class="content-section">
+                    <div class="header-title">
+                        <button onclick="openSection('search-section')" class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                        <span id="detail-header-name">Profil</span>
+                    </div>
+                    <div class="profile-banner-container">
+                        <img id="detail-banner" class="banner-img" src="">
+                    </div>
+                    <div class="profile-details">
+                        <div class="pp-container">
+                            <img id="detail-pp" class="pp-img" src="">
+                        </div>
+                        <div class="profile-info-wrapper" style="margin-top: 80px;">
+                            <h2 id="detail-username">Kullanıcı</h2>
+                            <p id="detail-bio" class="profile-bio-text"></p>
+                            <div id="detail-stats" class="profile-stats"></div>
+                            <div class="profile-actions" style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button id="detail-follow-btn" class="btn-primary" style="flex:1;">Takip Et</button>
+                                <button id="detail-dm-btn" class="btn-primary outline" style="flex:1;"><i class="fas fa-envelope"></i> Mesaj At</button>
+                                <!-- index.html içindeki ilgili kısmı şu şekilde güncelle -->
+<div id="detail-stats" class="profile-stats">
+    <div id="detail-followers-count"><strong>0</strong> Takipçi</div>
+    <div id="detail-following-count"><strong>0</strong> Takip Edilen</div>
+</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-posts-header">Gönderiler</div>
+                    <div id="detail-posts-container"></div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODALLAR (Sadece Özel İşlevler İçin) -->
+    
+    <!-- Takipçi Listesi Modalı -->
+    <div id="list-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <div id="list-modal-title" class="header-title" style="border:none;">Kullanıcılar</div>
+            <div id="list-modal-body" class="user-list"></div>
+        </div>
+    </div>
+
+    <!-- Gönderi Detay / Yorum Modalı -->
+    <div id="post-modal" class="modal">
+        <div class="modal-content post-detail-content">
+            <span class="close-modal">&times;</span>
+            <div id="post-detail-body" class="post-detail-body"></div>
+            <div class="comments-section">
+                <h3>Yorumlar</h3>
+                <div id="comments-container"></div>
+                <div class="add-comment">
+                    <input type="text" id="comment-input" placeholder="Yanıtını yaz...">
+                    <button id="send-comment-btn" class="btn-primary">Yanıtla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="compression-canvas" style="display:none;"></canvas>
     <script type="module" src="app.js"></script>
 </body>
 </html>

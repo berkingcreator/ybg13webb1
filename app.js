@@ -1,626 +1,579 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, onSnapshot, query, orderBy, deleteDoc, setDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { 
+    getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, 
+    onSnapshot, serverTimestamp, updateDoc, arrayUnion, arrayRemove, 
+    where, getDocs, deleteDoc 
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+// --- KONFİGÜRASYON ---
 const firebaseConfig = {
-    apiKey: "AIzaSyC0Mv6ovlgvilx8x4W7dPR1UZYLpKduqeI",
-    authDomain: "ybg13-a6ab3.firebaseapp.com",
-    projectId: "ybg13-a6ab3",
-    storageBucket: "ybg13-a6ab3.firebasestorage.app",
-    messagingSenderId: "623025176609",
-    appId: "1:623025176609:web:febf58e3150992dd142360",
-    measurementId: "G-D5CFJP1MZ0"
+  apiKey: "AIzaSyAV-SCX8O43d-nPOg8OXNn7DykuvcuBlWw",
+  authDomain: "ysosyal-59b95.firebaseapp.com",
+  projectId: "ysosyal-59b95",
+  storageBucket: "ysosyal-59b95.firebasestorage.app",
+  messagingSenderId: "488506757633",
+  appId: "1:488506757633:web:a859e6662ede1145946600"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let globalProducts = [];
-let globalNews = [];
+// --- GLOBAL DEĞİŞKENLER ---
+window.currentUser = null; 
+let currentChatUnsubscribe = null;
+let inboxUnsubscribe = null;
+let isRegisterMode = false;
+let activePostIdForComment = null; 
+let activeTargetEmail = null; 
 
-window.showPage = function(pageId) {
-    if(pageId === 'contact') {
-        window.location.href = 'iletisim.html';
-    } else {
-        window.location.href = pageId + '.html';
-    }
+const defaultPP = "https://placehold.co/150x150/1da1f2/ffffff?text=U";
+const defaultBanner = "https://placehold.co/800x200/c4d3df/ffffff?text=Kapak";
+
+// --- UI ELEMENTLERİ ---
+const views = { auth: document.getElementById('auth-view'), app: document.getElementById('app-view') };
+const sections = document.querySelectorAll('.content-section');
+const navLinks = document.querySelectorAll('.nav-links li');
+const modals = document.querySelectorAll('.modal');
+const closeBtns = document.querySelectorAll('.close-modal');
+
+// --- GENEL UI FONKSİYONLARI ---
+function showView(viewName) {
+    Object.values(views).forEach(v => v.classList.remove('active'));
+    if (views[viewName]) views[viewName].classList.add('active');
 }
 
-window.mobileMenuToggle = function() {
-    const mobMenu = document.getElementById('mobile-menu');
-    if(mobMenu) mobMenu.classList.toggle('hidden');
+window.openSection = function(targetId) {
+    const section = document.getElementById(targetId);
+    if (!section) return;
+
+    sections.forEach(s => s.classList.remove('active'));
+    section.classList.add('active');
+
+    navLinks.forEach(l => l.classList.remove('active'));
+    const navLink = document.querySelector(`[data-target="${targetId}"]`);
+    if (navLink) navLink.classList.add('active');
+};
+
+// --- MOBİL NAVBAR & SIDEBAR ---
+const hamburger = document.getElementById('hamburger-btn');
+const sidebar = document.querySelector('.sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+
+function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
 }
 
-/* ================= MAĞAZA VE ÜRÜNLER ================= */
-async function loadProducts() {
-    const grid = document.getElementById('product-grid');
-    if(!grid) return;
-    try {
-        const querySnapshot = await getDocs(query(collection(db, "products"), orderBy("createdAt", "desc")));
-        globalProducts = [];
-        grid.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const p = { id: doc.id, ...doc.data() };
-            globalProducts.push(p);
-            grid.innerHTML += `
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition cursor-pointer group" onclick="viewProduct('${p.id}')">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://placehold.co/800x600/3b82f6/white?text=Resim+Yok'">
-                        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-xs font-bold text-blue-600 shadow-sm">${p.category}</div>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-slate-900 mb-2 truncate">${p.name}</h3>
-                        <div class="flex justify-between items-center">
-                            <span class="text-blue-600 font-extrabold">${Number(p.price).toLocaleString('tr-TR')} ₺</span>
-                            <span class="text-slate-400 text-xs font-medium">İncele <i class="fas fa-chevron-right ml-1"></i></span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-    } catch (error) {
-        console.error("Ürünler yüklenirken hata oluştu:", error);
-        grid.innerHTML = `<p class="text-red-500">Ürünler yüklenemedi. Bağlantınızı kontrol edin.</p>`;
-    }
-}
+if(hamburger) hamburger.addEventListener('click', toggleSidebar);
+if(overlay) overlay.addEventListener('click', toggleSidebar);
 
-async function loadProductDetail() {
-    const container = document.getElementById('detail-content');
-    if(!container) return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-
-    if(productId) {
-        try {
-            const docSnap = await getDoc(doc(db, "products", productId));
-            if(docSnap.exists()) {
-                const p = docSnap.data();
-                const safeName = p.name ? p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
-                
-                container.innerHTML = `
-                    <div class="md:w-1/2 p-8 lg:p-12 bg-slate-50 flex items-center justify-center border-r border-slate-100">
-                        <img src="${p.img}" class="w-full object-cover rounded-2xl shadow-lg transform hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/800x600/3b82f6/white?text=${encodeURIComponent(p.name)}'">
-                    </div>
-                    <div class="md:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
-                        <div class="mb-4">
-                            <span class="bg-blue-100 text-blue-600 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">${p.category}</span>
-                        </div>
-                        <h1 class="text-3xl md:text-4xl font-extrabold mb-6 text-slate-900 leading-tight">${p.name}</h1>
-                        <p class="text-slate-600 mb-8 leading-relaxed text-lg">${p.desc}</p>
-                        <div class="flex items-center justify-between mb-8 border-y border-slate-100 py-6">
-                            <span class="text-slate-500 font-bold uppercase tracking-wide">Lisans Bedeli</span>
-                            <div class="text-4xl font-black text-blue-600">${Number(p.price).toLocaleString('tr-TR')} ₺</div>
-                        </div>
-                        <button onclick="requestQuote('${safeName}')" class="bg-slate-900 text-white py-5 px-8 rounded-xl font-bold hover:bg-blue-600 w-full transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center text-lg">
-                            <i class="fas fa-paper-plane mr-3"></i> Hemen Teklif Al
-                        </button>
-                    </div>
-                `;
-                document.title = p.name + " | YBG13™ Mağaza";
-            } else {
-                container.innerHTML = '<div class="w-full text-center py-20"><p class="text-red-500 font-bold text-xl">Ürün bulunamadı.</p></div>';
-            }
-        } catch(err) {
-            container.innerHTML = '<div class="w-full text-center py-20"><p class="text-red-500 font-bold text-xl">Bir hata oluştu.</p></div>';
-        }
-    }
-}
-
-/* ================= HABERLER ================= */
-async function loadNews() {
-    const newsGrid = document.getElementById('news-container');
-    if(!newsGrid) return;
-    try {
-        const querySnapshot = await getDocs(query(collection(db, "news"), orderBy("createdAt", "desc")));
-        globalNews = [];
-        newsGrid.innerHTML = ''; 
-        querySnapshot.forEach((doc) => {
-            const news = { id: doc.id, ...doc.data() };
-            globalNews.push(news);
-            newsGrid.innerHTML += `
-                <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-lg transition duration-300">
-                    <img src="${news.image}" class="w-full h-48 object-cover" onerror="this.src='https://placehold.co/800x400/slate/white?text=Haber'">
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-xs font-bold text-blue-600 uppercase">${news.category}</span>
-                            <span class="text-xs text-slate-400">${news.date}</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-slate-900">${news.title}</h3>
-                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">${news.summary}</p>
-                        <button onclick="viewNewsDetail('${news.id}')" class="text-blue-600 font-bold text-sm hover:underline">Devamını Oku <i class="fas fa-arrow-right ml-1"></i></button>
-                    </div>
-                </div>
-            `;
-        });
-    } catch (error) {
-        console.error("Haberler yüklenirken hata:", error);
-    }
-}
-
-async function loadNewsDetail() {
-    const container = document.getElementById('news-detail-container');
-    if(!container) return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const newsId = urlParams.get('id');
-
-    if(newsId) {
-        try {
-            const docSnap = await getDoc(doc(db, "news", newsId));
-            if(docSnap.exists()) {
-                const n = docSnap.data();
-                
-                container.innerHTML = `
-                    <div class="w-full h-64 md:h-96 relative">
-                        <img src="${n.image}" alt="${n.title}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/1200x600/slate/white?text=YBG13+Haberler'">
-                        <div class="absolute top-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-xl text-sm font-bold text-blue-600 shadow-sm uppercase tracking-widest">${n.category}</div>
-                    </div>
-                    <div class="p-8 md:p-16">
-                        <div class="flex items-center text-slate-500 mb-6 font-medium">
-                            <i class="far fa-calendar-alt mr-2"></i> ${n.date}
-                            <span class="mx-4 text-slate-300">|</span>
-                            <i class="fas fa-user-edit mr-2"></i> YBG13™ Ekibi
-                        </div>
-                        <h1 class="text-3xl md:text-5xl font-extrabold mb-8 text-slate-900 leading-tight">${n.title}</h1>
-                        <div class="prose prose-lg prose-slate max-w-none text-slate-600 leading-relaxed">
-                            ${n.content ? n.content.replace(/\n/g, '<br><br>') : n.summary}
-                        </div>
-                        
-                        <div class="mt-12 pt-8 border-t border-slate-100 flex justify-between items-center">
-                            <span class="font-bold text-slate-900">Bu haberi paylaş:</span>
-                            <div class="flex gap-3">
-                                <button class="w-10 h-10 rounded-full bg-slate-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm"><i class="fab fa-twitter"></i></button>
-                                <button class="w-10 h-10 rounded-full bg-slate-50 text-blue-800 flex items-center justify-center hover:bg-blue-800 hover:text-white transition shadow-sm"><i class="fab fa-linkedin-in"></i></button>
-                                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Bağlantı kopyalandı!');" class="w-10 h-10 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center hover:bg-slate-600 hover:text-white transition shadow-sm"><i class="fas fa-link"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.title = n.title + " | YBG13™ Haberler";
-            } else {
-                container.innerHTML = '<div class="w-full text-center py-32"><p class="text-red-500 font-bold text-xl">Haber bulunamadı.</p></div>';
-            }
-        } catch(err) {
-            container.innerHTML = '<div class="w-full text-center py-32"><p class="text-red-500 font-bold text-xl">Bir hata oluştu.</p></div>';
-        }
-    } else {
-        container.innerHTML = '<div class="w-full text-center py-32"><p class="text-slate-500 font-bold text-xl">Geçersiz haber bağlantısı.</p></div>';
-    }
-}
-
-/* ================= PROJELER & GÜVENLİK ================= */
-async function loadProjects() {
-    const container = document.getElementById('projects-container');
-    if(!container) return;
-    try {
-        const querySnapshot = await getDocs(query(collection(db, "portfolio"), orderBy("createdAt", "desc")));
-        container.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const p = doc.data();
-            container.innerHTML += `
-                <div class="bg-white p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition duration-300 flex flex-col h-full">
-                    <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6">
-                        <i class="fas ${p.icon}"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">${p.name}</h3>
-                    <p class="text-slate-600 mb-6 leading-relaxed flex-grow text-sm">${p.desc}</p>
-                    <a href="${p.url}" target="_blank" class="inline-flex items-center text-blue-600 font-bold hover:underline text-sm mt-auto">
-                        Projeyi İncele <i class="fas fa-external-link-alt ml-2 text-xs"></i>
-                    </a>
-                </div>
-            `;
-        });
-    } catch (error) {
-        console.error("Projeler yüklenirken hata:", error);
-    }
-}
-
-async function loadSecurity() {
-    const freeContainer = document.getElementById('free-versions-container');
-    const paidContainer = document.getElementById('paid-versions-container');
-    if(!freeContainer || !paidContainer) return;
-    
-    try {
-        const querySnapshot = await getDocs(query(collection(db, "security_versions"), orderBy("createdAt", "asc")));
-        freeContainer.innerHTML = '';
-        paidContainer.innerHTML = '';
-
-        querySnapshot.forEach((doc) => {
-            const s = doc.data();
-
-            const safeName = s.name ? s.name.replace(/'/g, "\\'").replace(/"/g, '&quot;') : '';
-            const safeJsUrl = s.jsUrl ? s.jsUrl.replace(/'/g, "\\'") : '';
-            const safePyUrl = s.pyUrl ? s.pyUrl.replace(/'/g, "\\'") : '';
-
-            if (s.type === 'free') {
-                freeContainer.innerHTML += `
-                    <div class="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-xl flex flex-col justify-between border-4 border-blue-500 hover:scale-[1.02] transition-transform overflow-hidden">
-                        <div class="mb-6">
-                            <h3 class="text-2xl font-black mb-2 tracking-tight">${s.name}</h3>
-                            <p class="text-blue-100 text-sm opacity-90">${s.details}</p>
-                        </div>
-                        <div class="flex flex-wrap gap-3">
-                            ${s.jsUrl ? `<button onclick="downloadRaw('${safeJsUrl}', '${safeName}.js')" class="flex-1 bg-white text-blue-600 px-4 py-3 rounded-2xl font-bold hover:bg-slate-100 transition shadow-md flex items-center justify-center gap-2 text-sm"><i class="fab fa-js text-lg"></i> JS İndir</button>` : ''}
-                            ${s.pyUrl ? `<button onclick="downloadRaw('${safePyUrl}', '${safeName}.py')" class="flex-1 bg-slate-900 text-white px-4 py-3 rounded-2xl font-bold hover:bg-black transition shadow-md flex items-center justify-center gap-2 border border-blue-400 text-sm"><i class="fab fa-python text-lg"></i> Python</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            } else {
-                paidContainer.innerHTML += `
-                    <div class="flex flex-col bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group overflow-hidden">
-                        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-1">${s.name}</h3>
-                        <p class="text-indigo-600 font-black text-lg mb-4">${s.priceOrDesc} ₺</p>
-                        <p class="text-slate-500 text-sm mb-8 flex-grow">${s.details}</p>
-                        <button onclick="goToContact('${safeName}')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-indigo-600 transition">Satın Al</button>
-                    </div>
-                `;
-            }
-        });
-    } catch (error) {
-        console.error("Güvenlik sürümleri yüklenirken hata:", error);
-    }
-}
-
-/* ================= YÜKLEYİCİ (HER ŞEYİ ÇALIŞTIRAN YER) ================= */
-window.addEventListener('DOMContentLoaded', () => {
-    loadProducts();
-    loadProductDetail();
-    loadNews();
-    loadNewsDetail(); // Haber detaylarını çekmesi için eklendi
-    loadProjects();
-    loadSecurity();
+// --- EVENT LISTENERS (GENEL) ---
+navLinks.forEach(link => { 
+    link.addEventListener('click', () => {
+        openSection(link.dataset.target);
+        if(window.innerWidth <= 768) toggleSidebar();
+    }); 
 });
 
-window.viewProduct = function(id) {
-    window.location.href = 'magaza_detay.html?id=' + id;
-}
+closeBtns.forEach(btn => { 
+    btn.addEventListener('click', () => modals.forEach(m => m.style.display = 'none')); 
+});
 
-window.viewNewsDetail = function(id) {
-    window.location.href = 'haber_detay.html?id=' + id;
-}
+// --- AUTH MANTIK ---
+document.getElementById('toggle-auth').addEventListener('click', () => {
+    isRegisterMode = !isRegisterMode;
+    document.getElementById('auth-title').textContent = isRegisterMode ? "Hesap Oluştur" : "Giriş Yap";
+    document.getElementById('auth-btn').textContent = isRegisterMode ? "Kayıt Ol" : "Devam Et";
+    document.getElementById('toggle-auth').textContent = isRegisterMode ? "Zaten hesabın var mı? Giriş Yap" : "Yeni Hesap Oluştur";
+});
 
-window.requestQuote = function(name) {
-    localStorage.setItem('ybg_contact_subject', "Teklif Talebi: " + name);
-    localStorage.setItem('ybg_contact_message', name + " ürünü hakkında detaylı teklif almak istiyorum.");
-    window.location.href = 'iletisim.html';
-}
-
-window.goToContact = function(productName) {
-    localStorage.setItem('ybg_contact_subject', "Satın Alma: " + productName);
-    localStorage.setItem('ybg_contact_message', `Merhaba, ${productName} sürümü hakkında bilgi almak ve satın almak istiyorum.`);
-    window.location.href = 'iletisim.html';
-}
-
-/* ================= İLETİŞİM SPAM KORUMASI ================= */
-let lastSubmitTime = 0;
-const contactForm = document.getElementById('contact-form');
-if(contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        const now = Date.now();
-        const cooldownLimit = 60000;
-        if (now - lastSubmitTime < cooldownLimit) {
-            e.preventDefault();
-            const remaining = Math.ceil((cooldownLimit - (now - lastSubmitTime)) / 1000);
-            alert(`Lütfen spam yapmayınız! Yeni bir mesaj göndermek için ${remaining} saniye bekleyin.`);
-        } else {
-            lastSubmitTime = now;
-        }
-    });
-}
-
-/* ================= YAPAY ZEKA ASİSTANI (MİMAR SELİM BEY) ================= */
-const API_KEY = "AIzaSyDnTNuuY_ysPd55hjD2F23rHlCBop3ej7E";
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${API_KEY}`;
-
-const ybg13BilgiBankasi = `
-KURUMSAL KİMLİK:
-- İsim: Mimar Selim Bey (YBG13 AI Asistanı).
-- Kurucular: Berk Bey (Yazılım Mimarı), Serhat Bey (Tasarım Direktörü).
-- Motto: "Geleceği Kodluyoruz."
-ÇALIŞMA SAATLERİ:
-- Hafta içi: 17:30 - 22:00
-- Hafta sonu: 16:00 - 00:00
-FİYATLANDIRMA:
-1. E-Ticaret Script: 48.000 ₺
-2. RPG Oyun Seti: 32.000 ₺
-3. Premium Destek: 120.000 ₺
-4. Fitness App: 65.000 ₺
-İLETİŞİM:
-- Müşterileri 'İletişim' sekmesine veya form doldurmaya yönlendir.
-`;
-
-window.askAI = async function() {
-    const input = document.getElementById('ai-input');
-    const container = document.getElementById('chat-messages');
-    const sendBtn = document.getElementById('send-btn');
-    if(!input || !container) return;
+document.getElementById('auth-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('auth-email').value.toLowerCase().trim();
+    const password = document.getElementById('auth-password').value;
+    const errorMsg = document.getElementById('auth-error');
     
-    const userText = input.value.trim();
-    if (!userText) return;
-
-    container.innerHTML += `
-        <div class="flex justify-end mb-4">
-            <div class="bg-slate-900 text-white p-4 rounded-2xl rounded-tr-none max-w-[80%] text-sm shadow-md">
-                ${userText}
-            </div>
-        </div>`;
-    
-    input.value = '';
-    container.scrollTop = container.scrollHeight;
-
-    const typingId = 'typing-' + Date.now();
-    container.innerHTML += `
-        <div id="${typingId}" class="flex gap-2 items-center mb-4 self-start ml-2 text-slate-400 italic text-xs">
-            <i class="fas fa-circle-notch animate-spin"></i> Mimar verileri analiz ediyor...
-        </div>`;
-    
-    sendBtn.disabled = true;
-
     try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ 
-                        text: `Senin adın Mimar Selim Bey. YBG13'ün akıllı asistanısın. 
-                               Karakterin: Zeki, çözüm odaklı, hafif esprili ama her zaman profesyonel.
-                               Dil: SADECE TÜRKÇE.
-                               BİLGİ TABANIN: ${ybg13BilgiBankasi}
-                               TALİMATLAR:
-                               1. Sorulara bilgi tabanındaki verilere dayanarak cevap ver.
-                               2. Bilmiyorsan 'Bu konuda Berk veya Serhat Bey en doğru bilgiyi verecektir' de.
-                               3. Kısa ve öz cevaplar ver.
-                               Kullanıcı: ${userText}` 
-                    }]
-                }]
-            })
-        });
-
-        const data = await response.json();
-        if (data.error) throw new Error(data.error.message);
-
-        const aiReply = data.candidates[0].content.parts[0].text;
-        document.getElementById(typingId).remove();
-        container.innerHTML += `
-            <div class="flex gap-3 mb-4 text-left">
-                <div class="bg-blue-100 text-blue-800 p-4 rounded-2xl rounded-tl-none max-w-[80%] text-sm shadow-sm border border-blue-200">
-                    ${aiReply.replace(/\n/g, '<br>')}
-                </div>
-            </div>`;
+        if (isRegisterMode) {
+            const userDoc = await getDoc(doc(db, "users", email));
+            if(userDoc.exists()) return errorMsg.textContent = "Bu e-posta adresi zaten kayıtlı!";
             
-    } catch (error) {
-        const tId = document.getElementById(typingId);
-        if(tId) tId.remove();
-        container.innerHTML += `
-            <div class="bg-red-50 text-red-600 p-3 rounded-xl text-[10px] border border-red-100 mb-4">
-                Bağlantı kesildi: ${error.message}
-            </div>`;
-    }
+            await setDoc(doc(db, "users", email), {
+                email: email, password: password, username: email.split('@')[0], 
+                bio: "Merhaba, YSosyal'dayım!", pp: defaultPP, banner: defaultBanner, 
+                searchUsername: email.split('@')[0].toLowerCase()
+            });
+            alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
+            document.getElementById('toggle-auth').click();
+        } else {
+            const userDoc = await getDoc(doc(db, "users", email));
+            if (userDoc.exists() && userDoc.data().password === password) {
+                window.currentUser = userDoc.data(); 
+                showView('app');
+                loadMyProfile();
+                loadFeed();
+                window.loadInbox();
+            } else {
+                errorMsg.textContent = "Hatalı E-Posta veya Şifre girdiniz!";
+            }
+        }
+    } catch (error) { errorMsg.textContent = "Hata: " + error.message; }
+});
 
-    sendBtn.disabled = false;
-    container.scrollTop = container.scrollHeight;
-}
+document.getElementById('logout-btn').addEventListener('click', () => window.location.reload());
 
-const aiInput = document.getElementById('ai-input');
-if(aiInput) {
-    aiInput.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') window.askAI();
+// --- GÖRSEL İŞLEMLER ---
+async function compressImage(file, isBanner = false) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+                const canvas = document.getElementById('compression-canvas');
+                const ctx = canvas.getContext('2d');
+                const MAX_WIDTH = isBanner ? 1000 : 800;
+                let width = img.width, height = img.height;
+                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                canvas.width = width; canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', 0.4)); 
+            };
+        };
     });
 }
 
-window.calculateTotal = function() {
-    const typeEl = document.getElementById('project-type');
-    if(!typeEl) return;
-    const projectBase = parseInt(typeEl.value) || 0;
-    const checkboxes = document.querySelectorAll('#calculator input[type="checkbox"]:checked');
+// --- PROFİL YÖNETİMİ ---
+async function loadMyProfile() {
+    const email = window.currentUser.email;
+    const docSnap = await getDoc(doc(db, "users", email));
     
-    let extras = 0;
-    checkboxes.forEach(item => { extras += parseInt(item.value); });
-    const total = projectBase + extras;
-    const priceDisplay = document.getElementById('total-price');
+    
+    if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById('my-username').value = data.username;
+        document.getElementById('my-bio').value = data.bio || '';
+        document.getElementById('my-pp-img').src = data.pp || defaultPP;
+        document.getElementById('my-banner-img').src = data.banner || defaultBanner;
 
-    if (priceDisplay) {
-        priceDisplay.innerText = total === 0 ? "0 ₺" : total.toLocaleString('tr-TR') + " ₺";
+        // --- Kendi Takipçi Sayılarımızı Çek ---
+        const counts = await getFollowCounts(email);
+        const statsDiv = document.getElementById('my-stats');
+        if (statsDiv) {
+            statsDiv.innerHTML = `
+                <div onclick="showUserList('${email}', 'followers')" style="cursor:pointer">
+                    <strong>${counts.followers}</strong> Takipçi
+                </div>
+                <div onclick="showUserList('${email}', 'following')" style="cursor:pointer">
+                    <strong>${counts.following}</strong> Takip Edilen
+                </div>
+            `;
+            
+        }
     }
-}
-
-window.downloadRaw = async function(url, fileName) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Bağlantı hatası');
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(link);
-    } catch (error) {
-        console.error("Dosya indirilemedi:", error);
-        window.open(url, '_blank'); 
+    
     }
-}
 
-window.toggleCeoContact = function() {
-    const info = document.getElementById('ceo-contact-info');
-    if(!info) return;
-    if (info.classList.contains('hidden')) {
-        info.classList.remove('hidden');
-        setTimeout(() => { info.classList.add('scale-100', 'opacity-100'); }, 10);
-    } else {
-        info.classList.remove('scale-100', 'opacity-100');
-        setTimeout(() => { info.classList.add('hidden'); }, 500);
-    }
-}
 
-/* ================= AEGIS ENGINE VE KONTROLLER ================= */
-console.log("%c YBG13™ Aegis Engine V1.5 ", "color: white; background: #2563eb; padding: 5px; border-radius: 5px; font-weight: bold;");
-console.log("%c Güvenlik Katmanları Aktif Edildi. ", "color: #2563eb; font-weight: bold;");
-
-window.addEventListener('load', () => {
-    const loadTime = performance.now() / 1000;
-    console.log(`%c Sistem Yükleme Süresi: ${loadTime.toFixed(2)} saniye.`, "color: gray; font-style: italic;");
+document.getElementById('upload-pp').addEventListener('change', async (e) => {
+    if(!e.target.files[0]) return;
+    const base64 = await compressImage(e.target.files[0]);
+    document.getElementById('my-pp-img').src = base64;
+    await updateDoc(doc(db, "users", window.currentUser.email), { pp: base64 });
 });
 
-const aegisMeta = {
-    owner: "Yusuf Berk Genç",
-    brand: "YBG13™",
-    engine: "Aegis",
-    version: "1.5.0",
-    buildDate: "2026-03-10",
-    environment: "Production"
-};
+document.getElementById('upload-banner').addEventListener('change', async (e) => {
+    if(!e.target.files[0]) return;
+    const base64 = await compressImage(e.target.files[0], true);
+    document.getElementById('my-banner-img').src = base64;
+    await updateDoc(doc(db, "users", window.currentUser.email), { banner: base64 });
+});
 
-window.checkEngineStatus = function() {
-    return `Aegis Engine ${aegisMeta.version} çalışıyor.`;
+document.getElementById('save-profile-btn').addEventListener('click', async () => {
+    const username = document.getElementById('my-username').value;
+    const bio = document.getElementById('my-bio').value;
+    await updateDoc(doc(db, "users", window.currentUser.email), { username, bio, searchUsername: username.toLowerCase() });
+    alert("Profil Kaydedildi.");
+});
+
+// --- AKIŞ (FEED) VE POSTLAR ---
+function buildPostHTML(post) {
+    const isLiked = post.likes && post.likes.includes(window.currentUser.email);
+    const deleteBtnHTML = post.ownerEmail === window.currentUser.email ? `<i class="fas fa-trash delete-btn" title="Sil" onclick="deletePost('${post.id}')"></i>` : '';
+    
+    return `
+        <div class="post-card">
+            ${deleteBtnHTML}
+            <div class="post-header" onclick="openUserProfile('${post.ownerEmail}')">
+                <img src="${post.userPP || defaultPP}">
+                <div>
+                    <div class="post-author">${post.username}</div>
+                    <div class="post-date">${post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString() : 'Şimdi'}</div>
+                </div>
+            </div>
+            <div class="post-text" onclick="openPostDetail('${post.id}')">${post.text}</div>
+            ${post.image ? `<img src="${post.image}" class="post-img-content" onclick="openPostDetail('${post.id}')">` : ''}
+            <div class="post-interactions">
+                <div class="interaction-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', ${isLiked})">
+                    <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i> ${post.likes ? post.likes.length : 0}
+                </div>
+                <div class="interaction-btn" onclick="openPostDetail('${post.id}')">
+                    <i class="far fa-comment"></i> Yorum
+                </div>
+            </div>
+        </div>
+    `;
 }
 
-let idleTimer;
-const resetTimer = () => {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => {
-        console.log("Sistem Bekleme Modunda (Idle)...");
-    }, 30000);
+function loadFeed() {
+    const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+        const feed = document.getElementById('feed-container');
+        feed.innerHTML = '';
+        snapshot.forEach(docSnap => {
+            const post = { id: docSnap.id, ...docSnap.data() };
+            feed.innerHTML += buildPostHTML(post);
+        });
+    });
+}
+
+document.getElementById('share-post-btn').addEventListener('click', async () => {
+    const text = document.getElementById('post-text').value;
+    const file = document.getElementById('post-image').files[0];
+    if(!text && !file) return;
+
+    let imgBase64 = null;
+    if(file) imgBase64 = await compressImage(file);
+
+    const u = window.currentUser;
+    await addDoc(collection(db, "posts"), {
+        ownerEmail: u.email,
+        username: u.username,
+        userPP: u.pp || defaultPP,
+        text: text,
+        image: imgBase64,
+        likes: [],
+        timestamp: serverTimestamp()
+    });
+    document.getElementById('post-text').value = '';
+    document.getElementById('post-image').value = '';
+});
+
+window.deletePost = async (postId) => {
+    if(confirm("Gönderiyi silmek istiyor musunuz?")) {
+        await deleteDoc(doc(db, "posts", postId));
+        document.getElementById('post-modal').style.display = 'none';
+    }
 };
-document.addEventListener('mousemove', resetTimer);
-document.addEventListener('keypress', resetTimer);
 
-onSnapshot(doc(db, "settings", "general"), (docSnap) => {
-    if (docSnap.exists()) {
-        const set = docSnap.data();
+window.toggleLike = async (postId, isLiked) => {
+    const postRef = doc(db, "posts", postId);
+    if(isLiked) await updateDoc(postRef, { likes: arrayRemove(window.currentUser.email) });
+    else await updateDoc(postRef, { likes: arrayUnion(window.currentUser.email) });
+};
 
-        if (set.maintenance) {
-            document.body.innerHTML = `
-                <div style="height:100vh; width:100vw; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#0b1437; color:white; font-family:sans-serif; text-align:center; position:fixed; top:0; left:0; z-index:999999;">
-                    <i class="fas fa-shield-alt" style="font-size:80px; color:#4318FF; margin-bottom:20px;"></i>
-                    <h1 style="font-size:3rem; margin:0;">YBG13™</h1>
-                    <h2 style="font-size:2rem; color:#a3aed1; margin:10px 0 20px 0;">Şuanda Bakımdayız</h2>
-                    <p style="color:#8f9bba; max-width:500px; line-height:1.6;">Sitemizin altyapısında güvenlik güncellemesi yapıyoruz. Sistemler kısa bir süre içinde tekrar devrede olacaktır.</p>
+// --- YORUMLAR ---
+window.openPostDetail = async (postId) => {
+    activePostIdForComment = postId;
+    document.getElementById('post-modal').style.display = 'flex';
+    
+    const postSnap = await getDoc(doc(db, "posts", postId));
+    const post = postSnap.data();
+    const isLiked = post.likes && post.likes.includes(window.currentUser.email);
+
+    document.getElementById('post-detail-body').innerHTML = `
+        <div class="post-header">
+            <img src="${post.userPP || defaultPP}">
+            <div class="post-author">${post.username}</div>
+        </div>
+        <div class="post-text" style="font-size:1.2rem; margin:15px 0;">${post.text}</div>
+        ${post.image ? `<img src="${post.image}" class="post-img-content">` : ''}
+    `;
+
+    const q = query(collection(db, `posts/${postId}/comments`), orderBy("timestamp", "asc"));
+    onSnapshot(q, (snap) => {
+        const container = document.getElementById('comments-container');
+        container.innerHTML = '';
+        snap.forEach(c => {
+            const comment = { id: c.id, ...c.data() };
+            const delHtml = comment.ownerEmail === window.currentUser.email ? `<i class="fas fa-times" onclick="deleteComment('${comment.id}')"></i>` : '';
+            container.innerHTML += `
+                <div class="comment-row">
+                    <img src="${comment.userPP || defaultPP}">
+                    <div class="comment-content">
+                        <strong>${comment.username}</strong>: ${comment.text} ${delHtml}
+                    </div>
                 </div>`;
-            return; 
+        });
+    });
+};
+
+document.getElementById('send-comment-btn').addEventListener('click', async () => {
+    const text = document.getElementById('comment-input').value;
+    if(!text || !activePostIdForComment) return;
+    const u = window.currentUser;
+
+    await addDoc(collection(db, `posts/${activePostIdForComment}/comments`), {
+        ownerEmail: u.email, username: u.username, userPP: u.pp || defaultPP,
+        text: text, timestamp: serverTimestamp()
+    });
+    document.getElementById('comment-input').value = '';
+});
+
+window.deleteComment = async (commentId) => {
+    if(confirm("Yorumu sil?")) await deleteDoc(doc(db, `posts/${activePostIdForComment}/comments`, commentId));
+};
+
+// --- TAKİP VE PROFİL DETAY ---
+async function toggleFollow(targetEmail) {
+    const myEmail = window.currentUser.email;
+    const followId = `${myEmail}_${targetEmail}`;
+    const followRef = doc(db, "follows", followId);
+    const followSnap = await getDoc(followRef);
+
+    if (followSnap.exists()) {
+        await deleteDoc(followRef);
+        return false; 
+    } else {
+        await setDoc(followRef, { follower: myEmail, following: targetEmail, timestamp: serverTimestamp() });
+        return true; 
+    }
+}
+
+async function getFollowCounts(email) {
+    const fers = await getDocs(query(collection(db, "follows"), where("following", "==", email)));
+    const fing = await getDocs(query(collection(db, "follows"), where("follower", "==", email)));
+    return { followers: fers.size, following: fing.size };
+}
+
+window.openUserProfile = async (targetEmail) => {
+    const snap = await getDoc(doc(db, "users", targetEmail));
+    if(!snap.exists()) return;
+    const data = snap.data();
+
+    openSection('user-detail-section');
+    
+    document.getElementById('detail-banner').src = data.banner || defaultBanner;
+    document.getElementById('detail-pp').src = data.pp || defaultPP;
+    document.getElementById('detail-username').textContent = data.username;
+    document.getElementById('detail-header-name').textContent = data.username;
+    document.getElementById('detail-bio').textContent = data.bio || "Biyografi yok.";
+
+    const counts = await getFollowCounts(targetEmail);
+    document.getElementById('detail-followers-count').innerHTML = `<strong onclick="showUserList('${targetEmail}', 'followers')">${counts.followers}</strong> Takipçi`;
+    document.getElementById('detail-following-count').innerHTML = `<strong onclick="showUserList('${targetEmail}', 'following')">${counts.following}</strong> Takip Edilen`;
+
+    const followBtn = document.getElementById('detail-follow-btn');
+    const isFollowing = (await getDoc(doc(db, "follows", `${window.currentUser.email}_${targetEmail}`))).exists();
+    
+    followBtn.textContent = isFollowing ? "Takibi Bırak" : "Takip Et";
+    followBtn.className = isFollowing ? "btn-primary outline" : "btn-primary";
+    followBtn.onclick = async () => {
+        await toggleFollow(targetEmail);
+        openUserProfile(targetEmail);
+    };
+    
+    document.getElementById('detail-dm-btn').onclick = () => startDM(targetEmail, data.username);
+};
+
+// --- ARAMA / KEŞFET ---
+document.getElementById('search-input').addEventListener('input', async (e) => {
+    const val = e.target.value.toLowerCase().trim();
+    const res = document.getElementById('search-results');
+    res.innerHTML = '';
+    if(val.length < 2) return;
+
+    const q = query(collection(db, "users"), where("searchUsername", ">=", val), where("searchUsername", "<=", val + '\uf8ff'));
+    const snaps = await getDocs(q);
+    
+    snaps.forEach(docSnap => {
+        const u = docSnap.data();
+        if(u.email === window.currentUser.email) return;
+        
+        const div = document.createElement('div');
+        div.className = 'user-row-card';
+        div.innerHTML = `
+            <div class="user-info">
+                <img src="${u.pp || defaultPP}">
+                <div><strong>${u.username}</strong><p>${u.bio || ''}</p></div>
+            </div>
+            <div class="user-actions">
+                <button onclick="openUserProfile('${u.email}')">Gör</button>
+                <button onclick="startDM('${u.email}', '${u.username}')"><i class="fas fa-envelope"></i></button>
+            </div>`;
+        res.appendChild(div);
+    });
+});
+
+// --- DM SİSTEMİ ---
+function getSecretKey(e1, e2) { return [e1, e2].sort().join('_') + "_YBG"; }
+function encryptMsg(text, key) { return CryptoJS.AES.encrypt(text, key).toString(); }
+function decryptMsg(cipher, key) {
+    try { return CryptoJS.AES.decrypt(cipher, key).toString(CryptoJS.enc.Utf8); } 
+    catch { return "[Şifreli Mesaj]"; }
+}
+
+window.loadInbox = function() {
+    if(inboxUnsubscribe) inboxUnsubscribe();
+    const q = query(collection(db, "chats"), where("participants", "array-contains", window.currentUser.email), orderBy("timestamp", "desc"));
+    
+    inboxUnsubscribe = onSnapshot(q, (snapshot) => {
+        const list = document.getElementById('dm-inbox-list');
+        list.innerHTML = snapshot.empty ? '<div class="empty-state">Mesaj yok.</div>' : '';
+        
+        snapshot.forEach(async (docSnap) => {
+            const data = docSnap.data();
+            const other = data.participants.find(e => e !== window.currentUser.email);
+            const uSnap = await getDoc(doc(db, "users", other));
+            const u = uSnap.exists() ? uSnap.data() : { username: "Bilinmeyen", pp: defaultPP };
+            const last = decryptMsg(data.lastMessage, getSecretKey(window.currentUser.email, other));
+
+            const div = document.createElement('div');
+            div.className = 'inbox-item';
+            div.innerHTML = `<img src="${u.pp}"><div class="inbox-item-details"><strong>${u.username}</strong><p>${last}</p></div>`;
+            div.onclick = () => startDM(other, u.username);
+            list.appendChild(div);
+        });
+    });
+};
+
+window.startDM = async function(targetEmail, targetUsername) {
+    openSection('dm-section');
+    activeTargetEmail = targetEmail;
+    document.getElementById('no-chat-msg').style.display = 'none';
+    document.getElementById('chat-wrapper').style.display = 'flex';
+
+    const uSnap = await getDoc(doc(db, "users", targetEmail));
+    const uData = uSnap.data();
+    document.getElementById('chat-user-info').innerHTML = `
+        <div class="chat-profile-trigger" onclick="openUserProfile('${targetEmail}')">
+            <img src="${uData.pp || defaultPP}"> <strong>${targetUsername}</strong>
+        </div>`;
+
+    const chatId = [window.currentUser.email, targetEmail].sort().join('_');
+    const key = getSecretKey(window.currentUser.email, targetEmail);
+    const chatBox = document.getElementById('chat-box');
+
+    if(currentChatUnsubscribe) currentChatUnsubscribe();
+    currentChatUnsubscribe = onSnapshot(query(collection(db, `chats/${chatId}/messages`), orderBy("timestamp", "asc")), (snap) => {
+        chatBox.innerHTML = '';
+        snap.forEach(d => {
+            const m = d.data();
+            chatBox.innerHTML += `<div class="msg ${m.senderEmail === window.currentUser.email ? 'sent' : 'received'}">${decryptMsg(m.text, key)}</div>`;
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+};
+
+document.getElementById('send-msg-btn').addEventListener('click', async () => {
+    const input = document.getElementById('chat-input');
+    if(!input.value.trim() || !activeTargetEmail) return;
+
+    const chatId = [window.currentUser.email, activeTargetEmail].sort().join('_');
+    const encrypted = encryptMsg(input.value.trim(), getSecretKey(window.currentUser.email, activeTargetEmail));
+
+    await addDoc(collection(db, `chats/${chatId}/messages`), {
+        senderEmail: window.currentUser.email, text: encrypted, timestamp: serverTimestamp()
+    });
+    await setDoc(doc(db, "chats", chatId), {
+        participants: [window.currentUser.email, activeTargetEmail],
+        lastMessage: encrypted, timestamp: serverTimestamp()
+    }, { merge: true });
+    input.value = '';
+});
+
+document.getElementById('close-chat-btn').addEventListener('click', () => {
+    document.getElementById('chat-wrapper').style.display = 'none';
+    document.getElementById('no-chat-msg').style.display = 'flex';
+    if(currentChatUnsubscribe) currentChatUnsubscribe();
+});
+
+// --- LİSTE MODALI (TAKİPÇİLER) ---
+window.showUserList = async (email, type) => {
+    document.getElementById('list-modal-title').textContent = type === 'followers' ? "Takipçiler" : "Takip Edilenler";
+    const container = document.getElementById('list-modal-body');
+    container.innerHTML = 'Yükleniyor...';
+    document.getElementById('list-modal').style.display = 'flex';
+
+    const field = type === 'followers' ? "following" : "follower";
+    const targetField = type === 'followers' ? "follower" : "following";
+    const snap = await getDocs(query(collection(db, "follows"), where(field, "==", email)));
+    
+    container.innerHTML = snap.empty ? 'Kimse yok.' : '';
+    for (const d of snap.docs) {
+        const uSnap = await getDoc(doc(db, "users", d.data()[targetField]));
+        if(uSnap.exists()) {
+            const u = uSnap.data();
+            const div = document.createElement('div');
+            div.className = 'user-row';
+            div.innerHTML = `<img src="${u.pp || defaultPP}"> <strong>${u.username}</strong>`;
+            div.onclick = () => { document.getElementById('list-modal').style.display = 'none'; openUserProfile(u.email); };
+            container.appendChild(div);
         }
+    }
+};
 
-        if (set.ddosProtection) {
-            const limit = set.ddosLevel === 'high' ? 2000 : 800;
-            const hits = parseInt(localStorage.getItem('ybg_hits') || '0');
-            const lastHit = parseInt(localStorage.getItem('ybg_time') || '0');
-            const now = Date.now();
-            if(now - lastHit < limit) {
-                localStorage.setItem('ybg_hits', hits + 1);
-                if(hits > 4) {
-                    document.body.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:red;color:white;font-weight:bold;font-size:24px;">AEGIS KORUMASI: Lütfen Spam Yapmayın!</div>`;
-                    setTimeout(() => localStorage.setItem('ybg_hits', 0), 30000); 
-                    return;
-                }
-            } else { localStorage.setItem('ybg_hits', 0); }
-            localStorage.setItem('ybg_time', now);
+window.openUserProfile = async (targetEmail) => {
+    try {
+        if (!targetEmail) return;
+        
+        const snap = await getDoc(doc(db, "users", targetEmail));
+        if (!snap.exists()) {
+            alert("Kullanıcı bulunamadı!");
+            return;
         }
+        
+        const data = snap.data();
+        
+        // Bölümü aç
+        openSection('user-detail-section');
 
-        document.oncontextmenu = set.noRightClick ? (e => e.preventDefault()) : null;
-
-        document.onkeydown = function(e) {
-            if(set.noShortcuts && (e.ctrlKey && (e.key === 's' || e.key === 'p' || e.key === 'u'))) e.preventDefault(); 
-            if(set.noF12 && (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73))) return false;
+        // Elementler mevcut mu kontrol et ve değerleri ata
+        const elements = {
+            'detail-banner': data.banner || defaultBanner,
+            'detail-pp': data.pp || defaultPP,
+            'detail-username': data.username,
+            'detail-header-name': data.username,
+            'detail-bio': data.bio || "Biyografi yok."
         };
 
-        document.body.style.userSelect = set.noCopy ? "none" : "auto";
-        document.ondragstart = set.noImageDrag ? (e => e.preventDefault()) : null;
-
-        if(set.noIframe && window.self !== window.top) { window.top.location = window.self.location; }
-
-        if (set.customAnalytics && !sessionStorage.getItem('ybg_logged')) {
-            fetch('https://api.ipify.org?format=json').then(r => r.json()).then(data => {
-                addDoc(collection(db, "visitor_logs"), { ip: data.ip, ua: navigator.userAgent, time: serverTimestamp() });
-                sessionStorage.setItem('ybg_logged', 'true');
-            }).catch(e => console.log("Analytics Error"));
-        }
-
-        let cursorStyle = document.getElementById('ybg-cursor');
-        if(set.customCursor) {
-            if(!cursorStyle) { cursorStyle = document.createElement('style'); cursorStyle.id='ybg-cursor'; document.head.appendChild(cursorStyle); }
-            cursorStyle.innerHTML = `* { cursor: url('https://cdn-icons-png.flaticon.com/32/709/709682.png'), auto !important; }`;
-        } else if(cursorStyle) cursorStyle.remove();
-
-        let selectStyle = document.getElementById('ybg-select');
-        if(set.customSelection) {
-            if(!selectStyle) { selectStyle = document.createElement('style'); selectStyle.id='ybg-select'; document.head.appendChild(selectStyle); }
-            selectStyle.innerHTML = `::selection { background: #4318FF; color: #fff; }`;
-        } else if(selectStyle) selectStyle.remove();
-
-        document.documentElement.style.scrollBehavior = set.smoothScroll ? 'smooth' : 'auto';
-
-        if(set.tabTitleChange) {
-            let defaultTitle = document.title;
-            window.onblur = () => { document.title = "Seni Özledik! | YBG13™"; };
-            window.onfocus = () => { document.title = defaultTitle; };
-        } else { window.onblur = null; window.onfocus = null; }
-
-        let scrollStyle = document.getElementById('ybg-scroll');
-        if(set.hideScrollbar) {
-            if(!scrollStyle) { scrollStyle = document.createElement('style'); scrollStyle.id='ybg-scroll'; document.head.appendChild(scrollStyle); }
-            scrollStyle.innerHTML = `::-webkit-scrollbar { display: none; }`;
-        } else if(scrollStyle) scrollStyle.remove();
-
-        document.body.style.filter = set.grayscaleMode ? "grayscale(100%)" : "none";
-
-        let meta = document.querySelector('meta[name="viewport"]');
-        if(set.disableZoom) {
-            if(meta) meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-        } else {
-            if(meta) meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
-        }
-    
-        const existingPopup = document.getElementById('ybg-popup');
-        if(set.popupActive && set.popupText) {
-            if(!sessionStorage.getItem('ybg_popup_seen')) {
-                if(!existingPopup) {
-                    const div = document.createElement('div'); div.id = 'ybg-popup';
-                    div.style.cssText = "position:fixed; bottom:20px; left:20px; background:#4318FF; color:white; padding:20px 30px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); z-index:9999; font-family:sans-serif; font-weight:bold; animation: slideIn 0.5s;";
-                    div.innerHTML = `<span style="margin-right:20px;">📢 ${set.popupText}</span> <button onclick="this.parentElement.remove(); sessionStorage.setItem('ybg_popup_seen','true');" style="background:transparent; border:none; color:white; font-size:20px; cursor:pointer;">&times;</button>`;
-                    document.body.appendChild(div);
-                }
+        // Resim ve metinleri güvenli bir şekilde güncelle
+        for (const [id, value] of Object.entries(elements)) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el.tagName === 'IMG') el.src = value;
+                else el.textContent = value;
             }
-        } else if(existingPopup) existingPopup.remove();
-    }
-});
+        }
 
-/* ================= COMPONENT YÜKLEYİCİ (NAVBAR & FOOTER) ================= */
-document.addEventListener("DOMContentLoaded", () => {
-    const navbarContainer = document.getElementById("navbar-container");
-    if (navbarContainer) {
-        fetch("navbar.html")
-            .then(response => {
-                if (!response.ok) throw new Error("Navbar bulunamadı");
-                return response.text();
-            })
-            .then(data => {
-                navbarContainer.innerHTML = data;
-            })
-            .catch(error => console.error("Navbar yükleme hatası:", error));
-    }
+        // Takipçi sayılarını çek ve GÜVENLİCE yazdır
+        const counts = await getFollowCounts(targetEmail);
+        
+        const followersEl = document.getElementById('detail-followers-count');
+        const followingEl = document.getElementById('detail-following-count');
 
-    const footerContainer = document.getElementById("footer-container");
-    if (footerContainer) {
-        fetch("footer.html")
-            .then(response => {
-                if (!response.ok) throw new Error("Footer bulunamadı");
-                return response.text();
-            })
-            .then(data => {
-                footerContainer.innerHTML = data;
+        if (followersEl) {
+            followersEl.innerHTML = `<strong onclick="showUserList('${targetEmail}', 'followers')" style="cursor:pointer">${counts.followers}</strong> Takipçi`;
+        }
+        
+        if (followingEl) {
+            followingEl.innerHTML = `<strong onclick="showUserList('${targetEmail}', 'following')" style="cursor:pointer">${counts.following}</strong> Takip Edilen`;
+        }
 
-                const yearElement = document.getElementById('current-year');
-                if(yearElement) {
-                    yearElement.textContent = new Date().getFullYear();
-                }
-            })
-            .catch(error => console.error("Footer yükleme hatası:", error));
-    }
-});
+        // Takip Butonu Güncelleme
+        const followBtn = document.getElementById('detail-follow-btn');
+        if (followBtn) {
+            const isFollowing = (await getDoc(doc(db, "follows", `${window.currentUser.email}_${targetEmail}`))).exists();
+            followBtn.textContent = isFollowing ? "Takibi Bırak" : "Takip Et";
+            followBtn.className = isFollowing ? "btn-primary outline" : "btn-primary";
+            followBtn.onclick = async () => {
+                await toggleFollow(targetEmail);
+                openUserProfile(targetEmail); // Yenile
+            };
+        }
+
+    } catch (error) {
+        console.error("Profil açılırken hata oluştu:", error);
+    };
+};
