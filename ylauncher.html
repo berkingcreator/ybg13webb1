@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YLauncher | YBG13™ Global</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --dark: #0f172a;
+            --accent: #38bdf8;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--dark);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+        .download-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(26, 115, 232, 0.4);
+        }
+        .btn:hover {
+            transform: translateY(-5px);
+            background: var(--accent);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+        }
+        .specs {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .badge {
+            background: #1e293b;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>YLauncher <span style="font-size: 0.5em; vertical-align: middle;">v5.0.1</span></h1>
+        <p class="tagline">Sınırları Zorlayan Performans, YBG13™ Güvencesiyle.</p>
+        
+        <div class="download-card">
+            <h2 style="margin-top:0">Hemen Ücretsiz İndir</h2>
+            <p style="color: #cbd5e1; margin-bottom: 30px;">Windows 10 ve 11 için optimize edilmiş en hızlı Minecraft deneyimi.</p>
+            <a href="https://github.com/berkingcreator/ybg13webb1/releases/download/5.0.1/mysetup.exe" class="btn">
+                YLauncher.exe İndir
+            </a>
+            <div class="specs">
+                <span class="badge">Win 10/11 Uyumu</span>
+                <span class="badge">37.0 MB</span>
+                <span class="badge">macOS (Yakında)</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
