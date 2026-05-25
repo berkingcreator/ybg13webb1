@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W OS Yönetim</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='blue'>W</text></svg>">
+    <link rel="stylesheet" href="w.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo">W OS Sistem Kontrol</h1>
+        <nav>
+            <a href="kernel.html">Ana Sayfa</a>
+            <a href="hakkimizda.html">Hakkımızda</a>
+        </nav>
+    </header>
+    <main>
+        <section class="admin-box" id="login-section">
+            <h2>Yetkili Girişi</h2>
+            <form id="login-form">
+                <label for="admin-email">E-posta:</label>
+                <input type="email" id="admin-email" required>
+                <label for="admin-pass">Şifre:</label>
+                <input type="password" id="admin-pass" required>
+                <button type="submit" class="admin-btn">Giriş Yap</button>
+            </form>
+            <p id="login-error"></p>
+        </section>
+
+        <section class="admin-box" id="panel-section" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Çekirdek Yönetimi</h2>
+                <button id="logout-btn" class="logout-btn">Çıkış Yap</button>
+            </div>
+            
+            <form id="release-form">
+                <label for="version">Sürüm Numarası:</label>
+                <input type="text" id="version" required>
+                <label for="date">Yayın Tarihi:</label>
+                <input type="date" id="date" required>
+                <label for="notes">Yama Notları:</label>
+                <textarea id="notes" rows="3" required></textarea>
+                <label for="code">Çekirdek Kodu:</label>
+                <textarea id="code" rows="10" required></textarea>
+                <button type="submit" id="submit-btn" class="admin-btn">Sistemi Güncelle / Yayınla</button>
+            </form>
+            <p id="status-message"></p>
+
+            <div class="admin-version-list">
+                <h3>Yüklü Sürümleri Yönet</h3>
+                <div id="admin-versions-container">Yükleniyor...</div>
+            </div>
+        </section>
+    </main>
+    <script type="module" src="w.js"></script>
+</body>
+</html>

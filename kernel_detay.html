@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sürüm Detayları</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='blue'>W</text></svg>">
+    <link rel="stylesheet" href="w.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo">W OS Sürüm İncelemesi</h1>
+        <nav>
+            <a href="kernel.html">Ana Sayfa</a>
+            <a href="hakkimizda.html">Hakkımızda</a>
+        </nav>
+    </header>
+    <main>
+        <section class="release-box">
+            <h2 id="detail-version">Yükleniyor...</h2>
+            <p id="detail-date"></p>
+            <p id="detail-notes"></p>
+           <h3>Kaynak Kodu:</h3>
+            <div class="code-container">
+                <button id="copy-btn" class="copy-btn">Kopyala</button>
+                <pre><code id="detail-code"></code></pre>
+            </div>
+            <pre><code id="detail-code"></code></pre>
+        </section>
+    </main>
+    <script type="module" src="w.js"></script>
+</body>
+</html>
