@@ -1,7 +1,6 @@
-/**
- * NovaGate v3.0.0 - Singularity Core (Defense Grade)
- * RSA-OAEP Asimetrik El Sıkışma, AES-256-GCM Katmanlı Şifreleme.
- */
+// "İnsanların en hayırlısı, insanlara faydalı olandır." - Hz. Muhammed (s.a.v)
+
+const crypto = require('crypto');
 
 class NovaGateSingularity {
     constructor(config = {}) {
@@ -12,61 +11,59 @@ class NovaGateSingularity {
             securityLevel: "MAXIMUM"
         };
         
-        this.keyPair = null; // RSA Anahtar Çifti
-        this.activeSessionKey = null; // AES Anahtarı
-        this.blacklistedNonces = new Set();
+        this.keyPair = null;
+        this.activeSessionKey = null;
+        this.blacklistedNonces = new Map();
         
-        this.log("Singularity Motoru Ateşleniyor...");
+        this.cleanupTimer = setInterval(() => {
+            const now = Date.now();
+            for (const [uid, ts] of this.blacklistedNonces.entries()) {
+                if (now - ts > 60000) {
+                    this.blacklistedNonces.delete(uid);
+                }
+            }
+        }, 60000);
+        
+        if (this.cleanupTimer.unref) {
+            this.cleanupTimer.unref();
+        }
+
+        this.log("Singularity Motoru Atesleniyor...");
     }
 
     log(msg) {
         if (this.config.debug) {
             const time = new Date().toLocaleTimeString();
-            console.log(`%c[NovaGate v${this.version}] [${time}]`, "color: #00ffcc; font-weight: bold; background: #000; padding: 2px 5px;", msg);
+            console.log(`[NovaGate v${this.version}] [${time}]`, msg);
         }
     }
 
-    /**
-     * RSA 4096-bit Anahtar Çifti Üretir (Asimetrik Güvenlik)
-     */
     async bootSequence() {
-        try {
-            this.keyPair = await window.crypto.subtle.generateKey(
-                {
-                    name: "RSA-OAEP",
-                    modulusLength: 4096,
-                    publicExponent: new Uint8Array([1, 0, 1]),
-                    hash: "SHA-256",
-                },
-                true,
-                ["encrypt", "decrypt"]
-            );
-
-            // İlk oturum anahtarını oluştur
-            await this.rotateSessionKey();
-            
-            this.log("Sistem Çekirdeği Hazır. RSA-4096 ve AES-256 aktif.");
-        } catch (e) {
-            this.log("BOOT HATASI: Donanım kripto desteği yetersiz.");
-        }
+        return new Promise((resolve, reject) => {
+            crypto.generateKeyPair('rsa', {
+                modulusLength: 4096,
+                publicKeyEncoding: { type: 'spki', format: 'pem' },
+                privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
+            }, (err, publicKey, privateKey) => {
+                if (err) return reject(err);
+                this.keyPair = { publicKey, privateKey };
+                this.rotateSessionKey();
+                this.log("Sistem Cekirdegi Hazir. RSA-4096 ve AES-256 aktif.");
+                resolve();
+            });
+        });
     }
 
-    async rotateSessionKey() {
-        this.activeSessionKey = await window.crypto.subtle.generateKey(
-            { name: "AES-GCM", length: 256 },
-            true,
-            ["encrypt", "decrypt"]
-        );
-        this.log("Oturum anahtarı başarıyla yenilendi.");
+    rotateSessionKey() {
+        this.activeSessionKey = crypto.randomBytes(32);
+        this.log("Oturum anahtari basariyla yenilendi.");
     }
 
-    /**
-     * Veriyi 'Singularity' protokolü ile zırhlar.
-     */
-    async secureWrap(payload) {
-        const encoder = new TextEncoder();
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
-        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+    secureWrap(payload) {
+        if (!this.activeSessionKey) throw new Error("Oturum anahtari eksik.");
+        
+        const iv = crypto.randomBytes(12);
+        const salt = crypto.randomBytes(16);
         
         const metadata = {
             uid: crypto.randomUUID(),
@@ -75,69 +72,66 @@ class NovaGateSingularity {
             v: this.version
         };
 
-        const rawContent = encoder.encode(JSON.stringify({
+        const rawContent = JSON.stringify({
             ...metadata,
             payload: payload
-        }));
+        });
 
-        // AES-GCM Şifreleme
-        const encryptedContent = await window.crypto.subtle.encrypt(
-            { name: "AES-GCM", iv: iv, additionalData: salt },
-            this.activeSessionKey,
-            rawContent
-        );
+        const cipher = crypto.createCipheriv('aes-256-gcm', this.activeSessionKey, iv);
+        cipher.setAAD(salt);
+        
+        let encryptedContent = cipher.update(rawContent, 'utf8', 'base64');
+        encryptedContent += cipher.final('base64');
+        const authTag = cipher.getAuthTag().toString('base64');
 
-        // Paketleme
         return {
-            bundle: btoa(String.fromCharCode(...new Uint8Array(encryptedContent))),
-            vector: btoa(String.fromCharCode(...iv)),
-            entropy: btoa(String.fromCharCode(...salt)),
+            bundle: encryptedContent,
+            vector: iv.toString('base64'),
+            entropy: salt.toString('base64'),
+            tag: authTag,
             signature: metadata.uid
         };
     }
 
-    /**
-     * Gelen zırhlı paketi açar ve bütünlük kontrolü yapar.
-     */
-    async breachUnwrap(securePackage) {
+    breachUnwrap(securePackage) {
         try {
-            const bundle = Uint8Array.from(atob(securePackage.bundle), c => c.charCodeAt(0));
-            const iv = Uint8Array.from(atob(securePackage.vector), c => c.charCodeAt(0));
-            const salt = Uint8Array.from(atob(securePackage.entropy), c => c.charCodeAt(0));
+            const bundle = securePackage.bundle;
+            const iv = Buffer.from(securePackage.vector, 'base64');
+            const salt = Buffer.from(securePackage.entropy, 'base64');
+            const authTag = Buffer.from(securePackage.tag, 'base64');
 
-            const decrypted = await window.crypto.subtle.decrypt(
-                { name: "AES-GCM", iv: iv, additionalData: salt },
-                this.activeSessionKey,
-                bundle
-            );
+            const decipher = crypto.createDecipheriv('aes-256-gcm', this.activeSessionKey, iv);
+            decipher.setAAD(salt);
+            decipher.setAuthTag(authTag);
 
-            const decoded = JSON.parse(new TextDecoder().decode(decrypted));
+            let decrypted = decipher.update(bundle, 'base64', 'utf8');
+            decrypted += decipher.final('utf8');
 
-            // Anti-Replay & Time-Sync Check
+            const decoded = JSON.parse(decrypted);
+
             if (this.blacklistedNonces.has(decoded.uid)) throw new Error("REPLAY DETECTED");
             if (Date.now() - decoded.ts > 60000) throw new Error("PACKAGE EXPIRED");
 
-            this.blacklistedNonces.add(decoded.uid);
-            this.log("Paket çözüldü: Veri bütünlüğü doğrulandı.");
+            this.blacklistedNonces.set(decoded.uid, decoded.ts);
+            this.log("Paket cozuldu: Veri butunlugu dogrulandi.");
             
             return decoded.payload;
         } catch (e) {
-            this.log(`GÜVENLİK İHLALİ: ${e.message}`);
+            this.log(`GUVENLIK IHLALI: ${e.message}`);
             return null;
         }
     }
 }
 
-// --- TEST DRIVE ---
 (async () => {
     const NG3 = new NovaGateSingularity({ debug: true });
     await NG3.bootSequence();
 
-    const topSecret = { project: "Kül-ü Anka", status: "Stealth Mode", tech: "Quantum-Safe" };
+    const topSecret = { project: "Kul-u Anka", status: "Stealth Mode", tech: "Quantum-Safe" };
 
-    const encrypted = await NG3.secureWrap(topSecret);
-    console.log("%c[GÖNDERİLEN PAKET]", "color: orange", encrypted);
+    const encrypted = NG3.secureWrap(topSecret);
+    console.log("[GONDERILEN PAKET]", encrypted);
 
-    const decrypted = await NG3.breachUnwrap(encrypted);
-    console.log("%c[ÇÖZÜLEN VERİ]", "color: green", decrypted);
+    const decrypted = NG3.breachUnwrap(encrypted);
+    console.log("[COZULEN VERI]", decrypted);
 })();
