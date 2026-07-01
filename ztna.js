@@ -1,3 +1,5 @@
+// "İnsanların en hayırlısı, insanlara faydalı olandır." - Hz. Muhammed (s.a.v)
+
 'use strict';
 
 const https = require('https');
