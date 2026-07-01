@@ -80,8 +80,7 @@ class NovaGateQuantum {
         const secureBundle = {
             data: compressed.toString('base64'),
             timestamp,
-            nonce: nonce.toString('hex'),
-            tenantId
+            nonce: nonce.toString('hex')
         };
         if (ttlMs && typeof ttlMs === 'number' && ttlMs > 0) {
             secureBundle.ttl_ms = ttlMs;
@@ -98,7 +97,8 @@ class NovaGateQuantum {
             cipher: encrypted,
             vector: iv.toString('base64'),
             tag: authTag,
-            v: this.#version
+            v: this.#version,
+            tenantId          // bu bilgi şifre çözme tarafında anahtar seçimi için düz metin olarak iletilir
         };
     }
 
@@ -108,26 +108,24 @@ class NovaGateQuantum {
             return null;
         }
 
-        try {
-            const encryptedText = securePackage.cipher;
-            const iv = Buffer.from(securePackage.vector, 'base64');
-            const authTag = Buffer.from(securePackage.tag, 'base64');
+        const { cipher: cipherText, vector, tag, tenantId } = securePackage;
+        if (!cipherText || !vector || !tag || !tenantId) {
+            this.log("Missing required fields in securePackage", "error");
+            return null;
+        }
 
-            const decipher = crypto.createDecipheriv(
-                'aes-256-gcm',
-                await this.#tenantKeyManager.getOrCreateKey('__placeholder__'),
-                iv
-            );
+        try {
+            const tenantKey = await this.#tenantKeyManager.getOrCreateKey(tenantId);
+            const iv = Buffer.from(vector, 'base64');
+            const authTag = Buffer.from(tag, 'base64');
+
+            const decipher = crypto.createDecipheriv('aes-256-gcm', tenantKey, iv);
             decipher.setAuthTag(authTag);
-            let decrypted = decipher.update(encryptedText, 'base64', 'utf8');
+
+            let decrypted = decipher.update(cipherText, 'base64', 'utf8');
             decrypted += decipher.final('utf8');
 
             const bundle = JSON.parse(decrypted);
-            const tenantKey = await this.#tenantKeyManager.getOrCreateKey(bundle.tenantId);
-
-            if (Buffer.compare(tenantKey, await this.#tenantKeyManager.getOrCreateKey(bundle.tenantId)) !== 0) {
-                throw new Error("Tenant key mismatch");
-            }
 
             const now = Date.now();
             const ttl = bundle.ttl_ms || 300000;
